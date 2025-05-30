@@ -17,10 +17,12 @@
             --accent-green: #22c55e;
             --accent-yellow: #f59e0b;
             --accent-gold: #ffd700;
-            --toast-yellow-bg: #fffbeb; /* Light yellow for toast */
-            --toast-yellow-text: #92400e; /* Dark yellow/brown text for toast */
-            --hint-bg-light: #fefce8; /* Light yellow for in-bubble hints */
-            --hint-text-dark: #713f12; /* Darker text for in-bubble hints */
+            --toast-yellow-bg: #fffbeb;
+            --toast-yellow-text: #92400e;
+            /* Removed --hint-bg-light and --hint-text-dark as the entire bubble will be styled */
+            --bubble-hint-bg: #f0fdf4; /* Light green background for hint bubble */
+            --bubble-hint-text: #14532d; /* Dark green text for hint bubble */
+            --bubble-hint-border: #a7f3d0; /* Border for hint bubble */
         }
         html, body {
             height: 100%;
@@ -134,17 +136,12 @@
         .chat-bubble { padding: 7px 10px; margin-bottom: 5px; font-size: 13px; line-height: 1.4; border-radius: 8px; max-width: 85%; word-wrap: break-word; }
         .chat-bubble.player { background-color: var(--accent-blue); color: var(--text-light); align-self: flex-end; margin-left: auto; }
         .chat-bubble.npc { background-color: var(--bg-dark-tertiary); color: var(--text-light); align-self: flex-start; margin-right: auto; }
-        .chat-bubble small { font-size: 0.7em; opacity: 0.8; }
-        .npc-hint { /* Styling for hints inside NPC bubbles */
-            display: block;
-            margin-top: 8px; /* Space between main text and hint */
-            padding: 6px 10px;
-            background-color: var(--hint-bg-light); /* Light yellow background */
-            color: var(--hint-text-dark); /* Dark text */
-            border-radius: 4px;
-            font-size: 0.9em; /* Slightly smaller */
-            border: 1px solid #fde68a; /* Light border for definition */
+        .chat-bubble.npc.hint-bubble { /* Style for the entire hint bubble */
+            background-color: var(--bubble-hint-bg);
+            color: var(--bubble-hint-text);
+            border: 1px solid var(--bubble-hint-border);
         }
+        /* .npc-hint span is no longer needed as the whole bubble is styled */
 
 
         .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
@@ -404,29 +401,41 @@
     <script>
         // --- API URLs ---
         const INITIAL_STORY_URL = 'https://d1d5ef45-d04b-4a1c-be4b-64a0680c6847-00-xxpggv06ka2e.sisko.replit.dev/haiguitang/generate-story';
-        const INGAME_RESPONSE_URL = 'https://d1d5ef45-d04b-4a1c-be4b-64a0680c6847-00-xxpggv06ka2e.sisko.replit.dev/ingame-ai-response';
-        const LEADERBOARD_URL = 'https://d1d5ef45-d04b-4a1c-be4b-64a0680c6847-00-xxpggv06ka2e.sisko.replit.dev/leaderboard'; // Backend URL for leaderboard
+        const INGAME_RESPONSE_URL = 'https://d1d5ef45-d04b-4a1c-be4b-64a0680c6847-00-xxpggv06ka2e.sisko.replit.dev/haiguitang/ingame-response';
+        const LEADERBOARD_URL = 'https://d1d5ef45-d04b-4a1c-be4b-64a0680c6847-00-xxpggv06ka2e.sisko.replit.dev/haiguitang/leaderboard';
+        const LEADERBOARD_ADD_URL = 'https://d1d5ef45-d04b-4a1c-be4b-64a0680c6847-00-xxpggv06ka2e.sisko.replit.dev/haiguitang/leaderboard/add';
+        const HAIGUITANG_GAME_START_URL = 'https://d1d5ef45-d04b-4a1c-be4b-64a0680c6847-00-xxpggv06ka2e.sisko.replit.dev/haiguitang/game/start'; // Endpoint for starting a stateful game
+        const HAIGUITANG_CHEAT_URL_TEMPLATE = 'https://d1d5ef45-d04b-4a1c-be4b-64a0680c6847-00-xxpggv06ka2e.sisko.replit.dev/haiguitang/game/{gameId}/cheat'; // Template for cheat endpoint
+
 
         const STORY_GENRES = ["懸疑推理", "奇幻冒險", "科幻謎團", "輕鬆搞笑", "都市傳說", "古代奇案", "恐怖驚悚", "日常溫馨", "荒誕不經"];
-        let CURRENT_STORY_DATA = { title: "尚未生成", initialScenario: "請先選擇一個故事類型。", solution: "請先選擇一個故事類型。", hints: [], hostingStyle: "標準", storySummary: "AI 正在整理思緒...", playerTitle: "偵探新手" };
+        let CURRENT_STORY_DATA = {
+            gameId: null, // To store the ID for stateful game interactions
+            title: "尚未生成",
+            initialScenario: "請先選擇一個故事類型。",
+            solution: "請先選擇一個故事類型。",
+            hints: [],
+            hostingStyle: "標準",
+            storySummary: "AI 正在整理思緒...",
+            playerTitle: "偵探新手"
+        };
         const DEFAULT_HINTS = [ "試著從地點、人物、物品、時間、原因等方向提問。", "受害者的死法是否常見？", "現場是否有不尋常的物品？" ];
         let playerNickname = "匿名玩家";
 
-        // Phrases for when the player's question is off-track or doesn't reveal new clues
         const OFF_TRACK_RESPONSES = [
             "嗯...這個問題嘛，可能跟真相有點距離喔，試試從別的角度想想？",
             "這個方向似乎不太對，換個思路如何？",
             "這個問題可能不是關鍵，再想想有沒有其他線索？",
             "我覺得我們可以探索其他可能性，你覺得呢？",
-            "這個提問很有趣，但或許我們可以先聚焦在其他方面。",
+            "这个提问很有趣，但或许我们可以先聚焦在其他方面。",
             "嗯，這個問題暫時沒有太多進展，要不要換個方向試試？",
-            "這個線索似乎比較模糊，我們看看其他的提示吧。",
-            "這個問題可能把我們帶偏了，重新整理一下思路吧！",
-            "感覺這不是通往真相的捷徑，再思考一下！",
-            "這個問題可能不是目前最重要的，試試別的問法？",
-            "嗯，我感覺這條路可能走不太通，要不要換一條？"
+            "这个线索似乎比较模糊，我们看看其他的提示吧。",
+            "这个問題可能把我們帶偏了，重新整理一下思路吧！",
+            "感觉这不是通往真相的捷径，再思考一下！",
+            "这个問題可能不是目前最重要的，試試別的問法？",
+            "嗯，我感觉这条路可能走不太通，要不要换一条？"
         ];
-        const GENERIC_OFF_TRACK_PHRASE = "嗯...這個問題嘛，可能跟真相有點距離喔，試試從別的角度想想？"; // The specific phrase to replace
+        const GENERIC_OFF_TRACK_PHRASE = "嗯...這個問題嘛，可能跟真相有點距離喔，試試從別的角度想想？";
 
         // DOM Elements
         const gameContainerEl = document.getElementById('game-container');
@@ -539,7 +548,7 @@
         }
 
         async function makeApiCall(url, payload, method = 'POST', loadingMessage = "處理中...", errorMessagePrefix = "請求失敗") {
-            if (method === 'POST') {
+            if (method === 'POST' && loadingMessage) {
                  showLoadingModal(true, loadingMessage);
             }
             try {
@@ -547,13 +556,13 @@
                     method: method,
                     headers: { 'Content-Type': 'application/json' },
                 };
-                if (method === 'POST' && payload) {
+                if (method !== 'GET' && payload) {
                     options.body = JSON.stringify(payload);
                 }
 
                 const response = await fetch(url, options);
 
-                if (method === 'POST') showLoadingModal(false);
+                if (method === 'POST' && loadingMessage) showLoadingModal(false);
 
                 if (!response.ok) {
                     let backendErrorMessage = `${errorMessagePrefix} (${response.status})。`;
@@ -572,7 +581,8 @@
                 return data;
             } catch (error) {
                 console.error(`${errorMessagePrefix}錯誤:`, error.message);
-                if (method === 'POST') showLoadingModal(false);
+                if (method === 'POST' && loadingMessage) showLoadingModal(false);
+
                 if (aiMaintenanceMessageEl && method !== 'GET') {
                     let displayErrorMessage = error.message;
                     if (error.message.toLowerCase().includes('failed to fetch')) {
@@ -592,10 +602,23 @@
             if(startGameFromIntroBtn) startGameFromIntroBtn.style.display = 'block';
             if(loadingModalImagePlaceholderEl) loadingModalImagePlaceholderEl.innerHTML = '⏳';
 
-            const aiResponse = await makeApiCall(INITIAL_STORY_URL, { genre: genre }, 'POST', `正在生成 ${genre} 故事...`, "AI初始故事生成");
+            // For stateless story generation, we use INITIAL_STORY_URL
+            // For stateful game (needed for cheat codes), we would call HAIGUITANG_GAME_START_URL
+            const aiResponse = await makeApiCall(INITIAL_STORY_URL, { genre: genre, nickname: playerNickname }, 'POST', `正在生成 ${genre} 故事...`, "AI初始故事生成");
 
-            if (aiResponse && aiResponse.title) {
-                CURRENT_STORY_DATA = { ...CURRENT_STORY_DATA, ...aiResponse, storySummary: "根據目前線索，故事大概是這樣的..." };
+            if (aiResponse && aiResponse.title) { // Assuming direct story generation still returns these
+                CURRENT_STORY_DATA = {
+                    ...CURRENT_STORY_DATA, // Keep existing like gameId if it were set
+                    title: aiResponse.title,
+                    initialScenario: aiResponse.initialScenario,
+                    solution: aiResponse.solution,
+                    hints: aiResponse.hints || [],
+                    hostingStyle: aiResponse.hostingStyle || "標準",
+                    storySummary: "根據目前線索，故事大概是這樣的..."
+                    // If HAIGUITANG_GAME_START_URL was used and returned a gameId:
+                    // gameId: aiResponse.gameId
+                };
+
                 if(storyIntroTitleEl) storyIntroTitleEl.textContent = `故事序幕：${CURRENT_STORY_DATA.title}`;
                 if(storyIntroScenarioEl) storyIntroScenarioEl.innerHTML = CURRENT_STORY_DATA.initialScenario.replace(/\n/g, '<br>');
                 if(genreModalEl) toggleModal(genreModalEl, false);
@@ -647,8 +670,58 @@
             if(hintButtonEl) hintButtonEl.disabled = false;
         }
 
+        async function applyHaiguitangCheatCode(gameId, cheatCode) {
+            if (!gameId) {
+                showToast("遊戲尚未開始，無法使用作弊碼。", "error");
+                return;
+            }
+            const cheatUrl = HAIGUITANG_CHEAT_URL_TEMPLATE.replace('{gameId}', gameId);
+            const result = await makeApiCall(cheatUrl, { cheat_code: cheatCode }, 'POST', "處理作弊碼中...", "作弊碼處理");
+
+            if (result && result.success) {
+                // Backend should return the full story or relevant info in result.data
+                // For now, let's assume it reveals the solution in the dialogue
+                addDialogue("npc", `作弊碼成功！真相是：<br>${result.data.solution || CURRENT_STORY_DATA.solution}`);
+                // Potentially end the game or update UI based on cheat effect
+                // For simplicity, we'll just show the solution.
+                // To properly end the game, you might call endGame(true, "作弊大師");
+                // and update CURRENT_STORY_DATA if the backend provides the full story object.
+                CURRENT_STORY_DATA.solution = result.data.solution || CURRENT_STORY_DATA.solution; // Update solution
+                endGame(true, "作弊大師");
+
+
+            } else {
+                showToast(result ? result.error : "作弊碼處理失敗。", "error");
+            }
+        }
+
+
         async function handlePlayerQuestion(questionText) {
             if (gameEnded || !questionText.trim()) return;
+
+            // --- 作弊碼處理邏輯 (需要 gameId) ---
+            // 目前的遊戲流程是無狀態的，直接呼叫 AI 生成故事和回應，沒有 gameId。
+            // 要讓作弊碼 "88888888" 生效，需要：
+            // 1. 修改 `generateInitialStoryWithAI`：
+            //    - 不再呼叫 INITIAL_STORY_URL (`/haiguitang/generate-story`)
+            //    - 改為呼叫後端的「開始新海龜湯遊戲」端點，例如 HAIGUITANG_GAME_START_URL (`/haiguitang/game/start`)。
+            //    - 此端點應由後端的 HaiguitangGameManager 處理，創建遊戲實例並回傳 gameId。
+            //    - 將獲取的 gameId 儲存在 CURRENT_STORY_DATA.gameId。
+            // 2. 在此處 (handlePlayerQuestion) 檢查：
+            //    if (questionText.trim() === "88888888" && CURRENT_STORY_DATA.gameId) {
+            //        await applyHaiguitangCheatCode(CURRENT_STORY_DATA.gameId, "88888888");
+            //        playerInputEl.value = ''; // 清空輸入框
+            //        return; // 作弊碼已處理，結束此函數
+            //    }
+            // 3. `applyHaiguitangCheatCode` 函數 (已在下方預留) 需要呼叫後端的作弊碼端點
+            //    (例如：HAIGUITANG_CHEAT_URL_TEMPLATE.replace('{gameId}', gameId))
+            //    後端應處理作弊碼效果，例如回傳完整答案。
+            //
+            // 目前因上述流程未實現，輸入 "88888888" 會被當作普通問題發給 AI，
+            // 可能導致 AI 無法理解而出現 "Failed to fetch" 或其他非預期回應。
+            // --- 作弊碼處理邏輯結束 ---
+
+
             turnCount++;
             totalCharCount += questionText.length;
             updateTurnCounterDisplay();
@@ -656,14 +729,15 @@
             showLoadingInChat(true);
 
             const ingamePayload = { playerQuestion: questionText, initialScenario: CURRENT_STORY_DATA.initialScenario, fullSolution: CURRENT_STORY_DATA.solution, revealedClues: Array.from(revealedStoryParts) };
+            // This currently calls the stateless INGAME_RESPONSE_URL.
+            // For a stateful game, this would be an endpoint like /haiguitang/game/{gameId}/guess
             const aiIngameResponse = await makeApiCall(INGAME_RESPONSE_URL, ingamePayload, 'POST', "AI 思考中...", "AI即時回應");
             showLoadingInChat(false);
 
             if (aiIngameResponse && aiIngameResponse.npcResponseText) {
                 let npcResponseToDisplay = aiIngameResponse.npcResponseText;
-                let hintPart = ""; // To store the hint if separated
+                let hintPart = "";
 
-                // Separate hint if present
                 if (npcResponseToDisplay.includes('\n提示：')) {
                     const parts = npcResponseToDisplay.split('\n提示：');
                     npcResponseToDisplay = parts[0];
@@ -672,12 +746,10 @@
                     }
                 }
 
-                // Check if the main response is the generic off-track phrase and no new clue was discovered
                 if (!aiIngameResponse.newClueDiscovered && npcResponseToDisplay.trim() === GENERIC_OFF_TRACK_PHRASE.trim()) {
                     npcResponseToDisplay = OFF_TRACK_RESPONSES[Math.floor(Math.random() * OFF_TRACK_RESPONSES.length)];
                 }
 
-                // Reconstruct the full message with the (potentially modified) main response and the original hint
                 const finalNpcMessage = hintPart ? `${npcResponseToDisplay}\n${hintPart}` : npcResponseToDisplay;
                 addDialogue("npc", finalNpcMessage);
 
@@ -808,32 +880,38 @@
             bubble.classList.add('chat-bubble', speaker === 'player' ? 'player' : 'npc');
 
             let mainText = text;
-            let hintPart = '';
+            let isHintMessage = false;
 
-            if (speaker === 'npc' && text.includes('\n提示：')) {
-                const parts = text.split('\n提示：');
-                mainText = parts[0];
-                if (parts.length > 1) {
-                    hintPart = `提示：${parts.slice(1).join('\n提示：')}`; // Rejoin if multiple "提示："
+            if (speaker === 'npc') {
+                if (text.includes('\n提示：')) {
+                    // This case is for AI responses that embed a hint
+                    // The hint part will be styled by the .npc-hint span logic below
+                } else if (text.startsWith('提示：')) {
+                    // This case is for hints directly from the hint button
+                    isHintMessage = true;
                 }
-            } else if (speaker === 'npc' && text.includes('提示：') && !text.includes('\n提示：') && text.startsWith('提示：')) {
-                 // Handle cases where the entire message is just a hint from hintButtonEl
-                 mainText = ''; // No main text part
-                 hintPart = text;
             }
 
+            if (isHintMessage) {
+                bubble.classList.add('hint-bubble'); // Apply special styling to the entire bubble
+                bubble.innerHTML = text.replace(/\n/g, '<br>'); // Render text directly
+            } else if (speaker === 'npc' && text.includes('\n提示：')) {
+                // For NPC responses with embedded hints, separate them
+                const parts = text.split('\n提示：');
+                mainText = parts[0];
+                bubble.innerHTML = mainText.replace(/\n/g, '<br>').replace(/<hr class="dialogue-hr">/g, '<hr class="dialogue-hr">');
 
-            // Sanitize and set main text (replace \n with <br>, handle dialogue-hr)
-            bubble.innerHTML = mainText.replace(/\n/g, '<br>').replace(/<hr class="dialogue-hr">/g, '<hr class="dialogue-hr">');
-
-
-            if (hintPart) {
-                const hintSpan = document.createElement('span');
-                hintSpan.classList.add('npc-hint');
-                // Ensure "提示：" prefix is there and then replace \n
-                let formattedHintText = hintPart.startsWith('提示：') ? hintPart : `提示：${hintPart}`;
-                hintSpan.innerHTML = formattedHintText.replace(/\n/g, '<br>');
-                bubble.appendChild(hintSpan);
+                if (parts.length > 1) {
+                    const hintSpan = document.createElement('span');
+                    hintSpan.classList.add('npc-hint'); // This class styles the hint part within a normal NPC bubble
+                    let hintContent = `提示：${parts.slice(1).join('\n提示：')}`;
+                    hintSpan.innerHTML = hintContent.replace(/\n/g, '<br>');
+                    bubble.appendChild(hintSpan);
+                }
+            }
+             else {
+                // For player messages or NPC messages without special hints
+                bubble.innerHTML = text.replace(/\n/g, '<br>').replace(/<hr class="dialogue-hr">/g, '<hr class="dialogue-hr">');
             }
 
 
@@ -848,7 +926,7 @@
                 toastMessageEl.className = 'toast show';
                 if (type === 'error') {
                     toastMessageEl.classList.add('error');
-                    toastMessageEl.style.backgroundColor = ''; // Reset to use class style
+                    toastMessageEl.style.backgroundColor = '';
                     toastMessageEl.style.color = '';
                 } else {
                     toastMessageEl.style.backgroundColor = 'var(--toast-yellow-bg)';
@@ -881,7 +959,7 @@
 
         async function saveToLeaderboard(nickname, turns, charCount, title) {
             const payload = { nickname, turns, charCount, title, date: new Date().toISOString() };
-            const result = await makeApiCall(LEADERBOARD_URL, payload, 'POST', "儲存成績中...", "儲存排行榜");
+            const result = await makeApiCall(LEADERBOARD_ADD_URL, payload, 'POST', "儲存成績中...", "儲存排行榜");
             if (result) {
                 showToast("成績已儲存到排行榜！");
             } else {
@@ -896,7 +974,7 @@
             if(leaderboardErrorMessageEl) leaderboardErrorMessageEl.style.display = 'none';
             if(leaderboardModalEl) toggleModal(leaderboardModalEl, true);
 
-            const leaderboardData = await makeApiCall(LEADERBOARD_URL, null, 'GET', "", "載入排行榜");
+            const leaderboardData = await makeApiCall(LEADERBOARD_URL, null, 'GET', null, "載入排行榜"); // No loading message for GET
 
             if(leaderboardLoadingEl) leaderboardLoadingEl.style.display = 'none';
 
@@ -966,7 +1044,7 @@
             if(gameContainerEl) gameContainerEl.style.display = 'none';
             if(genreModalEl) toggleModal(genreModalEl, true);
             populateGenreGrid();
-            CURRENT_STORY_DATA = { title: "尚未生成", initialScenario: "請先選擇一個故事類型。", solution: "請先選擇一個故事類型。", hints: [], hostingStyle: "標準", storySummary: "AI 正在整理思緒...", playerTitle: "偵探新手" };
+            CURRENT_STORY_DATA = { gameId: null, title: "尚未生成", initialScenario: "請先選擇一個故事類型。", solution: "請先選擇一個故事類型。", hints: [], hostingStyle: "標準", storySummary: "AI 正在整理思緒...", playerTitle: "偵探新手" };
             isGameStarted = false;
             gameEnded = false;
             updateNicknameDisplay();
@@ -1000,11 +1078,12 @@
                 if (availableHints.length > 0) {
                     hintToGive = availableHints[Math.floor(Math.random() * availableHints.length)];
                 }
-                // Add hint directly, it will be styled by addDialogue
-                addDialogue("npc", `提示：${hintToGive}`);
+                addDialogue("npc", `提示：${hintToGive}`); // This will now be styled as a hint bubble
                 hintsRemaining--;
                 updateHintButtonDisplay();
-                showToast("提示已使用！"); // This toast is for general notification
+                // The toast below is a general notification that a hint was used,
+                // the hint itself is displayed in the chat.
+                showToast("提示已使用！");
             }
         });
 
@@ -1020,3 +1099,4 @@
     </script>
 </body>
 </html>
+`
