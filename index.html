@@ -19,9 +19,9 @@
             --accent-gold: #ffd700;
             --toast-yellow-bg: #fffbeb;
             --toast-yellow-text: #92400e;
-            --bubble-hint-bg: #f0fdf4; 
-            --bubble-hint-text: #14532d; 
-            --bubble-hint-border: #a7f3d0; 
+            --bubble-hint-bg: #f0fdf4;
+            --bubble-hint-text: #14532d;
+            --bubble-hint-border: #a7f3d0;
             --challenge-bg: #2c3a4b; /* 挑戰成功條件背景色 */
             --dialogue-info-bg: #2c3a4b; /* NPC重要訊息背景色 */
         }
@@ -91,7 +91,7 @@
         #npc-name-banner {
             background-color: rgba(75, 85, 99, 0.8); /* Slightly more opaque */
             color: var(--text-light);
-            font-size: 0.8rem; 
+            font-size: 0.8rem;
             font-weight: 600;
             padding: 3px 8px; /* Adjusted padding */
             width: 100%;
@@ -104,10 +104,10 @@
             border-bottom-right-radius: 0.5rem;
         }
         #story-area-clickable { padding: 8px; min-height: 70px; background-color: var(--bg-dark-secondary); border-radius: 0.5rem; }
-        #story-text-preview { font-size: 0.875rem; color: var(--text-blue-300, #93c5fd); line-height: 1.4; } 
-        .header-text-sm { font-size: 0.8rem; } 
-        #turn-counter { font-size: 0.85rem; color: var(--text-light-secondary); } 
-        .button-group button { font-size: 0.8rem; padding: 4px 6px; } 
+        #story-text-preview { font-size: 0.875rem; color: var(--text-blue-300, #93c5fd); line-height: 1.4; }
+        .header-text-sm { font-size: 0.8rem; }
+        #turn-counter { font-size: 0.85rem; color: var(--text-light-secondary); }
+        .button-group button { font-size: 0.8rem; padding: 4px 6px; }
         .button-group { display: flex; align-items: center; gap: 6px; }
 
         #dialogue-history-scrollable { flex-grow: 1; overflow-y: auto; padding: 10px 12px; display: flex; flex-direction: column; -webkit-overflow-scrolling: touch; }
@@ -121,7 +121,7 @@
         #player-input-form { display: flex; align-items: stretch; gap: 0.5rem; }
         #player-input {
             padding: 8px 10px;
-            font-size: 15px; 
+            font-size: 15px;
             border-radius: 6px;
             flex-grow: 1;
             color: var(--text-light);
@@ -132,16 +132,16 @@
         #player-input::placeholder { color: var(--text-light-secondary); }
         #input-area .btn {
             padding: 8px 10px;
-            font-size: 14px; 
+            font-size: 14px;
             border-radius: 6px;
             line-height: 1.5;
             flex-shrink: 0;
         }
 
-        .chat-bubble { padding: 8px 12px; margin-bottom: 6px; font-size: 14px; line-height: 1.5; border-radius: 8px; max-width: 85%; word-wrap: break-word; } 
+        .chat-bubble { padding: 8px 12px; margin-bottom: 6px; font-size: 14px; line-height: 1.5; border-radius: 8px; max-width: 85%; word-wrap: break-word; }
         .chat-bubble.player { background-color: var(--accent-blue); color: var(--text-light); align-self: flex-end; margin-left: auto; }
         .chat-bubble.npc { background-color: var(--bg-dark-tertiary); color: var(--text-light); align-self: flex-start; margin-right: auto; }
-        .chat-bubble.npc.hint-bubble { 
+        .chat-bubble.npc.hint-bubble {
             background-color: var(--bubble-hint-bg);
             color: var(--bubble-hint-text);
             border: 1px solid var(--bubble-hint-border);
@@ -161,30 +161,30 @@
         .genre-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px; }
         .genre-item { padding: 8px; min-height: 80px; aspect-ratio: 1 / 1; background-color: var(--bg-dark-secondary); border-radius: 6px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; cursor: pointer; transition: background-color 0.2s ease; position: relative; overflow: hidden; }
         .genre-item:hover { background-color: var(--bg-dark-tertiary); }
-        .genre-item-text { font-size: 12px; z-index: 1; color: var(--text-light); } 
+        .genre-item-text { font-size: 12px; z-index: 1; color: var(--text-light); }
         .genre-item::before { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url('https://placehold.co/80x80/2D3748/A0AEC0?text=類型'); background-size: cover; background-position: center; opacity: 0.05; z-index: 0; }
 
-        #story-intro-modal h3 { font-size: 1.2rem; margin-bottom: 0.6rem; } 
-        #story-intro-modal p { font-size: 0.9rem; } 
-        #story-intro-modal .challenge-conditions { 
+        #story-intro-modal h3 { font-size: 1.2rem; margin-bottom: 0.6rem; }
+        #story-intro-modal p { font-size: 0.9rem; }
+        #story-intro-modal .challenge-conditions {
             margin: 1rem 0;
             padding: 0.75rem 0.5rem;
-            border-top: 2px solid var(--accent-yellow); 
-            border-bottom: 2px solid var(--accent-yellow); 
-            background-color: var(--challenge-bg); 
+            border-top: 2px solid var(--accent-yellow);
+            border-bottom: 2px solid var(--accent-yellow);
+            background-color: var(--challenge-bg);
             border-radius: 4px;
         }
-        #story-intro-modal .challenge-conditions h4 { font-size: 1rem; margin-bottom: 0.3rem; color: var(--accent-yellow); } 
+        #story-intro-modal .challenge-conditions h4 { font-size: 1rem; margin-bottom: 0.3rem; color: var(--accent-yellow); }
         #story-intro-modal .game-rules { margin-top: 1rem; padding-top: 0; }
-        #story-intro-modal .game-rules h4 { font-size: 1rem; margin-bottom: 0.3rem; } 
-        #story-intro-modal ul { font-size: 0.9rem; padding-left: 20px; } 
+        #story-intro-modal .game-rules h4 { font-size: 1rem; margin-bottom: 0.3rem; }
+        #story-intro-modal ul { font-size: 0.9rem; padding-left: 20px; }
         #story-intro-modal ul li { margin-bottom: 0.2rem; }
         #story-intro-modal .btn { margin-top: 1.2rem; }
 
-        #story-progress-modal h2 { font-size: 1.2rem; margin-bottom: 0.6rem;} 
-        #story-progress-modal #full-story-text { max-height: 200px; overflow-y: auto; margin-bottom: 0.8rem; padding-right: 8px; font-size: 0.95rem;} 
+        #story-progress-modal h2 { font-size: 1.2rem; margin-bottom: 0.6rem;}
+        #story-progress-modal #full-story-text { max-height: 200px; overflow-y: auto; margin-bottom: 0.8rem; padding-right: 8px; font-size: 0.95rem;}
         #story-progress-modal #current-story-summary-container { margin-top: 1rem; padding-top: 1rem; border-top: 1px dashed var(--bg-dark-tertiary); }
-        #story-progress-modal #current-story-summary { font-style: italic; font-size:0.9rem; color: var(--text-light-secondary); max-height: 150px; overflow-y: auto;} 
+        #story-progress-modal #current-story-summary { font-style: italic; font-size:0.9rem; color: var(--text-light-secondary); max-height: 150px; overflow-y: auto;}
 
         /* New Loading Modal Styles */
         #loading-modal .modal-content {
@@ -207,11 +207,11 @@
             animation: spin 1s linear infinite;
             margin-bottom: 20px; /* Space below spinner */
         }
-        #loading-text { 
+        #loading-text {
           font-size: 1.2rem; /* Adjusted size */
           color: var(--text-light);
           font-weight: 600; /* Slightly less bold */
-          margin-bottom: 15px; 
+          margin-bottom: 15px;
           user-select: none;
         }
         #loading-ad-placeholder { /* Ad placeholder for loading screen */
@@ -227,39 +227,39 @@
             font-size: 0.8rem;
             margin: 20px 0; /* Space around ad */
         }
-        #loading-modal-tips { 
-          font-size: 0.9rem; 
-          color: var(--text-light); 
+        #loading-modal-tips {
+          font-size: 0.9rem;
+          color: var(--text-light);
           background: rgba(0,0,0, 0.2); /* Subtle background for tips */
-          border-radius: 8px; 
-          padding: 10px 15px; 
+          border-radius: 8px;
+          padding: 10px 15px;
           max-width: 90%;
           text-align: center;
-          margin-top: 10px; 
+          margin-top: 10px;
           line-height: 1.5;
           height: 2.8em;
-          overflow:hidden; 
-          position:relative; 
-          width: 100%; 
+          overflow:hidden;
+          position:relative;
+          width: 100%;
         }
-        #loading-modal-tips span { 
-            position:absolute; 
-            width:100%; 
-            left:0; 
-            text-align:center; 
-            opacity:0; 
+        #loading-modal-tips span {
+            position:absolute;
+            width:100%;
+            left:0;
+            text-align:center;
+            opacity:0;
             animation-name: tip-fade-individual;
-            animation-duration: 4s; 
+            animation-duration: 4s;
             animation-iteration-count: infinite;
             transform: translateY(5px);
         }
         #loading-modal-tips span:nth-child(1) { animation-delay: 0s; }
         #loading-modal-tips span:nth-child(2) { animation-delay: 4s; }
-        #loading-modal-tips span:nth-child(3) { animation-delay: 8s; } 
+        #loading-modal-tips span:nth-child(3) { animation-delay: 8s; }
 
-        @keyframes tip-fade-individual { 
-            0%, 100% { opacity: 0; transform: translateY(5px); } 
-            25%, 75% { opacity: 1; transform: translateY(0); } 
+        @keyframes tip-fade-individual {
+            0%, 100% { opacity: 0; transform: translateY(5px); }
+            25%, 75% { opacity: 1; transform: translateY(0); }
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
@@ -270,8 +270,8 @@
             color: var(--accent-gold);
             margin-bottom: 1rem;
         }
-        #game-over-modal h2 { font-size: 1.8rem; margin-bottom: 0.5rem; } 
-        #player-title-display { font-size: 1.3rem; color: var(--accent-yellow); margin-bottom: 1.5rem; font-weight: bold;} 
+        #game-over-modal h2 { font-size: 1.8rem; margin-bottom: 0.5rem; }
+        #player-title-display { font-size: 1.3rem; color: var(--accent-yellow); margin-bottom: 1.5rem; font-weight: bold;}
         
         .stats-grid-gameover { /* New class for styling game over stats */
             display: flex;
@@ -303,52 +303,52 @@
 
 
         #leaderboard-modal .modal-content { text-align: center; }
-        #leaderboard-modal h2 { font-size: 1.3rem; margin-bottom: 1rem; } 
+        #leaderboard-modal h2 { font-size: 1.3rem; margin-bottom: 1rem; }
         
-        #leaderboard-table { 
-            width: 100%; 
-            margin-top: 1rem; 
-            border-collapse: separate; 
-            border-spacing: 0 10px; 
-            font-size: 0.9rem; 
+        #leaderboard-table {
+            width: 100%;
+            margin-top: 1rem;
+            border-collapse: separate;
+            border-spacing: 0 10px;
+            font-size: 0.9rem;
         }
-        #leaderboard-table thead { display: none; } 
+        #leaderboard-table thead { display: none; }
         #leaderboard-table tbody tr {
-            display: block; 
+            display: block;
             background-color: var(--bg-dark-secondary);
             border-radius: 8px;
             padding: 15px;
-            margin-bottom: 10px; 
+            margin-bottom: 10px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
-        #leaderboard-table td { 
-            display: block; 
-            text-align: left; 
-            padding: 3px 0; 
-            border-bottom: none; 
+        #leaderboard-table td {
+            display: block;
+            text-align: left;
+            padding: 3px 0;
+            border-bottom: none;
         }
-        #leaderboard-table td::before { 
+        #leaderboard-table td::before {
             content: attr(data-label);
             font-weight: 600;
             color: var(--text-light-secondary);
-            display: block; 
+            display: block;
             margin-bottom: 2px;
             font-size: 0.8em;
         }
         #leaderboard-table td:nth-child(1)::before { content: "玩家暱稱："; }
         #leaderboard-table td:nth-child(2)::before { content: "花費回合："; }
-        #leaderboard-table td:nth-child(3)::before { content: "故事解答字數："; } 
+        #leaderboard-table td:nth-child(3)::before { content: "故事解答字數："; }
         #leaderboard-table td:nth-child(4)::before { content: "獲得稱號："; }
 
         #ai-maintenance-modal .modal-content { text-align: center; }
-        #ai-maintenance-modal h2 { font-size: 1.3rem; margin-bottom: 1rem; color: var(--accent-red); } 
-        #ai-maintenance-modal p { font-size: 1rem; margin-bottom: 1.2rem; white-space: pre-wrap; } 
+        #ai-maintenance-modal h2 { font-size: 1.3rem; margin-bottom: 1rem; color: var(--accent-red); }
+        #ai-maintenance-modal p { font-size: 1rem; margin-bottom: 1.2rem; white-space: pre-wrap; }
 
         #nickname-modal .modal-content { max-width: 350px; }
-        #nickname-input { width: 100%; padding: 8px 10px; margin-top: 10px; margin-bottom: 5px; border-radius: 6px; border: 1px solid var(--bg-dark-tertiary); background-color: var(--bg-dark-secondary); color: var(--text-light); font-size: 1rem; } 
+        #nickname-input { width: 100%; padding: 8px 10px; margin-top: 10px; margin-bottom: 5px; border-radius: 6px; border: 1px solid var(--bg-dark-tertiary); background-color: var(--bg-dark-secondary); color: var(--text-light); font-size: 1rem; }
         #ad-placeholder {
             width: 100%;
-            height: 60px; 
+            height: 60px;
             background-color: var(--bg-dark-tertiary);
             border: 1px dashed var(--text-light-secondary);
             border-radius: 6px;
@@ -357,8 +357,8 @@
             justify-content: center;
             color: var(--text-light-secondary);
             font-size: 0.8rem;
-            margin-top: 10px; 
-            margin-bottom: 10px; 
+            margin-top: 10px;
+            margin-bottom: 10px;
         }
 
         .toast {
@@ -370,7 +370,7 @@
             color: var(--toast-yellow-text);
             padding: 10px 20px;
             border-radius: 6px;
-            font-size: 0.9rem; 
+            font-size: 0.9rem;
             z-index: 2000;
             opacity: 0;
             visibility: hidden;
@@ -382,14 +382,14 @@
         .toast.info { background-color: var(--accent-blue); color: var(--text-light); }
 
 
-        .btn { background-color: var(--accent-blue); color: var(--text-light); padding: 8px 15px; border-radius: 6px; border: none; cursor: pointer; font-weight: 500; transition: background-color 0.2s ease; font-size: 0.95rem; } 
+        .btn { background-color: var(--accent-blue); color: var(--text-light); padding: 8px 15px; border-radius: 6px; border: none; cursor: pointer; font-weight: 500; transition: background-color 0.2s ease; font-size: 0.95rem; }
         .btn:hover { background-color: #2563eb; }
         .btn-secondary { background-color: var(--bg-dark-tertiary); }
         .btn-secondary:hover { background-color: #5c677a; }
         .btn:disabled { background-color: var(--bg-dark-tertiary); color: var(--text-light-secondary); cursor: not-allowed; }
         .btn-gold { background-color: var(--accent-gold); color: var(--bg-dark); font-weight: bold; border: 1px solid #daa520; }
         .btn-gold:hover { background-color: #e6c300; }
-        #leaderboard-btn-ingame { font-size: 0.8rem !important; padding: 4px 6px !important; } 
+        #leaderboard-btn-ingame { font-size: 0.8rem !important; padding: 4px 6px !important; }
 
     </style>
 </head>
@@ -416,7 +416,8 @@
             </div>
         </div>
         <div id="dialogue-history-scrollable">
-            <div id="dialogue-history" class="flex flex-col space-y-2 p-1"></div>
+            <div id="dialogue-history" class="flex flex-col space-y-2 p-1">
+                </div>
         </div>
         <div id="input-area">
             <form id="player-input-form">
@@ -431,7 +432,7 @@
             <h2 class="text-xl font-semibold mb-1 text-center">選擇一個故事類型開始遊戲</h2>
             <p class="text-xs text-gray-400 mb-3 text-center">目前暱稱：<span id="current-nickname-display-genre">匿名玩家</span> <button id="change-nickname-btn-genre" class="text-xs text-blue-400 hover:underline ml-1">(修改)</button></p>
             <div id="genre-grid-container" class="genre-grid">
-            </div>
+                </div>
             <p class="text-xs text-gray-400 mt-3 text-center">AI 將根據您的選擇生成一個獨特的海龜湯故事！</p>
             <button id="leaderboard-btn-genre" class="btn btn-gold w-full mt-4">🏅 查看排行榜</button>
         </div>
@@ -468,7 +469,8 @@
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
             </button>
             <h2 class="text-lg font-semibold mb-2">目前已知線索：</h2>
-            <div id="full-story-text" class="space-y-1"></div>
+            <div id="full-story-text" class="space-y-1">
+                </div>
             <div id="current-story-summary-container">
                  <h3 class="text-md font-semibold">目前拼湊的故事：</h3>
                  <p id="current-story-summary" class="mt-1"></p>
@@ -480,7 +482,7 @@
         <div class="modal-content">
             <div class="loading-spinner"></div>
             <p id="loading-text" class="text-lg font-semibold my-2">AI 正在熬製湯底，請稍候...</p>
-            <div id="loading-ad-placeholder">載入中圖片保留位 (300x50)</div>
+            <div id="loading-ad-placeholder">[圖片：載入中廣告 (300x50)]</div>
             <div id="loading-modal-tips">
                 <span>提示：線索可能藏在不起眼的細節中...</span>
                 <span>提示：試著排除不可能的情況...</span>
@@ -531,7 +533,7 @@
                     </tr>
                 </thead>
                 <tbody id="leaderboard-table-body">
-                </tbody>
+                    </tbody>
             </table>
             <p id="leaderboard-empty-message" class="text-gray-400 mt-4" style="display:none;">排行榜目前是空的！</p>
             <p id="leaderboard-error-message" class="text-red-400 mt-4" style="display:none;">無法載入排行榜，請稍後再試。</p>
@@ -553,7 +555,7 @@
             </button>
             <h2 class="text-lg font-semibold mb-2 text-center">請輸入您的暱稱開始遊戲</h2>
             <input type="text" id="nickname-input" placeholder="請輸入暱稱 (最多10個字)" maxlength="10">
-            <div id="ad-placeholder">圖片保留位置 (300x60)</div>
+            <div id="ad-placeholder">[圖片：廣告保留位置 (300x60)]</div>
             <button id="save-nickname-btn" class="btn w-full mt-3">遊戲開始</button>
         </div>
     </div>
@@ -562,6 +564,7 @@
 
     <script>
         // --- API URLs ---
+        // 請替換成您實際的後端 API 端點
         const HAIGUITANG_GAME_START_URL = 'https://d1d5ef45-d04b-4a1c-be4b-64a0680c6847-00-xxpggv06ka2e.sisko.replit.dev/haiguitang/game/start';
         const HAIGUITANG_GAME_GUESS_URL_TEMPLATE = 'https://d1d5ef45-d04b-4a1c-be4b-64a0680c6847-00-xxpggv06ka2e.sisko.replit.dev/haiguitang/game/{gameId}/guess';
         const HAIGUITANG_GAME_SOLVE_URL_TEMPLATE = 'https://d1d5ef45-d04b-4a1c-be4b-64a0680c6847-00-xxpggv06ka2e.sisko.replit.dev/haiguitang/game/{gameId}/solve';
@@ -571,14 +574,14 @@
 
         const STORY_GENRES = ["懸疑推理", "奇幻冒險", "科幻謎團", "輕鬆搞笑", "都市傳說", "古代奇案", "恐怖驚悚", "日常溫馨", "荒誕不經"];
         let CURRENT_STORY_DATA = {
-            gameId: null, 
+            gameId: null,
             title: "尚未生成",
             initialScenario: "請先選擇一個故事類型。",
-            solution: null, 
-            hints: [], 
+            solution: null,
+            hints: [],
             sessionHintPool: [], // For current game's unique hints
             hostingStyle: "標準",
-            storySummary: "AI 正在整理思緒...", 
+            storySummary: "AI 正在整理思緒...",
             playerTitle: "偵探新手",
             is_cheated: false
         };
@@ -655,7 +658,7 @@
         const leaderboardBtnIngame = document.getElementById('leaderboard-btn-ingame');
 
         let turnCount = 0;
-        let totalCharCount = 0; 
+        let totalCharCount = 0;
         let hintsRemaining = 3; // Default, will be updated based on pool size
         let revealedStoryParts = new Set();
         let gameEnded = false;
@@ -733,8 +736,8 @@
                     }
                     throw new Error(backendErrorMessage);
                 }
-                if (response.status === 204) { 
-                    return { success: true, data: null }; 
+                if (response.status === 204) {
+                    return { success: true, data: null };
                 }
                 const data = await response.json();
                 // For GET leaderboard, if backend directly returns array, wrap it for consistency
@@ -777,20 +780,21 @@
             const payload = { genre: genre, nickname: playerNickname };
             const serverResponse = await makeApiCall(HAIGUITANG_GAME_START_URL, payload, 'POST', `正在生成 ${genre} 故事...`, "AI初始故事生成");
 
-            if (serverResponse && serverResponse.success && serverResponse.game_id) {
+            // *** MODIFICATION START ***
+            if (serverResponse && serverResponse.success && serverResponse.game_id && serverResponse.game_data) {
                 CURRENT_STORY_DATA = {
                     gameId: serverResponse.game_id,
-                    title: serverResponse.title || "未知標題",
-                    initialScenario: serverResponse.initial_scenario || "謎題描述缺失。",
-                    solution: null, 
-                    hints: serverResponse.hints || [], 
-                    sessionHintPool: [...new Set([...(serverResponse.hints || []), ...DEFAULT_HINTS])].sort(() => 0.5 - Math.random()), // Initialize hint pool
-                    hostingStyle: serverResponse.hosting_style || "標準",
-                    storySummary: "根據目前線索，故事大概是這樣的...", 
+                    title: serverResponse.game_data.title || "未知標題",
+                    initialScenario: serverResponse.game_data.initialScenario || "謎題描述缺失。",
+                    solution: null, // Solution is not sent at the start
+                    hints: serverResponse.game_data.hints || [],
+                    sessionHintPool: [...new Set([...(serverResponse.game_data.hints || []), ...DEFAULT_HINTS])].sort(() => 0.5 - Math.random()),
+                    hostingStyle: serverResponse.game_data.hostingStyle || "標準",
+                    storySummary: "根據目前線索，故事大概是這樣的...", // Initial summary
                     playerTitle: "偵探新手",
                     is_cheated: false
                 };
-                // Set hintsRemaining based on the smaller of 3 or actual unique hints available
+            // *** MODIFICATION END ***
                 hintsRemaining = Math.min(3, CURRENT_STORY_DATA.sessionHintPool.length);
 
 
@@ -798,43 +802,41 @@
                 if(storyIntroScenarioEl) storyIntroScenarioEl.innerHTML = highlightKeywordsInScenario(CURRENT_STORY_DATA.initialScenario);
                 if(genreModalEl) toggleModal(genreModalEl, false);
                 setTimeout(() => { if(storyIntroModalEl) toggleModal(storyIntroModalEl, true); }, 300);
-            } else { 
+            } else {
                 const errorMessage = serverResponse && serverResponse.error ? serverResponse.error : "後端回應格式不正確 (初始故事)。";
                 if(aiMaintenanceMessageEl) aiMaintenanceMessageEl.textContent = errorMessage + "\n\n請稍後再試。";
                 if(aiMaintenanceModalEl) toggleModal(aiMaintenanceModalEl, true);
-                if(genreModalEl) toggleModal(genreModalEl, true); 
+                if(genreModalEl) toggleModal(genreModalEl, true);
             }
         }
 
         function initGame() {
             turnCount = 0;
-            totalCharCount = 0; 
+            totalCharCount = 0;
             
-            // Re-initialize hint pool for the new game, and reset hintsRemaining
             CURRENT_STORY_DATA.sessionHintPool = [...new Set([...(CURRENT_STORY_DATA.hints || []), ...DEFAULT_HINTS])].sort(() => 0.5 - Math.random());
-            hintsRemaining = Math.min(3, CURRENT_STORY_DATA.sessionHintPool.length); // Max 3 hints, or fewer if pool is small
+            hintsRemaining = Math.min(3, CURRENT_STORY_DATA.sessionHintPool.length);
 
             revealedStoryParts.clear();
             gameEnded = false;
             gameWon = false;
             isGameStarted = true;
-            CURRENT_STORY_DATA.storySummary = "遊戲剛開始，還沒有太多線索..."; 
+            CURRENT_STORY_DATA.storySummary = "遊戲剛開始，還沒有太多線索...";
             CURRENT_STORY_DATA.is_cheated = false;
 
 
             updateTurnCounterDisplay();
             updateHintButtonDisplay();
             updateStoryDisplayPreview();
-            updateFullStoryModalDisplay(); 
+            updateFullStoryModalDisplay();
             if(dialogueHistoryEl) dialogueHistoryEl.innerHTML = '';
 
             if(gameContainerEl) gameContainerEl.style.display = 'flex';
             if(genreModalEl) toggleModal(genreModalEl, false);
             if(storyIntroModalEl) toggleModal(storyIntroModalEl, false);
 
-            // Add initial dialogues with special styling
             addDialogue("npc", `你好，${playerNickname}！這次的海龜湯謎題是「${CURRENT_STORY_DATA.title}」。`, "dialogue-highlight");
-            addDialogue("npc", highlightKeywordsInScenario(CURRENT_STORY_DATA.initialScenario)); // Normal bubble for scenario
+            addDialogue("npc", highlightKeywordsInScenario(CURRENT_STORY_DATA.initialScenario));
             addDialogue("npc", `挑戰成功條件：完整拼湊出故事原貌！`, "dialogue-highlight");
             addDialogue("npc", `主持人風格：${CURRENT_STORY_DATA.hostingStyle}`);
             addDialogue("npc", `請開始問是非題吧！`);
@@ -854,8 +856,8 @@
 
             if (result && result.success) {
                 addDialogue("npc", `神秘代碼 '${cheatCode}' 已成功啟用！<br>${result.message || '真相即將揭曉！'}`);
-                if (result.full_solution) { 
-                    CURRENT_STORY_DATA.solution = result.full_solution; 
+                if (result.full_solution) {
+                    CURRENT_STORY_DATA.solution = result.full_solution;
                     addDialogue("npc", `完整真相是：<br>${CURRENT_STORY_DATA.solution.replace(/\n/g, '<br>')}`);
                 }
                 const playerTitle = result.is_cheated ? "作弊大師" : (result.player_title || "海龜湯高手");
@@ -868,12 +870,12 @@
         async function handlePlayerQuestion(questionText) {
             if (gameEnded || !questionText.trim()) return;
 
-            const trimmedQuestion = questionText.trim(); 
+            const trimmedQuestion = questionText.trim();
             if (trimmedQuestion === "88888888") {
                 if (CURRENT_STORY_DATA.gameId) {
                     await applyHaiguitangCheatCode(CURRENT_STORY_DATA.gameId, "88888888");
-                    if(playerInputEl) playerInputEl.value = ''; 
-                    return; 
+                    if(playerInputEl) playerInputEl.value = '';
+                    return;
                 } else {
                     showToast("遊戲 ID 尚未設定，無法使用作弊碼。", "error");
                     if(playerInputEl) playerInputEl.value = '';
@@ -882,7 +884,7 @@
             }
 
             turnCount++;
-            totalCharCount += trimmedQuestion.length; 
+            totalCharCount += trimmedQuestion.length;
             updateTurnCounterDisplay();
             addDialogue("player", trimmedQuestion);
             showLoadingInChat(true);
@@ -895,7 +897,7 @@
             }
 
             const guessUrl = HAIGUITANG_GAME_GUESS_URL_TEMPLATE.replace('{gameId}', CURRENT_STORY_DATA.gameId);
-            const payload = { question: trimmedQuestion }; 
+            const payload = { question: trimmedQuestion };
             const serverResponse = await makeApiCall(guessUrl, payload, 'POST', "AI 思考中...", "AI即時回應");
             showLoadingInChat(false);
 
@@ -912,7 +914,7 @@
                     showToast("新線索已揭露！");
                 }
                 
-                if (serverResponse.story_summary) { 
+                if (serverResponse.story_summary) {
                     CURRENT_STORY_DATA.storySummary = serverResponse.story_summary;
                 } else {
                     CURRENT_STORY_DATA.storySummary = revealedStoryParts.size > 0 ? "根據已知線索：" + Array.from(revealedStoryParts).join("； ") : "遊戲進行中，繼續探索...";
@@ -921,14 +923,17 @@
                 updateStoryDisplayPreview();
                 updateFullStoryModalDisplay();
 
-                if (serverResponse.game_won === true) {
-                    CURRENT_STORY_DATA.solution = serverResponse.full_solution || CURRENT_STORY_DATA.solution; 
+                if (serverResponse.game_won === true) { // AI 判斷遊戲勝利
+                    // 後端 make_guess 在 AI 判斷勝利時，應該要回傳 full_solution 和 player_title
+                    // 目前的 haiguitang_game_manager.py 的 make_guess 在 AI 判斷勝利時未回傳這些
+                    // 這部分可能需要後端配合修改，或前端在此處再次請求解答 (但目前沒有這樣的端點)
+                    CURRENT_STORY_DATA.solution = serverResponse.full_solution || CURRENT_STORY_DATA.solution || "AI確認勝利，但解答未提供";
                     const playerTitle = serverResponse.player_title || "海龜湯達人";
                     endGame(true, playerTitle, false, serverResponse.rounds_played);
                     return;
                 }
 
-            } else { 
+            } else {
                 addDialogue("npc", (serverResponse && serverResponse.error) || "抱歉，我現在有點混亂，請稍後再試一次。 (回應格式錯誤)");
             }
 
@@ -963,32 +968,44 @@
             if(hintButtonEl) hintButtonEl.disabled = true;
 
             const finalTurns = roundsFromServer !== null ? roundsFromServer : turnCount;
-            CURRENT_STORY_DATA.is_cheated = isCheated; 
+            CURRENT_STORY_DATA.is_cheated = isCheated;
 
+            // 嘗試從後端獲取最終解答，如果前端還沒有的話
+            // 注意：attempt_to_solve 端點是 POST，用於玩家主動解答。
+            // 如果遊戲是 AI 判斷結束的，理想情況是 make_guess 回應就包含解答。
+            // 這裡的邏輯是，如果解答還未知，就嘗試調用 /solve (假設它是 GET 且能回傳解答)
+            // 但目前 /solve 是 POST。這部分邏輯可能需要調整或後端支持。
             if (!CURRENT_STORY_DATA.solution && CURRENT_STORY_DATA.gameId) {
-                const solveUrl = HAIGUITANG_GAME_SOLVE_URL_TEMPLATE.replace('{gameId}', CURRENT_STORY_DATA.gameId);
-                const solutionResponse = await makeApiCall(solveUrl, null, 'GET', "正在獲取最終答案...");
-                if (solutionResponse && solutionResponse.success && solutionResponse.full_solution) {
-                    CURRENT_STORY_DATA.solution = solutionResponse.full_solution;
-                } else {
-                    console.error("無法從後端獲取最終解答。");
-                    CURRENT_STORY_DATA.solution = CURRENT_STORY_DATA.solution || "解答未成功獲取。";
-                }
+                // 暫時註解掉這個 GET /solve 的呼叫，因為它與後端不符
+                // const solveUrl = HAIGUITANG_GAME_SOLVE_URL_TEMPLATE.replace('{gameId}', CURRENT_STORY_DATA.gameId);
+                // const solutionResponse = await makeApiCall(solveUrl, { solution_attempt: "系統請求解答" }, 'POST', "正在獲取最終答案...");
+                // if (solutionResponse && solutionResponse.success && solutionResponse.full_solution) {
+                //    CURRENT_STORY_DATA.solution = solutionResponse.full_solution;
+                // } else {
+                //    console.error("無法從後端獲取最終解答。");
+                //    CURRENT_STORY_DATA.solution = CURRENT_STORY_DATA.solution || "解答未成功獲取。";
+                // }
+                // 假設如果 AI 判斷勝利，solution 應該已經在 CURRENT_STORY_DATA 中了
+                // 如果沒有，則顯示一個通用訊息
+                 if (!CURRENT_STORY_DATA.solution) {
+                    CURRENT_STORY_DATA.solution = "謎底未能在遊戲結束時正確獲取。";
+                 }
             }
 
+
             if (isWin) {
-                if(gameOverTitleEl) { 
+                if(gameOverTitleEl) {
                     gameOverTitleEl.textContent = isCheated ? "🤫 作弊成功! 🤫" : "🎉 恭喜過關！ 🎉";
                     gameOverTitleEl.className = `font-bold text-2xl ${isCheated ? 'text-yellow-400' : 'text-green-400'}`;
                 }
                 if(playerTitleDisplayEl) playerTitleDisplayEl.textContent = `稱號：${playerTitleFromAI}`;
-                if (!isCheated) { // Only save to leaderboard if not cheated
+                if (!isCheated) {
                     await saveToLeaderboard(playerNickname, finalTurns, CURRENT_STORY_DATA.solution ? CURRENT_STORY_DATA.solution.length : 0, playerTitleFromAI);
                 }
             } else {
                 if(gameOverTitleEl) { gameOverTitleEl.textContent = "🤔 遊戲結束 🤔"; gameOverTitleEl.className = "font-bold text-2xl text-yellow-400"; }
                 if(playerTitleDisplayEl) playerTitleDisplayEl.textContent = "稱號：再接再厲的偵探";
-                if (CURRENT_STORY_DATA.solution) { 
+                if (CURRENT_STORY_DATA.solution) {
                     addDialogue("npc", `遊戲結束。正確答案是：<br>${CURRENT_STORY_DATA.solution.replace(/\n/g, '<br>')}`);
                 } else {
                     addDialogue("npc", "遊戲結束，但未能獲取到最終答案。");
@@ -996,14 +1013,14 @@
             }
             if(statNicknameEl) statNicknameEl.textContent = playerNickname;
             if(statTurnsEl) statTurnsEl.textContent = finalTurns;
-            if(statCharCountEl) statCharCountEl.textContent = totalCharCount; 
+            if(statCharCountEl) statCharCountEl.textContent = totalCharCount;
 
             if(storyTextPreviewEl && CURRENT_STORY_DATA.solution) {
                  storyTextPreviewEl.innerHTML = `<span class="font-bold" style="color: ${isWin ? (isCheated ? 'var(--accent-yellow)' : 'var(--accent-green)') : 'var(--accent-red)'};">${isWin ? (isCheated ? '【真相已現 (密)】' : '【真相大白】') : '【謎底揭曉】'}</span><br>${CURRENT_STORY_DATA.solution.substring(0, 50)}...`;
             } else if (storyTextPreviewEl) {
                 storyTextPreviewEl.innerHTML = "遊戲已結束。";
             }
-            updateFullStoryModalDisplay(); 
+            updateFullStoryModalDisplay();
             if(gameOverModalEl) toggleModal(gameOverModalEl, true);
         }
 
@@ -1014,7 +1031,7 @@
             }
             if (CURRENT_STORY_DATA.storySummary && CURRENT_STORY_DATA.storySummary !== "AI 正在整理思緒...") {
                  if(storyTextPreviewEl) storyTextPreviewEl.innerHTML = CURRENT_STORY_DATA.storySummary.substring(0, 60) + (CURRENT_STORY_DATA.storySummary.length > 60 ? "..." : "");
-            } else if (revealedStoryParts.size > 0) { 
+            } else if (revealedStoryParts.size > 0) {
                 let previewText = "目前線索：" + Array.from(revealedStoryParts).slice(0, 2).join("；") + (revealedStoryParts.size > 2 ? "..." : "");
                 if(storyTextPreviewEl) storyTextPreviewEl.innerHTML = previewText.substring(0, 60) + (previewText.length > 60 ? "..." : "");
             } else {
@@ -1040,9 +1057,9 @@
                 const resultColor = gameWon ? (CURRENT_STORY_DATA.is_cheated ? 'text-yellow-400' : 'text-green-400') : 'text-red-400';
                 if(currentStorySummaryEl) currentStorySummaryEl.innerHTML = `<strong class="${resultColor}">${resultType}</strong><br>${CURRENT_STORY_DATA.solution.replace(/\n/g, '<br>')}`;
             }
-            else if (CURRENT_STORY_DATA.storySummary && !gameEnded) { 
+            else if (CURRENT_STORY_DATA.storySummary && !gameEnded) {
                 if(currentStorySummaryEl) currentStorySummaryEl.textContent = CURRENT_STORY_DATA.storySummary;
-            } else if (!gameEnded) { 
+            } else if (!gameEnded) {
                 if(currentStorySummaryEl) currentStorySummaryEl.textContent = "AI 正在整理目前的遊戲進展...";
             }
         }
@@ -1081,8 +1098,8 @@
                 }
                 // Clear inline styles if class handles it, or set specific ones if 'info' needs them
                 if (type === 'error' || type === 'info') {
-                     toastMessageEl.style.backgroundColor = ''; 
-                     toastMessageEl.style.color = ''; 
+                     toastMessageEl.style.backgroundColor = '';
+                     toastMessageEl.style.color = '';
                 }
 
                 setTimeout(() => {
@@ -1100,36 +1117,36 @@
             currentTipIndex = 0;
             for(let i = 0; i < tips.length; i++) {
                 tips[i].style.opacity = '0';
-                tips[i].style.animationName = 'none'; 
+                tips[i].style.animationName = 'none';
             }
-            if (tips[currentTipIndex]) { 
+            if (tips[currentTipIndex]) {
                 tips[currentTipIndex].style.opacity = '1';
                 tips[currentTipIndex].style.transform = 'translateY(0)';
             }
 
-            clearInterval(tipInterval); 
+            clearInterval(tipInterval);
             tipInterval = setInterval(() => {
-                if (tips[currentTipIndex]) { 
+                if (tips[currentTipIndex]) {
                     tips[currentTipIndex].style.opacity = '0';
                     tips[currentTipIndex].style.transform = 'translateY(5px)';
                 }
 
                 currentTipIndex = (currentTipIndex + 1) % tips.length;
 
-                setTimeout(() => { 
-                    for(let i = 0; i < tips.length; i++) { 
-                         if(i !== currentTipIndex && tips[i]) { 
+                setTimeout(() => {
+                    for(let i = 0; i < tips.length; i++) {
+                         if(i !== currentTipIndex && tips[i]) {
                             tips[i].style.opacity = '0';
                             tips[i].style.transform = 'translateY(5px)';
                          }
                     }
-                    if (tips[currentTipIndex]) { 
+                    if (tips[currentTipIndex]) {
                         tips[currentTipIndex].style.opacity = '1';
                         tips[currentTipIndex].style.transform = 'translateY(0)';
                     }
-                }, 500); 
+                }, 500);
 
-            }, 4000); 
+            }, 4000);
         }
 
         function stopTipCarousel() {
@@ -1138,21 +1155,21 @@
             if (!tipsContainer) return;
             const tips = tipsContainer.getElementsByTagName('span');
             for(let i = 0; i < tips.length; i++) {
-                if (tips[i]) { 
-                    tips[i].style.opacity = '0'; 
-                    tips[i].style.animationName = 'tip-fade-individual'; 
+                if (tips[i]) {
+                    tips[i].style.opacity = '0';
+                    tips[i].style.animationName = 'tip-fade-individual';
                 }
             }
         }
 
         function showLoadingModal(show, message = "AI 正在熬製湯底，請稍候...") {
             if (show) {
-                if(loadingTextEl) loadingTextEl.textContent = message; 
+                if(loadingTextEl) loadingTextEl.textContent = message;
                 if(loadingModalEl) toggleModal(loadingModalEl, true);
-                startTipCarousel(); 
+                startTipCarousel();
             } else {
                 if(loadingModalEl) toggleModal(loadingModalEl, false);
-                stopTipCarousel(); 
+                stopTipCarousel();
             }
         }
         function populateGenreGrid() {
@@ -1163,8 +1180,9 @@
                 item.classList.add('genre-item');
                 item.innerHTML = `<span class="genre-item-text">${genre}</span>`;
                 const bgColor = Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
-                const textColor = 'FFFFFF'; 
+                const textColor = 'FFFFFF';
                 const textForImage = encodeURIComponent(genre.substring(0,2));
+                // 使用 placehold.co 生成佔位圖
                 item.style.backgroundImage = `url('https://placehold.co/100x100/${bgColor}/${textColor}?text=${textForImage}&font=roboto')`;
                 item.style.backgroundSize = 'cover';
                 item.style.backgroundPosition = 'center';
@@ -1176,9 +1194,9 @@
                 overlay.style.left = '0';
                 overlay.style.width = '100%';
                 overlay.style.height = '100%';
-                overlay.style.backgroundColor = 'rgba(0,0,0,0.3)'; 
-                overlay.style.zIndex = '0'; 
-                item.insertBefore(overlay, item.firstChild); 
+                overlay.style.backgroundColor = 'rgba(0,0,0,0.3)';
+                overlay.style.zIndex = '0';
+                item.insertBefore(overlay, item.firstChild);
 
                 item.addEventListener('click', () => generateInitialStoryWithAI(genre));
                 genreGridContainerEl.appendChild(item);
@@ -1186,9 +1204,9 @@
         }
 
         async function saveToLeaderboard(nickname, turns, storySolutionLength, title) {
-            const payload = { nickname: nickname, rounds: turns, story_solution_length: storySolutionLength, title_earned: title }; 
+            const payload = { nickname: nickname, rounds: turns, story_solution_length: storySolutionLength, title_earned: title };
             const result = await makeApiCall(LEADERBOARD_ADD_URL, payload, 'POST', "儲存成績中...", "儲存排行榜");
-            if (result && result.success) { 
+            if (result && result.success) {
                 showToast("成績已儲存到排行榜！");
             } else {
                 showToast((result && result.error) || "儲存成績失敗。", "error");
@@ -1197,24 +1215,23 @@
 
         async function showLeaderboard() {
             if(leaderboardLoadingEl) leaderboardLoadingEl.style.display = 'block';
-            if(leaderboardTableEl) leaderboardTableEl.style.display = 'none'; 
-            if(leaderboardTableBodyEl) leaderboardTableBodyEl.innerHTML = ''; 
+            if(leaderboardTableEl) leaderboardTableEl.style.display = 'none';
+            if(leaderboardTableBodyEl) leaderboardTableBodyEl.innerHTML = '';
             if(leaderboardEmptyMessageEl) leaderboardEmptyMessageEl.style.display = 'none';
             if(leaderboardErrorMessageEl) leaderboardErrorMessageEl.style.display = 'none';
             if(leaderboardModalEl) toggleModal(leaderboardModalEl, true);
 
-            const leaderboardData = await makeApiCall(LEADERBOARD_URL, null, 'GET', null, "載入排行榜"); 
+            const leaderboardData = await makeApiCall(LEADERBOARD_URL, null, 'GET', null, "載入排行榜");
 
             if(leaderboardLoadingEl) leaderboardLoadingEl.style.display = 'none';
 
-            // Corrected check for leaderboardData
             if (leaderboardData && leaderboardData.success && Array.isArray(leaderboardData.leaderboard)) {
                 const entries = leaderboardData.leaderboard;
                 if (entries.length === 0) {
                     if(leaderboardEmptyMessageEl) leaderboardEmptyMessageEl.style.display = 'block';
                 } else {
-                    if(leaderboardTableEl) leaderboardTableEl.style.display = 'table'; 
-                    entries.slice(0,10) 
+                    if(leaderboardTableEl) leaderboardTableEl.style.display = 'table';
+                    entries.slice(0,10)
                                  .forEach(entry => {
                         const row = leaderboardTableBodyEl.insertRow();
                         row.insertCell().outerHTML = `<td data-label="玩家暱稱：">${entry.nickname || 'N/A'}</td>`;
@@ -1233,13 +1250,13 @@
         // --- Event Listeners ---
         if(startGameFromIntroBtn) startGameFromIntroBtn.addEventListener('click', () => { if(storyIntroModalEl) toggleModal(storyIntroModalEl, false); initGame(); });
         if(reviewStoryIntroBtn) reviewStoryIntroBtn.addEventListener('click', () => {
-            if (!isGameStarted && CURRENT_STORY_DATA && CURRENT_STORY_DATA.title && !CURRENT_STORY_DATA.title.includes("尚未生成")) { 
+            if (!isGameStarted && CURRENT_STORY_DATA && CURRENT_STORY_DATA.title && !CURRENT_STORY_DATA.title.includes("尚未生成")) {
                  if(storyIntroModalEl) toggleModal(storyIntroModalEl, true);
                  if(closeStoryIntroModalBtn) closeStoryIntroModalBtn.style.display = 'block';
                  if(startGameFromIntroBtn) startGameFromIntroBtn.style.display = 'none';
             } else if (isGameStarted) {
                 if(storyIntroTitleEl && CURRENT_STORY_DATA) storyIntroTitleEl.textContent = `故事序幕：${CURRENT_STORY_DATA.title}`;
-                if(storyIntroScenarioEl && CURRENT_STORY_DATA) storyIntroScenarioEl.innerHTML = highlightKeywordsInScenario(CURRENT_STORY_DATA.initialScenario); 
+                if(storyIntroScenarioEl && CURRENT_STORY_DATA) storyIntroScenarioEl.innerHTML = highlightKeywordsInScenario(CURRENT_STORY_DATA.initialScenario);
                 if(storyIntroModalEl) toggleModal(storyIntroModalEl, true);
                 if(closeStoryIntroModalBtn) closeStoryIntroModalBtn.style.display = 'block';
                 if(startGameFromIntroBtn) startGameFromIntroBtn.style.display = 'none';
@@ -1273,11 +1290,11 @@
             if(gameOverModalEl) toggleModal(gameOverModalEl, false);
             if(gameContainerEl) gameContainerEl.style.display = 'none';
             if(genreModalEl) toggleModal(genreModalEl, true);
-            populateGenreGrid(); 
+            populateGenreGrid();
             CURRENT_STORY_DATA = { gameId: null, title: "尚未生成", initialScenario: "請先選擇一個故事類型。", solution: null, hints: [], sessionHintPool: [], hostingStyle: "標準", storySummary: "AI 正在整理思緒...", playerTitle: "偵探新手", is_cheated: false };
             isGameStarted = false;
             gameEnded = false;
-            updateNicknameDisplay(); 
+            updateNicknameDisplay();
         });
 
         if(changeNicknameBtnGenre) changeNicknameBtnGenre.addEventListener('click', () => {
@@ -1293,7 +1310,7 @@
         });
         if(closeNicknameModalBtn) closeNicknameModalBtn.addEventListener('click', () => {
             toggleModal(nicknameModalEl, false);
-            if (!initialNicknameSet) { 
+            if (!initialNicknameSet) {
                 toggleModal(genreModalEl, true);
             }
         });
@@ -1326,11 +1343,11 @@
         // Initial Setup
         updateNicknameDisplay();
         populateGenreGrid();
-        if (genreModalEl) toggleModal(genreModalEl, false); 
-        if (nicknameModalEl) { 
+        if (genreModalEl) toggleModal(genreModalEl, false);
+        if (nicknameModalEl) {
             toggleModal(nicknameModalEl, true);
             if(saveNicknameBtn) saveNicknameBtn.textContent = "開始遊戲";
         }
     </script>
 </body>
-</ht
+</html>
