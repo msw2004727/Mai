@@ -2,19 +2,19 @@
 <html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>AI海龜湯遊戲</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         :root {
-            --bg-dark: #1f2937; /* 深灰藍 */
-            --bg-dark-secondary: #374151; /* 次深灰藍 */
-            --bg-dark-tertiary: #4b5563; /* 更淺的灰藍 */
-            --text-light: #f3f4f6; /* 淡灰白 */
-            --text-light-secondary: #d1d5db; /* 次淡灰白 */
-            --accent-blue: #3b82f6; /* 強調藍 */
-            --accent-red: #ef4444; /* 強調紅 */
-            --accent-green: #22c55e; /* 強調綠 */
+            --bg-dark: #1f2937; 
+            --bg-dark-secondary: #374151; 
+            --bg-dark-tertiary: #4b5563; 
+            --text-light: #f3f4f6; 
+            --text-light-secondary: #d1d5db; 
+            --accent-blue: #3b82f6; 
+            --accent-red: #ef4444; 
+            --accent-green: #22c55e; 
         }
 
         body {
@@ -25,56 +25,76 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            height: 100vh; 
             margin: 0;
-            padding: 8px;
+            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); 
+            overscroll-behavior-y: contain; 
+            overflow: hidden; 
         }
         #game-container {
             background-color: var(--bg-dark);
             border-radius: 12px;
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
             width: 100%;
-            max-width: 480px;
-            height: calc(100vh - 16px);
-            max-height: 900px;
+            max-width: 480px; 
+            height: 100%; 
             display: flex;
             flex-direction: column;
             overflow: hidden;
         }
-        .scrollable-area {
-            overflow-y: auto;
-            padding: 16px;
-            flex-grow: 1;
+
+        #game-header-area {
+            padding: 12px 16px; 
+            border-bottom: 1px solid var(--bg-dark-tertiary);
+            flex-shrink: 0; 
         }
+        #game-header-area .grid { 
+            min-height: 90px; 
+        }
+
+
+        #dialogue-history-scrollable {
+            flex-grow: 1; 
+            overflow-y: auto; 
+            padding: 12px 16px; 
+            display: flex;
+            flex-direction: column; 
+             -webkit-overflow-scrolling: touch; 
+        }
+        
         #input-area {
             border-top: 1px solid var(--bg-dark-tertiary);
-            padding: 12px;
+            padding: 8px 12px; 
             background-color: var(--bg-dark-secondary);
+            flex-shrink: 0; 
         }
         #player-input {
             width: 100%;
-            padding: 10px 12px;
+            padding: 8px 10px; 
             border: 1px solid var(--bg-dark-tertiary);
             background-color: var(--bg-dark-secondary);
             color: var(--text-light);
             border-radius: 8px;
-            font-size: 16px;
+            font-size: 15px; 
             box-sizing: border-box;
         }
         #player-input::placeholder {
             color: var(--text-light-secondary);
         }
         .btn {
-            background-color: var(--accent-blue); color: white; padding: 8px 12px;
-            border-radius: 8px; border: none; cursor: pointer;
-            font-size: 14px; transition: background-color 0.2s;
+            background-color: var(--accent-blue); color: white; padding: 6px 10px; 
+            border-radius: 6px; border: none; cursor: pointer; 
+            font-size: 13px; transition: background-color 0.2s; 
+            white-space: nowrap; 
         }
         .btn:hover { background-color: #2563eb; }
         .btn-secondary { background-color: var(--bg-dark-tertiary); }
         .btn-secondary:hover { background-color: #5a6675; }
         
         .chat-bubble {
-            padding: 10px 14px; border-radius: 12px; margin-bottom: 8px;
-            max-width: 80%; word-wrap: break-word;
+            padding: 8px 12px; border-radius: 12px; margin-bottom: 6px; 
+            max-width: 85%; word-wrap: break-word; 
+            font-size: 14px; 
         }
         .npc-bubble {
             background-color: #375a7f; 
@@ -108,56 +128,55 @@
         .modal-content {
             background-color: var(--bg-dark); 
             color: var(--text-light); 
-            padding: 24px; border-radius: 10px;
+            padding: 20px; 
+            border-radius: 10px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
-            width: 100%; max-width: 500px;
+            width: 100%; max-width: 90vw; 
             max-height: 85vh; overflow-y: auto;
             transform: scale(0.95);
             transition: transform 0.3s ease-in-out;
+            position: relative; 
         }
         .modal.active .modal-content {
             transform: scale(1);
         }
-        .modal-close-btn {
-            background-color: var(--accent-red); color: white; padding: 8px 12px;
-            border-radius: 6px; border: none; cursor: pointer; float: right;
-            font-size: 14px;
+        .modal-close-btn { 
+            background-color: var(--accent-red); color: white; padding: 0; 
+            border-radius: 50%; border: none; cursor: pointer; 
+            position: absolute; top: 8px; right: 8px; 
+            width: 28px; height: 28px; 
+            display: flex; justify-content: center; align-items: center;
+            z-index: 10; 
         }
+        .modal-close-btn svg { width: 16px; height: 16px; } 
         .modal-close-btn:hover { background-color: #c0392b; }
+
 
         .genre-grid {
             display: grid; grid-template-columns: repeat(3, 1fr);
-            gap: 10px; margin-top: 20px;
+            gap: 8px; margin-top: 16px; 
         }
         .genre-item {
             position: relative;
             background-color: var(--bg-dark-secondary); border: 1px solid var(--bg-dark-tertiary);
-            padding: 10px; border-radius: 8px; text-align: center;
+            padding: 8px; border-radius: 8px; text-align: center; 
             cursor: pointer; transition: background-color 0.2s, transform 0.1s;
-            min-height: 80px;
+            min-height: 70px; 
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             overflow: hidden;
         }
         .genre-item:hover { background-color: var(--bg-dark-tertiary); transform: translateY(-2px); }
         .genre-item-text {
-            font-size: 12px; font-weight: 500; color: var(--text-light);
+            font-size: 11px; font-weight: 500; color: var(--text-light); 
             position: relative; z-index: 2;
         }
         .genre-item::before {
             content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background-image: url('https://placehold.co/100x100/374151/9CA3AF?text=類型'); 
             background-size: cover; background-position: center;
-            opacity: 0.15; 
+            opacity: 0.1; 
             z-index: 1; border-radius: 8px;
         }
-        .genre-item[data-genre="懸疑推理"]::before { background-image: url('https://placehold.co/100x100/566573/e5e7eb?text=懸疑'); }
-        .genre-item[data-genre="奇幻冒險"]::before { background-image: url('https://placehold.co/100x100/7d3c98/e5e7eb?text=奇幻'); }
-        .genre-item[data-genre="科幻謎團"]::before { background-image: url('https://placehold.co/100x100/117a65/e5e7eb?text=科幻'); }
-        .genre-item[data-genre="輕鬆搞笑"]::before { background-image: url('https://placehold.co/100x100/d35400/e5e7eb?text=搞笑'); }
-        .genre-item[data-genre="都市傳說"]::before { background-image: url('https://placehold.co/100x100/707b7c/e5e7eb?text=都市'); }
-        .genre-item[data-genre="古代奇案"]::before { background-image: url('https://placehold.co/100x100/af601a/e5e7eb?text=古代'); }
-        .genre-item[data-genre="恐怖驚悚"]::before { background-image: url('https://placehold.co/100x100/a93226/e5e7eb?text=恐怖'); }
-        .genre-item[data-genre="日常溫馨"]::before { background-image: url('https://placehold.co/100x100/1e8449/e5e7eb?text=溫馨'); }
-        .genre-item[data-genre="荒誕不經"]::before { background-image: url('https://placehold.co/100x100/2c3e50/e5e7eb?text=荒誕'); }
 
         #loading-indicator {
             position: fixed; z-index: 1051; left: 0; top: 0;
@@ -177,48 +196,53 @@
         #npc-area {
             background-color: var(--bg-dark-secondary);
             color: var(--text-light);
+            min-height: 90px; 
         }
         #npc-area .text-gray-700 { color: var(--text-light-secondary); }
         #story-area-clickable {
             background-color: var(--bg-dark-secondary);
             color: var(--text-light);
             border: 1px dashed var(--bg-dark-tertiary); 
+            min-height: 90px; 
         }
         #story-area-clickable:hover { background-color: var(--bg-dark-tertiary); }
         #story-area-clickable .text-blue-700 { color: var(--accent-blue); }
         #story-area-clickable .text-blue-600 { color: var(--text-light-secondary); }
-        #turn-counter { color: var(--text-light-secondary); }
+        #turn-counter { color: var(--text-light-secondary); font-size: 0.8rem; } 
 
         #story-intro-modal .modal-content {
             text-align: left;
         }
         #story-intro-modal h3 {
             color: var(--accent-blue);
-            font-size: 1.25rem; 
+            font-size: 1.1rem; 
             font-weight: 600; 
-            margin-bottom: 0.75rem; 
+            margin-bottom: 0.5rem; 
+            padding-right: 30px; 
         }
         #story-intro-modal p {
             margin-bottom: 0.5rem; 
             line-height: 1.6;
+            font-size: 0.875rem; 
         }
         #story-intro-modal .game-rules {
-            margin-top: 1.5rem; 
-            padding-top: 1rem; 
+            margin-top: 1rem; 
+            padding-top: 0.75rem; 
             border-top: 1px solid var(--bg-dark-tertiary);
         }
         #story-intro-modal .game-rules h4 {
             font-weight: 600; 
-            margin-bottom: 0.5rem; 
+            margin-bottom: 0.3rem; 
             color: var(--text-light-secondary);
+            font-size: 0.9rem;
         }
         #story-intro-modal ul {
             list-style-type: none; 
             padding-left: 0; 
-            font-size: 0.875rem; 
+            font-size: 0.8rem; 
         }
          #story-intro-modal ul li {
-            margin-bottom: 0.25rem; 
+            margin-bottom: 0.2rem; 
          }
          #story-intro-modal ul li::before { 
             content: "▪";
@@ -228,40 +252,58 @@
             margin-left: -1em;
         }
         #input-assist-hint {
-            font-size: 0.75rem; 
+            font-size: 0.7rem; 
             color: var(--text-light-secondary);
-            margin-top: 4px;
-            height: 1rem; 
+            margin-top: 2px; 
+            height: 0.8rem; 
             text-align: center;
             transition: opacity 0.3s ease-in-out;
+        }
+        #ai-maintenance-modal .modal-content {
+            text-align: center;
+        }
+        #ai-maintenance-modal h2 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: var(--accent-red);
+        }
+         #ai-maintenance-modal p {
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            white-space: pre-wrap; 
         }
 
     </style>
 </head>
 <body>
     <div id="game-container" style="display:none;">
-        <div class="scrollable-area">
-            <div class="grid grid-cols-2 gap-4 mb-4">
-                <div id="npc-area" class="p-3 rounded-lg h-32 flex flex-col items-center justify-center text-center">
-                    <img id="npc-image" src="https://placehold.co/80x80/4b5563/e5e7eb?text=NPC" alt="NPC 圖片" class="rounded-full mb-2 w-16 h-16 object-cover">
-                    <p class="text-sm font-semibold text-gray-700">NPC 主持人</p>
+        <div id="game-header-area">
+            <div class="grid grid-cols-2 gap-3 mb-3"> 
+                <div id="npc-area" class="p-2 rounded-lg flex flex-col items-center justify-center text-center"> 
+                    <img id="npc-image" src="https://placehold.co/64x64/4b5563/e5e7eb?text=NPC" alt="NPC 圖片" class="rounded-full mb-1 w-12 h-12 object-cover"> 
+                    <p class="text-xs font-semibold text-gray-700">NPC 主持人</p> 
                 </div>
-                <div id="story-area-clickable" class="p-3 rounded-lg h-32 overflow-y-auto cursor-pointer transition">
-                    <h3 class="text-sm font-semibold text-blue-700 mb-1">故事進展 (點擊查看)：</h3>
+                <div id="story-area-clickable" class="p-2 rounded-lg overflow-y-auto cursor-pointer transition"> 
+                    <h3 class="text-xs font-semibold text-blue-700 mb-1">故事進展 (點擊)：</h3> 
                     <p id="story-text-preview" class="text-xs text-blue-600">選擇類型以開始...</p>
                 </div>
             </div>
 
-            <div class="flex justify-between items-center mb-4 px-1">
+            <div class="flex justify-between items-center px-1">
                 <div id="turn-counter" class="text-sm">回合：<span id="turn-count">0</span></div>
-                <button id="hint-button" class="btn btn-secondary text-xs py-1 px-2">
-                    提示 (<span id="hints-remaining">3</span>)
-                </button>
+                <div class="flex items-center">
+                    <button id="review-story-intro-btn" class="btn btn-secondary text-xs py-1 px-2 mr-1">回顧序幕</button> 
+                    <button id="hint-button" class="btn btn-secondary text-xs py-1 px-2">
+                        提示 (<span id="hints-remaining">3</span>)
+                    </button>
+                </div>
             </div>
-            
-            <div id="dialogue-history" class="space-y-3 mb-4 flex flex-col"></div>
         </div>
 
+        <div id="dialogue-history-scrollable">
+            <div id="dialogue-history" class="space-y-2 flex flex-col"></div> 
+        </div>
+        
         <div id="input-area">
             <form id="player-input-form" class="flex items-center gap-2">
                 <input type="text" id="player-input" placeholder="問一個是非題..." autocomplete="off">
@@ -273,15 +315,21 @@
 
     <div id="genre-modal" class="modal active">
         <div class="modal-content">
-            <h2 class="text-xl font-semibold mb-4 text-center">選擇一個故事類型開始遊戲</h2>
+             <button id="close-genre-modal-btn" class="modal-close-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+             </button>
+            <h2 class="text-xl font-semibold mb-3 text-center">選擇一個故事類型開始遊戲</h2>
             <div id="genre-grid-container" class="genre-grid">
             </div>
-            <p class="text-xs text-gray-500 mt-4 text-center">AI 將根據您的選擇生成一個獨特的海龜湯故事！</p>
+            <p class="text-xs text-gray-500 mt-3 text-center">AI 將根據您的選擇生成一個獨特的海龜湯故事！</p>
         </div>
     </div>
 
     <div id="story-intro-modal" class="modal">
         <div class="modal-content">
+            <button id="close-story-intro-modal-btn" class="modal-close-btn" style="display: none;">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
             <h3 id="story-intro-title">故事序幕：</h3>
             <p id="story-intro-scenario" class="text-sm leading-relaxed"></p>
             <div class="game-rules">
@@ -294,17 +342,27 @@
                     <li>求助：善用提示按鈕獲取線索。</li>
                 </ul>
             </div>
-            <button id="start-game-from-intro-btn" class="btn mt-6 w-full">開始探索真相</button>
+            <button id="start-game-from-intro-btn" class="btn mt-4 w-full">開始探索真相</button> 
         </div>
     </div>
 
     <div id="story-progress-modal" class="modal">
         <div class="modal-content">
-            <div class="flex justify-between items-center mb-3">
+            <button id="close-story-progress-modal-btn" class="modal-close-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+            <div class="flex justify-between items-center mb-2"> 
                 <h2 class="text-lg font-semibold">目前已知線索：</h2>
-                <button id="close-story-modal-btn" class="modal-close-btn">關閉</button>
             </div>
             <div id="full-story-text" class="text-sm space-y-1"></div>
+        </div>
+    </div>
+
+    <div id="ai-maintenance-modal" class="modal">
+        <div class="modal-content">
+            <h2>🤖 AI 連線失敗 🛠️</h2> 
+            <p id="ai-maintenance-message">抱歉，AI 暫時無法連線。請檢查您的網路或稍後再試。</p> 
+            <button id="close-maintenance-modal-btn" class="btn btn-secondary w-full">關閉並重試</button>
         </div>
     </div>
     
@@ -316,8 +374,9 @@
     <div id="toast-message" class="toast"></div>
 
     <script>
-        // --- AI & Game Configuration ---
-        const BACKEND_PROXY_URL = 'https://d1d5ef45-d04b-4a1c-be4b-64a0680c6847-00-xxpggv06ka2e.sisko.replit.dev/generate-story'; 
+        // --- API URLs ---
+        const INITIAL_STORY_URL = 'https://d1d5ef45-d04b-4a1c-be4b-64a0680c6847-00-xxpggv06ka2e.sisko.replit.dev/generate-initial-story';
+        const INGAME_RESPONSE_URL = 'https://d1d5ef45-d04b-4a1c-be4b-64a0680c6847-00-xxpggv06ka2e.sisko.replit.dev/ingame-ai-response';
 
         const STORY_GENRES = [
             "懸疑推理", "奇幻冒險", "科幻謎團", 
@@ -329,7 +388,6 @@
             title: "尚未生成",
             initialScenario: "請先選擇一個故事類型。",
             solution: "請先選擇一個故事類型。",
-            npcClues: [], 
             hints: [],
             hostingStyle: "標準" 
         };
@@ -340,14 +398,7 @@
             "現場是否有不尋常的物品？"
         ];
 
-        const DEFAULT_NPC_CLUES = [
-            { keywords: ["動物"], answer: "不是。", type: "generic"},
-            { keywords: ["武器", "兇器"], answer: "不是。", type: "generic"},
-            { keywords: ["自殺"], answer: "不是。", type: "generic"},
-            { keywords: ["自然死亡", "心臟病"], answer: "不是。", type: "generic"},
-            { keywords: ["獨自", "一個人"], answer: "是。", type: "generic"},
-        ];
-
+        // --- DOM Elements ---
         const gameContainerEl = document.getElementById('game-container');
         const npcImageEl = document.getElementById('npc-image');
         const storyAreaClickableEl = document.getElementById('story-area-clickable');
@@ -355,129 +406,127 @@
         const turnCountEl = document.getElementById('turn-count');
         const hintsRemainingEl = document.getElementById('hints-remaining');
         const hintButtonEl = document.getElementById('hint-button');
+        const reviewStoryIntroBtn = document.getElementById('review-story-intro-btn'); 
+        const dialogueHistoryScrollableEl = document.getElementById('dialogue-history-scrollable');
         const dialogueHistoryEl = document.getElementById('dialogue-history');
         const playerInputForm = document.getElementById('player-input-form');
         const playerInputEl = document.getElementById('player-input');
         const inputAssistHintEl = document.getElementById('input-assist-hint'); 
         const toastMessageEl = document.getElementById('toast-message');
+        
         const genreModalEl = document.getElementById('genre-modal');
         const genreGridContainerEl = document.getElementById('genre-grid-container');
+        const closeGenreModalBtn = document.getElementById('close-genre-modal-btn'); 
+        
         const storyIntroModalEl = document.getElementById('story-intro-modal');
         const storyIntroTitleEl = document.getElementById('story-intro-title');
         const storyIntroScenarioEl = document.getElementById('story-intro-scenario');
         const startGameFromIntroBtn = document.getElementById('start-game-from-intro-btn');
+        const closeStoryIntroModalBtn = document.getElementById('close-story-intro-modal-btn'); 
+
         const storyProgressModalEl = document.getElementById('story-progress-modal');
         const fullStoryTextEl = document.getElementById('full-story-text');
-        const closeStoryModalBtn = document.getElementById('close-story-modal-btn');
+        const closeStoryProgressModalBtn = document.getElementById('close-story-progress-modal-btn'); 
         const loadingIndicatorEl = document.getElementById('loading-indicator');
+        const aiMaintenanceModalEl = document.getElementById('ai-maintenance-modal'); 
+        const closeMaintenanceModalBtn = document.getElementById('close-maintenance-modal-btn'); 
+        const aiMaintenanceMessageEl = document.getElementById('ai-maintenance-message'); 
 
+
+        // --- Game State ---
         let turnCount = 0;
         let hintsRemaining = 3;
         let revealedStoryParts = new Set();
         let gameEnded = false;
         let gameWon = false; 
         let consecutiveNonRevelations = 0; 
+        let isGameStarted = false; 
 
-        async function generateStoryWithAI(genre) {
+        // --- AI Story Generation (Initial) ---
+        async function generateInitialStoryWithAI(genre) {
             loadingIndicatorEl.classList.add('active');
             genreModalEl.classList.remove('active'); 
+            isGameStarted = false; 
+            closeStoryIntroModalBtn.style.display = 'none'; 
+            startGameFromIntroBtn.style.display = 'block'; 
 
-            const proxyPayload = {
-                genre: genre
-            };
+            const payload = { genre: genre };
             
             try {
-                const response = await fetch(BACKEND_PROXY_URL, { 
+                const response = await fetch(INITIAL_STORY_URL, { 
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(proxyPayload) 
+                    body: JSON.stringify(payload) 
                 });
 
                 if (!response.ok) {
-                    const errorText = await response.text(); 
-                    if (response.status === 405) {
-                         throw new Error(`後端代理請求失敗: 405 - 方法不允許。請檢查您的後端伺服器 (${BACKEND_PROXY_URL}) 是否已正確設定以接受 POST 請求。`);
+                    let backendErrorMessage = `後端請求發生未預期錯誤 (${response.status})。`; 
+                    try {
+                        const errorData = await response.json(); 
+                        if (errorData && errorData.error) {
+                            backendErrorMessage = `AI 服務錯誤 (${response.status})：${errorData.error}`;
+                        }
+                    } catch (e) {
+                        try {
+                            const errorText = await response.text();
+                            backendErrorMessage = `後端請求失敗 (${response.status})：${errorText.substring(0, 150)}`;
+                        } catch (textErr) { /*保持預設*/ }
                     }
-                    throw new Error(`後端代理請求失敗: ${response.status} - ${errorText.substring(0,150)}`);
+                    throw new Error(backendErrorMessage); 
                 }
                 
                 const parsedAiResponse = await response.json(); 
 
                 if (parsedAiResponse && parsedAiResponse.title) { 
-                    CURRENT_STORY_DATA.title = parsedAiResponse.title || "AI的神秘故事";
-                    CURRENT_STORY_DATA.initialScenario = parsedAiResponse.initialScenario || "AI正在思考一個謎題...";
-                    CURRENT_STORY_DATA.solution = parsedAiResponse.solution || "AI的最終解答。";
+                    CURRENT_STORY_DATA.title = parsedAiResponse.title;
+                    CURRENT_STORY_DATA.initialScenario = parsedAiResponse.initialScenario;
+                    CURRENT_STORY_DATA.solution = parsedAiResponse.solution;
                     CURRENT_STORY_DATA.hints = parsedAiResponse.hints && parsedAiResponse.hints.length > 0 ? parsedAiResponse.hints.slice(0,5) : DEFAULT_HINTS;
                     CURRENT_STORY_DATA.hostingStyle = parsedAiResponse.hostingStyle || "標準";
-                    
-                    let dynamicClues = [];
-                    if (parsedAiResponse.positiveKeywords) {
-                        parsedAiResponse.positiveKeywords.forEach(kw => {
-                            dynamicClues.push({ keywords: [kw], answer: "是。", storyReveal: `與「${kw}」有關。`, type: "ai_positive" });
-                        });
-                    }
-                    if (parsedAiResponse.negativeKeywords) {
-                        parsedAiResponse.negativeKeywords.forEach(kw => {
-                            dynamicClues.push({ keywords: [kw], answer: "不是。", type: "ai_negative" });
-                        });
-                    }
-                    CURRENT_STORY_DATA.npcClues = [...dynamicClues, ...DEFAULT_NPC_CLUES]; 
                     
                     loadingIndicatorEl.classList.remove('active');
                     storyIntroTitleEl.textContent = `故事序幕：${CURRENT_STORY_DATA.title}`;
                     storyIntroScenarioEl.innerHTML = CURRENT_STORY_DATA.initialScenario.replace(/\n/g, '<br>');
                     storyIntroModalEl.classList.add('active');
-
                 } else {
-                    throw new Error("後端代理回應格式不正確或關鍵內容為空。");
+                    throw new Error("後端回應格式不正確或關鍵內容為空 (初始故事)。");
                 }
-            } catch (error) {
-                console.error("AI故事生成失敗 (透過後端代理):", error);
-                let userErrorMessage = "AI生成故事失敗。";
-                if (error.message && error.message.includes("405")) { // Check for 405 specifically
-                    userErrorMessage = error.message; // Use the more specific error message
-                } else if (error.message) {
-                    userErrorMessage += ` (${error.message.substring(0, 150)})`;
-                }
-                userErrorMessage += " 將使用預設故事。";
-                showToast(userErrorMessage);
-                
-                CURRENT_STORY_DATA = {
-                    title: "備用故事：辦公室之謎",
-                    initialScenario: "一名員工被發現倒在辦公室，身旁只有一杯灑了的咖啡和一個訂書機。",
-                    solution: "他不小心被訂書機絆倒，頭撞到桌角，咖啡也灑了。純屬意外。",
-                    npcClues: [
-                        { keywords: ["謀殺"], answer: "不是。" }, { keywords: ["咖啡"], answer: "是。", storyReveal: "現場有咖啡。" },
-                        { keywords: ["訂書機"], answer: "是。", storyReveal: "現場有訂書機。" }, { keywords: ["意外"], answer: "是。", storyReveal: "這是一場意外。" },
-                        ...DEFAULT_NPC_CLUES
-                    ],
-                    hints: DEFAULT_HINTS,
-                    hostingStyle: "標準"
-                };
+            } catch (error) { 
+                console.error("AI初始故事生成失敗:", error.message); 
                 loadingIndicatorEl.classList.remove('active');
-                storyIntroTitleEl.textContent = `故事序幕：${CURRENT_STORY_DATA.title}`;
-                storyIntroScenarioEl.innerHTML = CURRENT_STORY_DATA.initialScenario.replace(/\n/g, '<br>');
-                storyIntroModalEl.classList.add('active');
+                if (aiMaintenanceMessageEl) {
+                    // 確保 error.message 是字串，並安全地處理換行
+                    const displayErrorMessage = typeof error.message === 'string' ? error.message.replace(/\n/g, ' ') : '未知的 AI 連線錯誤。';
+                    aiMaintenanceMessageEl.textContent = displayErrorMessage + "\n\n請檢查您的網路連線或稍後再試。";
+                }
+                aiMaintenanceModalEl.classList.add('active');
             }
         }
 
+        // --- Game Logic Functions ---
         function initGame() {
             turnCount = 0;
             hintsRemaining = CURRENT_STORY_DATA.hints.length;
-            revealedStoryParts.clear();
+            revealedStoryParts.clear(); 
             gameEnded = false;
             gameWon = false;
             consecutiveNonRevelations = 0;
             inputAssistHintEl.textContent = '';
+            isGameStarted = true; 
 
             updateTurnCounterDisplay();
             updateHintButtonDisplay();
             updateStoryDisplayPreview(); 
-            dialogueHistoryEl.innerHTML = '';
+            dialogueHistoryEl.innerHTML = ''; 
             
             let greetingStyle = CURRENT_STORY_DATA.hostingStyle || "標準";
-            let initialGreeting = `(風格提示：${greetingStyle}) 你好，我是主持人！今天的謎題是「${CURRENT_STORY_DATA.title}」。準備好挑戰了嗎？請開始問是非題吧！`;
+            let initialGreeting = `(風格提示：${greetingStyle}) 你好，我是主持人！今天的謎題是「${CURRENT_STORY_DATA.title}」。\n${CURRENT_STORY_DATA.initialScenario}\n準備好挑戰了嗎？請開始問是非題吧！`;
             addDialogue("NPC", initialGreeting);
+
+            setTimeout(() => {
+                 addDialogue("NPC", "你可以試著問我關於「人物身份」、「案發地點」、「物品用途」或者「時間點」等問題。例如：「死者是男性嗎？」或「事件發生在白天嗎？」");
+                 showInputAssistHint("提示：試著針對人、事、時、地、物提問。");
+            }, 700); 
             
             playerInputEl.disabled = false;
             hintButtonEl.disabled = false;
@@ -485,66 +534,107 @@
             playerInputEl.focus();
         }
 
-        function handlePlayerQuestion(questionText) {
+        async function handlePlayerQuestion(questionText) { 
             if (gameEnded || !questionText.trim()) return;
             turnCount++;
             updateTurnCounterDisplay();
             addDialogue("player", questionText);
             inputAssistHintEl.textContent = ''; 
+            showLoadingInChat(true); 
 
-            let npcResponse = "嗯...這題我無法簡單回答是或不是，或者這與謎底不太相關。";
-            let matchFound = false;
+            const ingamePayload = {
+                playerQuestion: questionText,
+                initialScenario: CURRENT_STORY_DATA.initialScenario,
+                fullSolution: CURRENT_STORY_DATA.solution, 
+                revealedClues: Array.from(revealedStoryParts),
+            };
 
-            for (const clue of CURRENT_STORY_DATA.npcClues) {
-                if (clue.keywords.some(keyword => questionText.toLowerCase().includes(keyword.toLowerCase()))) {
-                    npcResponse = clue.answer;
-                    if (clue.answer.includes("是") && clue.storyReveal) {
-                        revealedStoryParts.add(clue.storyReveal);
-                        updateStoryDisplayPreview();
+            try {
+                const response = await fetch(INGAME_RESPONSE_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(ingamePayload)
+                });
+                
+                showLoadingInChat(false); 
+
+                if (!response.ok) {
+                    let backendErrorMessage = `AI即時回應請求失敗 (${response.status})。`;
+                    try {
+                        const errorData = await response.json();
+                        if (errorData && errorData.error) {
+                            backendErrorMessage = `AI 服務錯誤 (${response.status})：${errorData.error}`;
+                        }
+                    } catch (e) {
+                        try {
+                            const errorText = await response.text();
+                            backendErrorMessage = `AI即時回應請求失敗 (${response.status})：${errorText.substring(0,100)}`;
+                        } catch (textErr) {/*保持預設*/}
                     }
-                    matchFound = true;
-                    break;
+                    addDialogue("NPC", `嗯...我好像有點短路了，請你換個問題試試？\n<small class="text-gray-400">(錯誤: ${backendErrorMessage.substring(0,50)}...)</small>`);
+                    console.error("AI即時回應請求失敗:", backendErrorMessage);
+                    return; 
                 }
+                const aiIngameResponse = await response.json();
+
+                if (aiIngameResponse && aiIngameResponse.npcResponseText) {
+                    addDialogue("NPC", aiIngameResponse.npcResponseText);
+                    if (aiIngameResponse.newClueDiscovered && aiIngameResponse.newClueDiscovered.trim() !== "") {
+                        revealedStoryParts.add(aiIngameResponse.newClueDiscovered);
+                        updateStoryDisplayPreview();
+                        showToast("新線索已揭露！");
+                    }
+                    if (aiIngameResponse.isAffirmative === "是" || aiIngameResponse.isAffirmative === "不是") {
+                        consecutiveNonRevelations = 0;
+                    } else {
+                        consecutiveNonRevelations++;
+                    }
+                } else {
+                    throw new Error("AI即時回應格式不正確。");
+                }
+
+            } catch (error) {
+                showLoadingInChat(false);
+                console.error("處理玩家問題時與後端通訊失敗:", error);
+                addDialogue("NPC", "抱歉，我現在有點混亂，請稍後再試一次。");
             }
             
-            if (!matchFound && !questionText.toLowerCase().includes("答案是") && !questionText.toLowerCase().includes("真相是")) {
-                consecutiveNonRevelations++;
-            } else {
-                consecutiveNonRevelations = 0; 
-            }
-
-            if (consecutiveNonRevelations >= 2 && turnCount > 1 && !gameEnded) {
+            if (consecutiveNonRevelations >= 2 && !gameEnded) {
                 const assistHints = [
-                    "試著問關於「時間」或「地點」的問題？",
-                    "死者/主角的「身份」或「攜帶物品」是？",
-                    "事件發生前「主角在做什麼」？",
-                    "是否有「其他人」在場？",
-                    "這件事是「意外」還是「人為」？",
-                    "可以問問「天氣」或「環境」嗎？",
+                    "試著問關於「時間」或「地點」的問題？", "死者/主角的「身份」或「攜帶物品」是？",
+                    "事件發生前「主角在做什麼」？", "是否有「其他人」在場？",
+                    "這件事是「意外」還是「人為」？", "可以問問「天氣」或「環境」嗎？",
                     "主角的「情緒」或「動機」是什麼？"
                 ];
                 showInputAssistHint(assistHints[Math.floor(Math.random() * assistHints.length)]);
                 consecutiveNonRevelations = 0; 
-            } else if (turnCount > 5 && revealedStoryParts.size < 2 && !gameEnded && hintsRemaining > 0) {
-                 showInputAssistHint("進展緩慢嗎？試著從不同角度提問，或使用提示按鈕！");
             }
 
             if (questionText.toLowerCase().includes("答案是") || questionText.toLowerCase().includes("真相是")) {
-                if (checkSolution(questionText)) {
-                    npcResponse = `恭喜你！答對了！完整的故事是：${CURRENT_STORY_DATA.solution}`;
+                if (checkSolution(questionText)) { 
+                    addDialogue("NPC", `恭喜你！答對了！完整的故事是：${CURRENT_STORY_DATA.solution}`);
                     endGame(true);
-                } else {
-                    npcResponse = "很接近了，但還不是正確答案。";
-                }
-            } else if (!gameEnded && revealedStoryParts.size > 3 && turnCount > 5) { 
-                const criticalCluesCount = CURRENT_STORY_DATA.npcClues.filter(c => c.type === 'ai_positive' && revealedStoryParts.has(c.storyReveal)).length;
-                const totalAICriticalClues = CURRENT_STORY_DATA.npcClues.filter(c => c.type === 'ai_positive').length;
-                if (totalAICriticalClues > 0 && criticalCluesCount >= Math.min(3, Math.floor(totalAICriticalClues * 0.5))) { 
-                     npcResponse = `你已經拼湊出很多線索了！你認為真相是什麼？（可以試著說出「答案是...」來猜測完整故事）`;
                 }
             }
-            setTimeout(() => addDialogue("NPC", npcResponse), 300);
             playerInputEl.value = '';
+        }
+
+        let npcLoadingBubble = null;
+        function showLoadingInChat(isLoading) {
+            if (isLoading) {
+                if (!npcLoadingBubble) {
+                    npcLoadingBubble = document.createElement('div');
+                    npcLoadingBubble.classList.add('chat-bubble', 'npc-bubble');
+                    npcLoadingBubble.innerHTML = '<span class="italic text-gray-400">NPC 正在輸入...</span>';
+                    dialogueHistoryEl.appendChild(npcLoadingBubble);
+                    dialogueHistoryScrollableEl.scrollTop = dialogueHistoryScrollableEl.scrollHeight;
+                }
+            } else {
+                if (npcLoadingBubble) {
+                    dialogueHistoryEl.removeChild(npcLoadingBubble);
+                    npcLoadingBubble = null;
+                }
+            }
         }
         
         function showInputAssistHint(message) {
@@ -621,7 +711,7 @@
             bubble.innerHTML = text.replace(/\n/g, '<br>');
             bubble.classList.add(speaker === 'NPC' ? 'npc-bubble' : 'player-bubble');
             dialogueHistoryEl.appendChild(bubble);
-            dialogueHistoryEl.parentElement.scrollTop = dialogueHistoryEl.parentElement.scrollHeight;
+            dialogueHistoryScrollableEl.scrollTop = dialogueHistoryScrollableEl.scrollHeight;
         }
 
         function showToast(message) {
@@ -634,6 +724,7 @@
             }, 3000);
         }
 
+        // --- Modal Controls & Event Listeners ---
         function populateGenreGrid() {
             STORY_GENRES.forEach(genre => {
                 const item = document.createElement('div');
@@ -643,7 +734,7 @@
                 textSpan.classList.add('genre-item-text');
                 textSpan.textContent = genre;
                 item.appendChild(textSpan);
-                item.addEventListener('click', () => generateStoryWithAI(genre));
+                item.addEventListener('click', () => generateInitialStoryWithAI(genre)); 
                 genreGridContainerEl.appendChild(item);
             });
         }
@@ -651,18 +742,62 @@
         startGameFromIntroBtn.addEventListener('click', () => {
             storyIntroModalEl.classList.remove('active');
             gameContainerEl.style.display = 'flex';
-            initGame();
+            initGame(); 
+        });
+
+        reviewStoryIntroBtn.addEventListener('click', () => {
+            if (CURRENT_STORY_DATA && CURRENT_STORY_DATA.title !== "尚未生成") {
+                storyIntroTitleEl.textContent = `故事序幕：${CURRENT_STORY_DATA.title}`;
+                storyIntroScenarioEl.innerHTML = CURRENT_STORY_DATA.initialScenario.replace(/\n/g, '<br>');
+            } else {
+                storyIntroTitleEl.textContent = '故事序幕';
+                storyIntroScenarioEl.textContent = '請先選擇一個故事類型以生成故事。';
+            }
+            if (isGameStarted) { 
+                closeStoryIntroModalBtn.style.display = 'flex'; 
+                startGameFromIntroBtn.style.display = 'none'; 
+            } else { 
+                closeStoryIntroModalBtn.style.display = 'none';
+                startGameFromIntroBtn.style.display = 'block';
+            }
+            storyIntroModalEl.classList.add('active');
         });
 
         storyAreaClickableEl.addEventListener('click', () => {
             updateFullStoryModalDisplay();
             storyProgressModalEl.classList.add('active');
         });
-        closeStoryModalBtn.addEventListener('click', () => {
-            storyProgressModalEl.classList.remove('active');
-        });
-        window.addEventListener('click', (event) => {
-            if (event.target === storyProgressModalEl) storyProgressModalEl.classList.remove('active');
+
+        if(closeGenreModalBtn) { 
+            closeGenreModalBtn.addEventListener('click', () => genreModalEl.classList.remove('active'));
+        }
+        if(closeStoryIntroModalBtn) {
+            closeStoryIntroModalBtn.addEventListener('click', () => storyIntroModalEl.classList.remove('active'));
+        }
+        if(closeStoryProgressModalBtn) {
+            closeStoryProgressModalBtn.addEventListener('click', () => storyProgressModalEl.classList.remove('active'));
+        }
+        if(closeMaintenanceModalBtn) {
+            closeMaintenanceModalBtn.addEventListener('click', () => {
+                aiMaintenanceModalEl.classList.remove('active');
+                location.reload(); 
+            });
+        }
+
+        [genreModalEl, storyIntroModalEl, storyProgressModalEl, aiMaintenanceModalEl].forEach(modal => {
+            if (modal) {
+                modal.addEventListener('click', (event) => {
+                    if (event.target === modal) { 
+                        if (modal === storyIntroModalEl && !isGameStarted && !event.target.closest('.modal-close-btn')) { 
+                            return; 
+                        }
+                        if (modal === aiMaintenanceModalEl && !event.target.closest('.modal-close-btn')) {
+                            return; 
+                        }
+                        modal.classList.remove('active');
+                    }
+                });
+            }
         });
 
         playerInputForm.addEventListener('submit', (e) => {
@@ -683,6 +818,7 @@
             else { showToast("提示已用完！"); }
         });
 
+        // --- Game Start ---
         populateGenreGrid(); 
     </script>
 </body>
