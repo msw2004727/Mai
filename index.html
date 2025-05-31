@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>AI海龜湯遊戲</title>
+    <title>AI海龜湯遊戲 - 起承轉合</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         :root {
@@ -17,13 +17,16 @@
             --accent-green: #22c55e;
             --accent-yellow: #f59e0b;
             --accent-gold: #ffd700;
+            --accent-purple: #8b5cf6; 
             --toast-yellow-bg: #fffbeb;
             --toast-yellow-text: #92400e;
             --bubble-hint-bg: #f0fdf4;
             --bubble-hint-text: #14532d;
             --bubble-hint-border: #a7f3d0;
-            --challenge-bg: #2c3a4b; /* 挑戰成功條件背景色 */
-            --dialogue-info-bg: #2c3a4b; /* NPC重要訊息背景色 */
+            --challenge-bg: #2c3a4b; 
+            --dialogue-info-bg: #2c3a4b; 
+            --clue-revealed-text: var(--accent-green);
+            --clue-pending-text: var(--text-light-secondary);
         }
         html, body {
             height: 100%;
@@ -67,48 +70,55 @@
         }
         #game-header-area .grid { min-height: 80px; gap: 8px; align-items: stretch; }
         #npc-area {
-            padding: 0; /* Remove padding if image handles its own spacing */
+            padding: 0;
             min-height: 70px;
             background-color: var(--bg-dark-secondary);
             border-radius: 0.5rem;
-            display: flex; /* Using flex might simplify positioning if needed */
+            display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-end; /* Aligns banner to bottom if image doesn't fill */
-            overflow: hidden; /* Important to clip parts of image if it's larger */
+            justify-content: flex-end;
+            overflow: hidden;
             position: relative;
-            padding-top: 10px; /* This creates the space for the background to be "lower" */
+            padding-top: 10px;
         }
         #npc-image {
             width: 100%;
-            height: calc(100% + 10px); /* Compensate for the padding-top of parent to fill original space */
+            height: calc(100% + 10px);
             object-fit: cover;
             border-radius: 0;
-            position: relative; /* Allow z-index and margin adjustment */
-            top: -10px; /* Pull image up to cover the padding-top area */
+            position: relative;
+            top: -10px;
             z-index: 1;
         }
         #npc-name-banner {
-            background-color: rgba(75, 85, 99, 0.8); /* Slightly more opaque */
+            background-color: rgba(75, 85, 99, 0.8);
             color: var(--text-light);
             font-size: 0.8rem;
             font-weight: 600;
-            padding: 3px 8px; /* Adjusted padding */
+            padding: 3px 8px;
             width: 100%;
             text-align: center;
             position: absolute;
             bottom: 0;
             left: 0;
-            z-index: 2; /* Ensure banner is above image */
-            border-bottom-left-radius: 0.5rem; /* Match container rounding if image doesn't cover */
+            z-index: 2;
+            border-bottom-left-radius: 0.5rem;
             border-bottom-right-radius: 0.5rem;
         }
-        #story-area-clickable { padding: 8px; min-height: 70px; background-color: var(--bg-dark-secondary); border-radius: 0.5rem; }
+        #story-area-clickable { padding: 8px; min-height: 70px; background-color: var(--bg-dark-secondary); border-radius: 0.5rem; cursor: pointer; }
         #story-text-preview { font-size: 0.875rem; color: var(--text-blue-300, #93c5fd); line-height: 1.4; }
         .header-text-sm { font-size: 0.8rem; }
         #turn-counter { font-size: 0.85rem; color: var(--text-light-secondary); }
         .button-group button { font-size: 0.8rem; padding: 4px 6px; }
         .button-group { display: flex; align-items: center; gap: 6px; }
+
+        /* 起承轉合預覽區樣式 */
+        #qcth-preview { font-size: 0.75rem; line-height: 1.3; }
+        #qcth-preview > div > span { font-weight: 500; }
+        .qcth-preview-revealed { color: var(--clue-revealed-text) !important; }
+        .qcth-preview-pending { color: var(--clue-pending-text) !important; }
+
 
         #dialogue-history-scrollable { flex-grow: 1; overflow-y: auto; padding: 10px 12px; display: flex; flex-direction: column; -webkit-overflow-scrolling: touch; }
         .dialogue-hr {
@@ -137,6 +147,15 @@
             line-height: 1.5;
             flex-shrink: 0;
         }
+        /* 新的提示按鈕樣式 (原解答按鈕位置) */
+        #new-hint-button { 
+            background-color: var(--accent-yellow);
+            color: var(--bg-dark);
+        }
+        #new-hint-button:hover {
+            background-color: #facc15; 
+        }
+
 
         .chat-bubble { padding: 8px 12px; margin-bottom: 6px; font-size: 14px; line-height: 1.5; border-radius: 8px; max-width: 85%; word-wrap: break-word; }
         .chat-bubble.player { background-color: var(--accent-blue); color: var(--text-light); align-self: flex-end; margin-left: auto; }
@@ -146,12 +165,14 @@
             color: var(--bubble-hint-text);
             border: 1px solid var(--bubble-hint-border);
         }
-        .chat-bubble.dialogue-highlight { /* For important NPC messages */
+        .chat-bubble.dialogue-highlight {
             background-color: var(--dialogue-info-bg);
             border-left: 4px solid var(--accent-yellow);
             padding-left: 10px;
         }
-        
+        /* 移除了 .player-solution-attempt 樣式，因為不再有專門的解答泡泡 */
+
+
         .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
         .modal.active { opacity: 1; visibility: visible; }
         .modal-content { background-color: var(--bg-dark); padding: 20px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); width: calc(100vw - 40px); max-width: 500px; max-height: calc(100vh - 40px); overflow-y: auto; position: relative; color: var(--text-light); }
@@ -181,22 +202,28 @@
         #story-intro-modal ul li { margin-bottom: 0.2rem; }
         #story-intro-modal .btn { margin-top: 1.2rem; }
 
+        /* 故事進展 Modal 樣式調整 */
         #story-progress-modal h2 { font-size: 1.2rem; margin-bottom: 0.6rem;}
-        #story-progress-modal #full-story-text { max-height: 200px; overflow-y: auto; margin-bottom: 0.8rem; padding-right: 8px; font-size: 0.95rem;}
+        #qcth-details-container .qcth-item { margin-bottom: 0.75rem; padding: 0.75rem; border-radius: 6px; background-color: rgba(75, 85, 99, 0.3); border-left: 3px solid var(--accent-blue); }
+        #qcth-details-container .qcth-item h4 { font-size: 1rem; font-weight: 600; color: var(--accent-yellow); margin-bottom: 0.25rem; }
+        #qcth-details-container .qcth-item p { font-size: 0.9rem; line-height: 1.5; }
+        #qcth-details-container .qcth-item p.revealed { color: var(--text-light); }
+        #qcth-details-container .qcth-item p.pending { color: var(--text-light-secondary); font-style: italic; }
+
         #story-progress-modal #current-story-summary-container { margin-top: 1rem; padding-top: 1rem; border-top: 1px dashed var(--bg-dark-tertiary); }
         #story-progress-modal #current-story-summary { font-style: italic; font-size:0.9rem; color: var(--text-light-secondary); max-height: 150px; overflow-y: auto;}
 
-        /* New Loading Modal Styles */
+
         #loading-modal .modal-content {
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center; /* Center content vertically */
+            justify-content: center;
             text-align: center;
             padding: 25px;
-            background: transparent; /* Transparent background for the modal content box */
-            box-shadow: none; /* No shadow for the content box */
-            height: auto; /* Adjust height to content */
+            background: transparent;
+            box-shadow: none;
+            height: auto;
         }
         .loading-spinner {
             border: 5px solid var(--bg-dark-tertiary);
@@ -205,18 +232,18 @@
             width: 60px;
             height: 60px;
             animation: spin 1s linear infinite;
-            margin-bottom: 20px; /* Space below spinner */
+            margin-bottom: 20px;
         }
         #loading-text {
-          font-size: 1.2rem; /* Adjusted size */
+          font-size: 1.2rem;
           color: var(--text-light);
-          font-weight: 600; /* Slightly less bold */
+          font-weight: 600;
           margin-bottom: 15px;
           user-select: none;
         }
-        #loading-ad-placeholder { /* Ad placeholder for loading screen */
-            width: 300px; /* Standard ad size */
-            height: 50px;  /* Standard ad size */
+        #loading-ad-placeholder {
+            width: 300px;
+            height: 50px;
             background-color: var(--bg-dark-tertiary);
             border: 1px dashed var(--text-light-secondary);
             border-radius: 6px;
@@ -225,12 +252,12 @@
             justify-content: center;
             color: var(--text-light-secondary);
             font-size: 0.8rem;
-            margin: 20px 0; /* Space around ad */
+            margin: 20px 0;
         }
         #loading-modal-tips {
           font-size: 0.9rem;
           color: var(--text-light);
-          background: rgba(0,0,0, 0.2); /* Subtle background for tips */
+          background: rgba(0,0,0, 0.2);
           border-radius: 8px;
           padding: 10px 15px;
           max-width: 90%;
@@ -263,30 +290,40 @@
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* Game Over Modal Enhancements */
         #game-over-modal .modal-content { text-align: center; }
-        #game-over-trophy { /* New ID for the trophy image/icon */
-            font-size: 5rem; /* Large trophy icon */
-            color: var(--accent-gold);
+        #game-over-trophy {
+            font-size: 5rem;
             margin-bottom: 1rem;
         }
         #game-over-modal h2 { font-size: 1.8rem; margin-bottom: 0.5rem; }
-        #player-title-display { font-size: 1.3rem; color: var(--accent-yellow); margin-bottom: 1.5rem; font-weight: bold;}
-        
-        .stats-grid-gameover { /* New class for styling game over stats */
+        #player-title-display { font-size: 1.3rem; color: var(--accent-yellow); margin-bottom: 1rem; font-weight: bold;}
+        #game-over-solution-reveal { 
+            font-size: 0.95rem;
+            color: var(--text-light-secondary);
+            margin-bottom: 1.5rem;
+            padding: 10px;
+            background-color: var(--bg-dark-secondary);
+            border-radius: 6px;
+            text-align: left;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+        #game-over-solution-reveal strong { color: var(--accent-yellow); }
+
+        .stats-grid-gameover {
             display: flex;
             flex-direction: column;
-            gap: 0.8rem; /* Space between stat items */
-            font-size: 1rem; /* Larger font for stats */
+            gap: 0.8rem;
+            font-size: 1rem;
             margin-bottom: 1.8rem;
             width: 100%;
-            max-width: 300px; /* Limit width for better centering */
+            max-width: 300px;
             margin-left: auto;
             margin-right: auto;
         }
         .stat-item {
             display: flex;
-            justify-content: space-between; /* Label on left, value on right */
+            justify-content: space-between;
             padding: 0.5rem 0.8rem;
             background-color: var(--bg-dark-secondary);
             border-radius: 6px;
@@ -361,6 +398,8 @@
             margin-bottom: 10px;
         }
 
+        /* 移除了 #solution-modal 相關樣式 */
+
         .toast {
             position: fixed;
             bottom: 20px;
@@ -398,19 +437,24 @@
         <div id="game-header-area">
             <div class="grid grid-cols-2">
                 <div id="npc-area">
-                    <img id="npc-image" src="https://github.com/msw2004727/Mai/blob/main/NPC.png?raw=true" alt="NPC 圖片">
+                    <img id="npc-image" src="https://github.com/msw2004727/Mai/blob/main/NPC.png?raw=true" alt="NPC 圖片" onerror="this.onerror=null; this.src='https://placehold.co/200x100/374151/f3f4f6?text=NPC圖片遺失';">
                     <div id="npc-name-banner">NPC 主持人</div>
                 </div>
-                <div id="story-area-clickable" class="rounded-lg overflow-y-auto cursor-pointer transition hover:bg-gray-600">
-                    <h3 class="header-text-sm font-semibold text-blue-400 mb-1.5">故事進展 (點擊)：</h3>
-                    <p id="story-text-preview">選擇類型以開始...</p>
+                <div id="story-area-clickable" class="rounded-lg overflow-y-auto">
+                    <h3 class="header-text-sm font-semibold text-blue-400 mb-1">故事進展 (點擊)：</h3>
+                    <p id="story-text-preview" class="mb-1.5">選擇類型以開始...</p>
+                    <div id="qcth-preview" class="text-xs mt-1 space-y-0.5">
+                        <div>起: <span id="qi-preview-status" class="qcth-preview-pending">未揭露</span></div>
+                        <div>承: <span id="cheng-preview-status" class="qcth-preview-pending">未揭露</span></div>
+                        <div>轉: <span id="zhuan-preview-status" class="qcth-preview-pending">未揭露</span></div>
+                        <div>合: <span id="he-preview-status" class="qcth-preview-pending">未揭露</span></div>
+                    </div>
                 </div>
             </div>
             <div class="flex justify-between items-center px-1 mt-1.5">
                 <div id="turn-counter">回合：<span id="turn-count">0</span></div>
                 <div class="button-group">
                     <button id="review-story-intro-btn" class="btn btn-secondary">回顧序幕</button>
-                    <button id="hint-button" class="btn btn-secondary">提示 (<span id="hints-remaining">3</span>)</button>
                     <button id="leaderboard-btn-ingame" class="btn btn-gold">🏅 排行榜</button>
                 </div>
             </div>
@@ -423,6 +467,7 @@
             <form id="player-input-form">
                 <input type="text" id="player-input" class="flex-grow" placeholder="問一個是非題..." autocomplete="off">
                 <button type="submit" class="btn">送出</button>
+                <button type="button" id="new-hint-button" class="btn">提示 (<span id="hints-remaining">3</span>)</button> 
             </form>
         </div>
     </div>
@@ -447,16 +492,16 @@
             <p id="story-intro-scenario" class="leading-relaxed my-2"></p>
             <div class="challenge-conditions">
                 <h4 class="font-semibold">挑戰成功條件：</h4>
-                <p>完整拼湊出故事原貌，並由主持人確認你已理解真相！</p>
+                <p>透過提問，逐步揭露故事的「起」、「承」、「轉」、「合」四個關鍵線索！</p>
             </div>
             <div class="game-rules">
                 <h4 class="font-semibold">遊戲規則：</h4>
                 <ul class="list-disc list-inside">
                     <li>謎題：NPC提供不完整故事。</li>
-                    <li>目標：透過是非題猜出真相。</li>
+                    <li>目標：透過是非題逐步揭露故事的四大關鍵線索。</li>
                     <li>提問：針對人、事、時、地、物。</li>
-                    <li>猜測：有把握時說「答案是...」。</li>
-                    <li>求助：善用提示按鈕獲取線索。</li>
+                    <li>勝利：當四個關鍵線索全部揭露時，遊戲勝利。</li>
+                    <li>求助：善用提示按鈕獲取線索 (共<span id="rules-hints-count">3</span>次)。</li>
                 </ul>
             </div>
             <button id="start-game-from-intro-btn" class="btn w-full">開始探索真相</button>
@@ -468,11 +513,27 @@
             <button id="close-story-progress-modal-btn" class="modal-close-btn">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
             </button>
-            <h2 class="text-lg font-semibold mb-2">目前已知線索：</h2>
-            <div id="full-story-text" class="space-y-1">
+            <h2 class="text-lg font-semibold mb-3">關鍵線索進展：</h2>
+            <div id="qcth-details-container" class="mb-4">
+                <div class="qcth-item">
+                    <h4 class="font-semibold text-yellow-400">【起】始</h4>
+                    <p id="qi-clue-text" class="text-gray-300 mt-1 pending">尚未揭露</p>
                 </div>
+                <div class="qcth-item">
+                    <h4 class="font-semibold text-yellow-400">【承】接</h4>
+                    <p id="cheng-clue-text" class="text-gray-300 mt-1 pending">尚未揭露</p>
+                </div>
+                <div class="qcth-item">
+                    <h4 class="font-semibold text-yellow-400">【轉】折</h4>
+                    <p id="zhuan-clue-text" class="text-gray-300 mt-1 pending">尚未揭露</p>
+                </div>
+                <div class="qcth-item">
+                    <h4 class="font-semibold text-yellow-400">【合】局</h4>
+                    <p id="he-clue-text" class="text-gray-300 mt-1 pending">尚未揭露</p>
+                </div>
+            </div>
             <div id="current-story-summary-container">
-                 <h3 class="text-md font-semibold">目前拼湊的故事：</h3>
+                 <h3 class="text-md font-semibold">目前AI拼湊的故事：</h3>
                  <p id="current-story-summary" class="mt-1"></p>
             </div>
         </div>
@@ -496,9 +557,12 @@
             <button id="close-game-over-modal-btn" class="modal-close-btn">
                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
             </button>
-            <div id="game-over-trophy">🏆</div>
+            <div id="game-over-trophy">🏆</div> 
             <h2 id="game-over-title" class="font-bold">恭喜過關！</h2>
             <p id="player-title-display">稱號：海龜湯大師</p>
+            <div id="game-over-solution-reveal">
+                <strong>真相揭曉：</strong><span id="final-solution-text">完整的故事解答將會顯示在這裡。</span>
+            </div>
             <div class="stats-grid-gameover">
                 <div class="stat-item">
                     <span class="stat-label">玩家暱稱：</span><span id="stat-nickname" class="stat-value">匿名玩家</span>
@@ -564,10 +628,9 @@
 
     <script>
         // --- API URLs ---
-        // 請替換成您實際的後端 API 端點
         const HAIGUITANG_GAME_START_URL = 'https://d1d5ef45-d04b-4a1c-be4b-64a0680c6847-00-xxpggv06ka2e.sisko.replit.dev/haiguitang/game/start';
         const HAIGUITANG_GAME_GUESS_URL_TEMPLATE = 'https://d1d5ef45-d04b-4a1c-be4b-64a0680c6847-00-xxpggv06ka2e.sisko.replit.dev/haiguitang/game/{gameId}/guess';
-        const HAIGUITANG_GAME_SOLVE_URL_TEMPLATE = 'https://d1d5ef45-d04b-4a1c-be4b-64a0680c6847-00-xxpggv06ka2e.sisko.replit.dev/haiguitang/game/{gameId}/solve';
+        // HAIGUITANG_GAME_SOLVE_URL_TEMPLATE 不再主要使用於玩家提交解答，但後端可能仍保留作弊或其他用途
         const HAIGUITANG_CHEAT_URL_TEMPLATE = 'https://d1d5ef45-d04b-4a1c-be4b-64a0680c6847-00-xxpggv06ka2e.sisko.replit.dev/haiguitang/game/{gameId}/cheat';
         const LEADERBOARD_URL = 'https://d1d5ef45-d04b-4a1c-be4b-64a0680c6847-00-xxpggv06ka2e.sisko.replit.dev/haiguitang/leaderboard';
         const LEADERBOARD_ADD_URL = 'https://d1d5ef45-d04b-4a1c-be4b-64a0680c6847-00-xxpggv06ka2e.sisko.replit.dev/haiguitang/leaderboard/add';
@@ -577,39 +640,42 @@
             gameId: null,
             title: "尚未生成",
             initialScenario: "請先選擇一個故事類型。",
-            solution: null,
-            hints: [],
-            sessionHintPool: [], // For current game's unique hints
+            solution: null, 
+            hints: [], // 通用提示池
+            sessionHintPool: [], // 本局遊戲可用的通用提示
             hostingStyle: "標準",
-            storySummary: "AI 正在整理思緒...",
+            storySummary: "AI 正在整理思緒...", // AI拼湊的故事
             playerTitle: "偵探新手",
-            is_cheated: false
+            is_cheated: false,
+            // 新增：起承轉合線索
+            qi: { text: null, revealed: false, id_prefix: "qi" },
+            cheng: { text: null, revealed: false, id_prefix: "cheng" },
+            zhuan: { text: null, revealed: false, id_prefix: "zhuan" },
+            he: { text: null, revealed: false, id_prefix: "he" }
         };
         const DEFAULT_HINTS = [ "試著從地點、人物、物品、時間、原因等方向提問。", "受害者的死法是否常見？", "現場是否有不尋常的物品？", "死者是否有仇家？", "兇手是否在現場留下了什麼？" ];
         let playerNickname = "匿名玩家";
+        const MAX_HINTS = 3; // 最大提示次數
 
         const OFF_TRACK_RESPONSES = [
             "嗯...這個問題嘛，可能跟真相有點距離喔，試試從別的角度想想？",
             "這個方向似乎不太對，換個思路如何？",
-            "這個問題可能不是關鍵，再想想有沒有其他線索？",
-            "我覺得我們可以探索其他可能性，你覺得呢？",
-            "这个提问很有趣，但或许我们可以先聚焦在其他方面。",
-            "嗯，這個問題暫時沒有太多進展，要不要換個方向試試？",
-            "这个线索似乎比较模糊，我们看看其他的提示吧。",
-            "这个問題可能把我們帶偏了，重新整理一下思路吧！",
-            "感觉这不是通往真相的捷径，再思考一下！",
-            "这个問題可能不是目前最重要的，試試別的問法？",
-            "嗯，我感觉这条路可能走不太通，要不要换一条？"
+            "這個問題可能不是關鍵，再想想有沒有其他線索？"
         ];
-        const GENERIC_OFF_TRACK_PHRASE = "嗯...這個問題嘛，可能跟真相有點距離喔，試試從別的角度想想？";
+        const GENERIC_OFF_TRACK_PHRASE = OFF_TRACK_RESPONSES[0];
 
         // DOM Elements
         const gameContainerEl = document.getElementById('game-container');
         const storyAreaClickableEl = document.getElementById('story-area-clickable');
         const storyTextPreviewEl = document.getElementById('story-text-preview');
         const turnCountEl = document.getElementById('turn-count');
-        const hintsRemainingEl = document.getElementById('hints-remaining');
-        const hintButtonEl = document.getElementById('hint-button');
+        
+        // 新的提示按鈕 (原解答按鈕)
+        const newHintButtonEl = document.getElementById('new-hint-button');
+        const hintsRemainingEl = document.getElementById('hints-remaining'); // 提示次數顯示在按鈕上
+        const rulesHintsCountEl = document.getElementById('rules-hints-count');
+
+
         const reviewStoryIntroBtn = document.getElementById('review-story-intro-btn');
         const dialogueHistoryEl = document.getElementById('dialogue-history');
         const playerInputForm = document.getElementById('player-input-form');
@@ -630,7 +696,7 @@
         const startGameFromIntroBtn = document.getElementById('start-game-from-intro-btn');
         const closeStoryIntroModalBtn = document.getElementById('close-story-intro-modal-btn');
         const storyProgressModalEl = document.getElementById('story-progress-modal');
-        const fullStoryTextEl = document.getElementById('full-story-text');
+        // const fullStoryTextEl = document.getElementById('full-story-text'); // 不再直接使用這個ID填充，改用QCTH的
         const currentStorySummaryEl = document.getElementById('current-story-summary');
         const closeStoryProgressModalBtn = document.getElementById('close-story-progress-modal-btn');
         const loadingModalEl = document.getElementById('loading-modal');
@@ -656,17 +722,32 @@
         const closeLeaderboardModalBtn = document.getElementById('close-leaderboard-modal-btn');
         const leaderboardBtnGenre = document.getElementById('leaderboard-btn-genre');
         const leaderboardBtnIngame = document.getElementById('leaderboard-btn-ingame');
+        const gameOverTrophyEl = document.getElementById('game-over-trophy');
+        const finalSolutionTextEl = document.getElementById('final-solution-text');
+        const gameOverSolutionRevealEl = document.getElementById('game-over-solution-reveal');
+
+        // 起承轉合 DOM Elements
+        const qiPreviewStatusEl = document.getElementById('qi-preview-status');
+        const chengPreviewStatusEl = document.getElementById('cheng-preview-status');
+        const zhuanPreviewStatusEl = document.getElementById('zhuan-preview-status');
+        const hePreviewStatusEl = document.getElementById('he-preview-status');
+        const qiClueTextEl = document.getElementById('qi-clue-text');
+        const chengClueTextEl = document.getElementById('cheng-clue-text');
+        const zhuanClueTextEl = document.getElementById('zhuan-clue-text');
+        const heClueTextEl = document.getElementById('he-clue-text');
+
 
         let turnCount = 0;
         let totalCharCount = 0;
-        let hintsRemaining = 3; // Default, will be updated based on pool size
-        let revealedStoryParts = new Set();
+        let hintsRemaining = MAX_HINTS; // 使用常量
+        // revealedStoryParts 不再是主要線索儲存方式，改用 CURRENT_STORY_DATA 中的起承轉合
         let gameEnded = false;
         let gameWon = false;
         let isGameStarted = false;
         let initialNicknameSet = false;
         let currentTipIndex = 0;
         let tipInterval;
+        // solutionAttemptsRemaining 已移除
 
         function toggleModal(modalElement, show) {
             if (modalElement) {
@@ -736,20 +817,19 @@
                     }
                     throw new Error(backendErrorMessage);
                 }
-                if (response.status === 204) {
+                if (response.status === 204) { 
                     return { success: true, data: null };
                 }
                 const data = await response.json();
-                // For GET leaderboard, if backend directly returns array, wrap it for consistency
                 if (method === 'GET' && url.includes('/leaderboard') && Array.isArray(data)) {
                     return { success: true, leaderboard: data };
                 }
-                return data; // Expects {success: true, ...} or {error: ...} for POSTs
+                return data;
             } catch (error) {
                 console.error(`${errorMessagePrefix}錯誤:`, error.message);
                 if (method === 'POST' && loadingMessage) showLoadingModal(false);
 
-                if (aiMaintenanceMessageEl && method !== 'GET') {
+                if (aiMaintenanceMessageEl && method !== 'GET') { 
                     let displayErrorMessage = error.message;
                     if (error.message.toLowerCase().includes('failed to fetch')) {
                         displayErrorMessage = "無法連接到 AI 故事伺服器。\n請檢查您的網路連線，或可能是伺服器暫時無法使用。";
@@ -757,12 +837,12 @@
                     aiMaintenanceMessageEl.textContent = displayErrorMessage + "\n\n請稍後再試。";
                     if (aiMaintenanceModalEl) toggleModal(aiMaintenanceModalEl, true);
                 }
-                return { error: error.message, success: false }; // Return error object
+                return { error: error.message, success: false };
             }
         }
         
         function highlightKeywordsInScenario(text) {
-            if (typeof text !== 'string') return ''; // Ensure text is a string
+            if (typeof text !== 'string') return '';
             const keywords = ["屍體", "房間", "窗戶", "奇怪", "神秘", "唯一", "沒有", "血跡", "兇手", "動機", "線索", "證據", "死亡", "被害人", "嫌疑人", "消失", "秘密", "關鍵"];
             let highlightedText = text;
             keywords.forEach(keyword => {
@@ -779,27 +859,36 @@
 
             const payload = { genre: genre, nickname: playerNickname };
             const serverResponse = await makeApiCall(HAIGUITANG_GAME_START_URL, payload, 'POST', `正在生成 ${genre} 故事...`, "AI初始故事生成");
-
-            // *** MODIFICATION START ***
+            
+            // *** 後端互動預期 ***
+            // serverResponse.game_data 應包含:
+            // title, initialScenario, solution (完整真相)
+            // qi_clue_text, cheng_clue_text, zhuan_clue_text, he_clue_text
+            // hints (通用提示), hostingStyle
             if (serverResponse && serverResponse.success && serverResponse.game_id && serverResponse.game_data) {
                 CURRENT_STORY_DATA = {
                     gameId: serverResponse.game_id,
                     title: serverResponse.game_data.title || "未知標題",
                     initialScenario: serverResponse.game_data.initialScenario || "謎題描述缺失。",
-                    solution: null, // Solution is not sent at the start
+                    solution: serverResponse.game_data.solution || "真相未提供。", 
                     hints: serverResponse.game_data.hints || [],
                     sessionHintPool: [...new Set([...(serverResponse.game_data.hints || []), ...DEFAULT_HINTS])].sort(() => 0.5 - Math.random()),
                     hostingStyle: serverResponse.game_data.hostingStyle || "標準",
-                    storySummary: "根據目前線索，故事大概是這樣的...", // Initial summary
+                    storySummary: "根據目前線索，故事大概是這樣的...",
                     playerTitle: "偵探新手",
-                    is_cheated: false
+                    is_cheated: false,
+                    qi: { text: serverResponse.game_data.qi_clue_text || "起之線索未定義", revealed: false, id_prefix: "qi" },
+                    cheng: { text: serverResponse.game_data.cheng_clue_text || "承之線索未定義", revealed: false, id_prefix: "cheng" },
+                    zhuan: { text: serverResponse.game_data.zhuan_clue_text || "轉之線索未定義", revealed: false, id_prefix: "zhuan" },
+                    he: { text: serverResponse.game_data.he_clue_text || "合之線索未定義", revealed: false, id_prefix: "he" }
                 };
-            // *** MODIFICATION END ***
-                hintsRemaining = Math.min(3, CURRENT_STORY_DATA.sessionHintPool.length);
+                hintsRemaining = Math.min(MAX_HINTS, CURRENT_STORY_DATA.sessionHintPool.length);
+                if(rulesHintsCountEl) rulesHintsCountEl.textContent = MAX_HINTS;
 
 
                 if(storyIntroTitleEl) storyIntroTitleEl.textContent = `故事序幕：${CURRENT_STORY_DATA.title}`;
                 if(storyIntroScenarioEl) storyIntroScenarioEl.innerHTML = highlightKeywordsInScenario(CURRENT_STORY_DATA.initialScenario);
+                updateQCTHDisplay(); // 更新起承轉合的初始顯示
                 if(genreModalEl) toggleModal(genreModalEl, false);
                 setTimeout(() => { if(storyIntroModalEl) toggleModal(storyIntroModalEl, true); }, 300);
             } else {
@@ -815,20 +904,23 @@
             totalCharCount = 0;
             
             CURRENT_STORY_DATA.sessionHintPool = [...new Set([...(CURRENT_STORY_DATA.hints || []), ...DEFAULT_HINTS])].sort(() => 0.5 - Math.random());
-            hintsRemaining = Math.min(3, CURRENT_STORY_DATA.sessionHintPool.length);
+            hintsRemaining = Math.min(MAX_HINTS, CURRENT_STORY_DATA.sessionHintPool.length);
+            
+            // 重置起承轉合狀態
+            ['qi', 'cheng', 'zhuan', 'he'].forEach(key => {
+                if(CURRENT_STORY_DATA[key]) CURRENT_STORY_DATA[key].revealed = false;
+            });
 
-            revealedStoryParts.clear();
             gameEnded = false;
             gameWon = false;
             isGameStarted = true;
             CURRENT_STORY_DATA.storySummary = "遊戲剛開始，還沒有太多線索...";
             CURRENT_STORY_DATA.is_cheated = false;
 
-
             updateTurnCounterDisplay();
-            updateHintButtonDisplay();
-            updateStoryDisplayPreview();
-            updateFullStoryModalDisplay();
+            updateNewHintButtonDisplay(); // 更新新的提示按鈕
+            updateStoryDisplayPreview(); // 包含起承轉合預覽
+            updateQCTHDisplay(); // 更新 Modal 內的起承轉合詳細
             if(dialogueHistoryEl) dialogueHistoryEl.innerHTML = '';
 
             if(gameContainerEl) gameContainerEl.style.display = 'flex';
@@ -837,13 +929,13 @@
 
             addDialogue("npc", `你好，${playerNickname}！這次的海龜湯謎題是「${CURRENT_STORY_DATA.title}」。`, "dialogue-highlight");
             addDialogue("npc", highlightKeywordsInScenario(CURRENT_STORY_DATA.initialScenario));
-            addDialogue("npc", `挑戰成功條件：完整拼湊出故事原貌！`, "dialogue-highlight");
+            addDialogue("npc", `挑戰成功條件：揭露故事的「起」、「承」、「轉」、「合」四個關鍵線索！`, "dialogue-highlight");
             addDialogue("npc", `主持人風格：${CURRENT_STORY_DATA.hostingStyle}`);
-            addDialogue("npc", `請開始問是非題吧！`);
+            addDialogue("npc", `你可以開始問是非題了。`);
             
-            setTimeout(() => { addDialogue("npc", "例如：「死者是男性嗎？」或「事件發生在白天嗎？」"); }, 700);
+            setTimeout(() => { addDialogue("npc", "例如：「現場還有其他人嗎？」或「事件發生在白天嗎？」"); }, 700);
             if(playerInputEl) { playerInputEl.disabled = false; playerInputEl.value = ''; playerInputEl.focus(); }
-            if(hintButtonEl) hintButtonEl.disabled = false;
+            if(newHintButtonEl) newHintButtonEl.disabled = false; 
         }
 
         async function applyHaiguitangCheatCode(gameId, cheatCode) {
@@ -857,11 +949,22 @@
             if (result && result.success) {
                 addDialogue("npc", `神秘代碼 '${cheatCode}' 已成功啟用！<br>${result.message || '真相即將揭曉！'}`);
                 if (result.full_solution) {
-                    CURRENT_STORY_DATA.solution = result.full_solution;
+                    CURRENT_STORY_DATA.solution = result.full_solution; 
                     addDialogue("npc", `完整真相是：<br>${CURRENT_STORY_DATA.solution.replace(/\n/g, '<br>')}`);
                 }
+                // 作弊也算勝利，並揭露所有QCTH線索
+                ['qi', 'cheng', 'zhuan', 'he'].forEach(key => {
+                    if(CURRENT_STORY_DATA[key]) {
+                        CURRENT_STORY_DATA[key].revealed = true;
+                        // 如果後端沒有提供QCTH的文本，這裡可能需要從 full_solution 中提取或設為通用文本
+                        if(!CURRENT_STORY_DATA[key].text && CURRENT_STORY_DATA.solution) {
+                             CURRENT_STORY_DATA[key].text = `(${key.toUpperCase()}) 線索已透過密碼揭露。`;
+                        }
+                    }
+                });
+                updateQCTHDisplay();
                 const playerTitle = result.is_cheated ? "作弊大師" : (result.player_title || "海龜湯高手");
-                endGame(result.player_won !== undefined ? result.player_won : true, playerTitle, true, result.rounds_played); // Mark as cheated
+                endGame(true, playerTitle, true, result.rounds_played);
             } else {
                 showToast(result && result.error ? result.error : "作弊碼處理失敗或無效。", "error");
             }
@@ -871,7 +974,7 @@
             if (gameEnded || !questionText.trim()) return;
 
             const trimmedQuestion = questionText.trim();
-            if (trimmedQuestion === "88888888") {
+            if (trimmedQuestion === "88888888") { 
                 if (CURRENT_STORY_DATA.gameId) {
                     await applyHaiguitangCheatCode(CURRENT_STORY_DATA.gameId, "88888888");
                     if(playerInputEl) playerInputEl.value = '';
@@ -898,6 +1001,9 @@
 
             const guessUrl = HAIGUITANG_GAME_GUESS_URL_TEMPLATE.replace('{gameId}', CURRENT_STORY_DATA.gameId);
             const payload = { question: trimmedQuestion };
+            // *** 後端互動預期 ***
+            // serverResponse.new_clue_discovered 可能包含新揭露的QCTH線索文本
+            // 或者更好的是 serverResponse.revealed_qcth_clue = { type: "qi", text: "..." }
             const serverResponse = await makeApiCall(guessUrl, payload, 'POST', "AI 思考中...", "AI即時回應");
             showLoadingInChat(false);
 
@@ -909,36 +1015,54 @@
                 }
                 addDialogue("npc", npcResponseToDisplay);
 
-                if (serverResponse.new_clue_discovered && serverResponse.new_clue_discovered.trim() !== "") {
-                    revealedStoryParts.add(serverResponse.new_clue_discovered);
-                    showToast("新線索已揭露！");
+                if (serverResponse.new_clue_discovered && typeof serverResponse.new_clue_discovered === 'string') {
+                    const discoveredClueText = serverResponse.new_clue_discovered.trim();
+                    let qcthKeyRevealed = null;
+
+                    // 嘗試匹配是哪個QCTH線索被揭露
+                    for (const key of ['qi', 'cheng', 'zhuan', 'he']) {
+                        if (CURRENT_STORY_DATA[key] && !CURRENT_STORY_DATA[key].revealed && 
+                            CURRENT_STORY_DATA[key].text && discoveredClueText.includes(CURRENT_STORY_DATA[key].text.substring(0,10))) { // 簡易匹配，後端最好直接告知類型
+                            CURRENT_STORY_DATA[key].revealed = true;
+                            CURRENT_STORY_DATA[key].text = discoveredClueText; // 更新為AI回傳的完整線索文本
+                            qcthKeyRevealed = key;
+                            break;
+                        } else if (CURRENT_STORY_DATA[key] && !CURRENT_STORY_DATA[key].revealed && serverResponse.revealed_clue_type === key) {
+                            // 如果後端直接告知類型
+                            CURRENT_STORY_DATA[key].revealed = true;
+                            CURRENT_STORY_DATA[key].text = discoveredClueText;
+                            qcthKeyRevealed = key;
+                            break;
+                        }
+                    }
+
+                    if (qcthKeyRevealed) {
+                        const qcthNames = {qi: "【起】", cheng: "【承】", zhuan: "【轉】", he: "【合】"};
+                        showToast(`新線索 ${qcthNames[qcthKeyRevealed]} 已揭露！`);
+                        addDialogue("npc", `你發現了 ${qcthNames[qcthKeyRevealed]} 的線索：<br>${CURRENT_STORY_DATA[qcthKeyRevealed].text.replace(/\n/g, '<br>')}`, "dialogue-highlight");
+                        updateQCTHDisplay();
+                        checkWinCondition(); 
+                    } else {
+                        // 如果 new_clue_discovered 不是QCTH線索，但仍是有效線索
+                        // 這裡可以選擇是否將其加入一個通用的 revealedStoryParts 數組 (如果保留該機制)
+                        // 目前設計是主要依賴QCTH
+                        console.log("揭露的線索非主要的起承轉合線索，或無法匹配:", discoveredClueText);
+                    }
                 }
                 
                 if (serverResponse.story_summary) {
                     CURRENT_STORY_DATA.storySummary = serverResponse.story_summary;
                 } else {
-                    CURRENT_STORY_DATA.storySummary = revealedStoryParts.size > 0 ? "根據已知線索：" + Array.from(revealedStoryParts).join("； ") : "遊戲進行中，繼續探索...";
+                    // 更新AI拼湊的故事的邏輯可以保留，或者如果QCTH是唯一進度，則此處可簡化
+                    let revealedQCTHCount = ['qi', 'cheng', 'zhuan', 'he'].filter(k => CURRENT_STORY_DATA[k].revealed).length;
+                    CURRENT_STORY_DATA.storySummary = `已揭露 ${revealedQCTHCount}/4 個關鍵線索。AI 正在整理目前的遊戲進展...`;
                 }
 
-                updateStoryDisplayPreview();
-                updateFullStoryModalDisplay();
-
-                if (serverResponse.game_won === true) { // AI 判斷遊戲勝利
-                    // 後端 make_guess 在 AI 判斷勝利時，應該要回傳 full_solution 和 player_title
-                    // 目前的 haiguitang_game_manager.py 的 make_guess 在 AI 判斷勝利時未回傳這些
-                    // 這部分可能需要後端配合修改，或前端在此處再次請求解答 (但目前沒有這樣的端點)
-                    CURRENT_STORY_DATA.solution = serverResponse.full_solution || CURRENT_STORY_DATA.solution || "AI確認勝利，但解答未提供";
-                    const playerTitle = serverResponse.player_title || "海龜湯達人";
-                    endGame(true, playerTitle, false, serverResponse.rounds_played);
-                    return;
-                }
+                updateStoryDisplayPreview(); // 更新包含QCTH預覽的頂部
+                updateQCTHDisplay(); // 更新彈窗內的QCTH詳情
 
             } else {
                 addDialogue("npc", (serverResponse && serverResponse.error) || "抱歉，我現在有點混亂，請稍後再試一次。 (回應格式錯誤)");
-            }
-
-            if (trimmedQuestion.toLowerCase().includes("答案是：") || trimmedQuestion.toLowerCase().includes("真相是：")) {
-                 showToast("偵測到解答嘗試！若要正式提交解答，請使用專門的解答按鈕（未來功能）。");
             }
             if(playerInputEl) { playerInputEl.value = ''; playerInputEl.focus(); }
         }
@@ -961,95 +1085,136 @@
             }
         }
 
+        // handleSolutionAttempt 函數已移除
+
         async function endGame(isWin, playerTitleFromAI = "海龜湯高手", isCheated = false, roundsFromServer = null) {
             gameEnded = true;
             gameWon = isWin;
             if(playerInputEl) playerInputEl.disabled = true;
-            if(hintButtonEl) hintButtonEl.disabled = true;
+            if(newHintButtonEl) newHintButtonEl.disabled = true;
 
             const finalTurns = roundsFromServer !== null ? roundsFromServer : turnCount;
             CURRENT_STORY_DATA.is_cheated = isCheated;
 
-            // 嘗試從後端獲取最終解答，如果前端還沒有的話
-            // 注意：attempt_to_solve 端點是 POST，用於玩家主動解答。
-            // 如果遊戲是 AI 判斷結束的，理想情況是 make_guess 回應就包含解答。
-            // 這裡的邏輯是，如果解答還未知，就嘗試調用 /solve (假設它是 GET 且能回傳解答)
-            // 但目前 /solve 是 POST。這部分邏輯可能需要調整或後端支持。
             if (!CURRENT_STORY_DATA.solution && CURRENT_STORY_DATA.gameId) {
-                // 暫時註解掉這個 GET /solve 的呼叫，因為它與後端不符
-                // const solveUrl = HAIGUITANG_GAME_SOLVE_URL_TEMPLATE.replace('{gameId}', CURRENT_STORY_DATA.gameId);
-                // const solutionResponse = await makeApiCall(solveUrl, { solution_attempt: "系統請求解答" }, 'POST', "正在獲取最終答案...");
-                // if (solutionResponse && solutionResponse.success && solutionResponse.full_solution) {
-                //    CURRENT_STORY_DATA.solution = solutionResponse.full_solution;
-                // } else {
-                //    console.error("無法從後端獲取最終解答。");
-                //    CURRENT_STORY_DATA.solution = CURRENT_STORY_DATA.solution || "解答未成功獲取。";
-                // }
-                // 假設如果 AI 判斷勝利，solution 應該已經在 CURRENT_STORY_DATA 中了
-                // 如果沒有，則顯示一個通用訊息
-                 if (!CURRENT_STORY_DATA.solution) {
-                    CURRENT_STORY_DATA.solution = "謎底未能在遊戲結束時正確獲取。";
-                 }
+                console.warn("遊戲結束時，CURRENT_STORY_DATA.solution 未被設定。");
+                CURRENT_STORY_DATA.solution = "謎底未能正確獲取，請檢查後端。";
             }
 
-
             if (isWin) {
+                if(gameOverTrophyEl) gameOverTrophyEl.textContent = isCheated ? "🤫" : "🏆";
                 if(gameOverTitleEl) {
-                    gameOverTitleEl.textContent = isCheated ? "🤫 作弊成功! 🤫" : "🎉 恭喜過關！ 🎉";
+                    gameOverTitleEl.textContent = isCheated ? "作弊成功!" : "🎉 恭喜！成功揭露所有線索！ 🎉";
                     gameOverTitleEl.className = `font-bold text-2xl ${isCheated ? 'text-yellow-400' : 'text-green-400'}`;
                 }
                 if(playerTitleDisplayEl) playerTitleDisplayEl.textContent = `稱號：${playerTitleFromAI}`;
+                if(gameOverSolutionRevealEl) gameOverSolutionRevealEl.style.display = 'block'; 
+                if(finalSolutionTextEl) finalSolutionTextEl.innerHTML = (CURRENT_STORY_DATA.solution).replace(/\n/g, '<br>');
+
                 if (!isCheated) {
                     await saveToLeaderboard(playerNickname, finalTurns, CURRENT_STORY_DATA.solution ? CURRENT_STORY_DATA.solution.length : 0, playerTitleFromAI);
                 }
-            } else {
-                if(gameOverTitleEl) { gameOverTitleEl.textContent = "🤔 遊戲結束 🤔"; gameOverTitleEl.className = "font-bold text-2xl text-yellow-400"; }
-                if(playerTitleDisplayEl) playerTitleDisplayEl.textContent = "稱號：再接再厲的偵探";
-                if (CURRENT_STORY_DATA.solution) {
-                    addDialogue("npc", `遊戲結束。正確答案是：<br>${CURRENT_STORY_DATA.solution.replace(/\n/g, '<br>')}`);
-                } else {
-                    addDialogue("npc", "遊戲結束，但未能獲取到最終答案。");
+            } else { 
+                // 目前的設計下，除非有其他失敗條件（如回合限制），否則主要透過勝利結束
+                // 如果需要明確的失敗彈窗（非勝利），這裡可以調整
+                if(gameOverTrophyEl) gameOverTrophyEl.textContent = "🤔"; 
+                if(gameOverTitleEl) {
+                    gameOverTitleEl.textContent = "遊戲結束"; // 通用結束語
+                    gameOverTitleEl.className = "font-bold text-2xl text-yellow-400";
                 }
+                if(playerTitleDisplayEl) playerTitleDisplayEl.textContent = "稱號：再接再厲的偵探";
+                if(gameOverSolutionRevealEl) gameOverSolutionRevealEl.style.display = 'block';
+                if(finalSolutionTextEl) finalSolutionTextEl.innerHTML = (CURRENT_STORY_DATA.solution).replace(/\n/g, '<br>');
+                addDialogue("npc", `遊戲結束。正確答案是：<br>${(CURRENT_STORY_DATA.solution).replace(/\n/g, '<br>')}`);
             }
             if(statNicknameEl) statNicknameEl.textContent = playerNickname;
             if(statTurnsEl) statTurnsEl.textContent = finalTurns;
             if(statCharCountEl) statCharCountEl.textContent = totalCharCount;
 
-            if(storyTextPreviewEl && CURRENT_STORY_DATA.solution) {
-                 storyTextPreviewEl.innerHTML = `<span class="font-bold" style="color: ${isWin ? (isCheated ? 'var(--accent-yellow)' : 'var(--accent-green)') : 'var(--accent-red)'};">${isWin ? (isCheated ? '【真相已現 (密)】' : '【真相大白】') : '【謎底揭曉】'}</span><br>${CURRENT_STORY_DATA.solution.substring(0, 50)}...`;
-            } else if (storyTextPreviewEl) {
-                storyTextPreviewEl.innerHTML = "遊戲已結束。";
-            }
-            updateFullStoryModalDisplay();
+            updateStoryDisplayPreview(); 
+            updateQCTHDisplay(); 
             if(gameOverModalEl) toggleModal(gameOverModalEl, true);
         }
 
+        // 更新頂部預覽區的起承轉合狀態 和 Modal 內的詳細線索文本
+        function updateQCTHDisplay() {
+            const qcthMap = {
+                qi: { previewEl: qiPreviewStatusEl, detailEl: qiClueTextEl, name: "起" },
+                cheng: { previewEl: chengPreviewStatusEl, detailEl: chengClueTextEl, name: "承" },
+                zhuan: { previewEl: zhuanPreviewStatusEl, detailEl: zhuanClueTextEl, name: "轉" },
+                he: { previewEl: hePreviewStatusEl, detailEl: heClueTextEl, name: "合" }
+            };
+
+            let revealedCount = 0;
+            for (const key of ['qi', 'cheng', 'zhuan', 'he']) {
+                const clueData = CURRENT_STORY_DATA[key];
+                const mapEntry = qcthMap[key];
+                if (clueData && mapEntry.previewEl && mapEntry.detailEl) {
+                    if (clueData.revealed) {
+                        revealedCount++;
+                        mapEntry.previewEl.textContent = `✅ ${clueData.text ? clueData.text.substring(0, 5)+'...' : '已揭露'}`;
+                        mapEntry.previewEl.className = 'qcth-preview-revealed';
+                        mapEntry.detailEl.textContent = clueData.text || "線索內容缺失";
+                        mapEntry.detailEl.className = 'text-gray-100 mt-1 revealed';
+                    } else {
+                        mapEntry.previewEl.textContent = '未揭露';
+                        mapEntry.previewEl.className = 'qcth-preview-pending';
+                        mapEntry.detailEl.textContent = '尚未揭露';
+                        mapEntry.detailEl.className = 'text-gray-400 mt-1 pending';
+                    }
+                }
+            }
+            // 更新頂部故事預覽的主要文本 (AI拼湊的故事)
+            if (storyTextPreviewEl) {
+                if (!isGameStarted) {
+                     storyTextPreviewEl.innerHTML = "選擇類型以開始...";
+                } else if (gameEnded && gameWon) {
+                    storyTextPreviewEl.innerHTML = `<span class="font-bold text-green-400">【真相大白】</span> 點擊查看完整故事。`;
+                } else if (gameEnded && !gameWon) {
+                     storyTextPreviewEl.innerHTML = `<span class="font-bold text-red-400">【謎底揭曉】</span> 點擊查看完整故事。`;
+                } else {
+                    storyTextPreviewEl.innerHTML = CURRENT_STORY_DATA.storySummary.substring(0,60) + "...";
+                }
+            }
+        }
+        
+        function checkWinCondition() {
+            if (CURRENT_STORY_DATA.qi.revealed &&
+                CURRENT_STORY_DATA.cheng.revealed &&
+                CURRENT_STORY_DATA.zhuan.revealed &&
+                CURRENT_STORY_DATA.he.revealed) {
+                if (!gameEnded) { // 確保只觸發一次
+                    addDialogue("npc", "恭喜你！你已成功拼湊出所有「起承轉合」的關鍵線索，真相即將揭曉！", "dialogue-highlight");
+                    endGame(true, CURRENT_STORY_DATA.playerTitle || "海龜湯大偵探", false, turnCount);
+                }
+            }
+        }
+
+
         function updateStoryDisplayPreview() {
+            // 此函數現在主要由 updateQCTHDisplay 控制頂部預覽
+            // 但保留AI拼湊的故事預覽
             if (!isGameStarted) {
                 if(storyTextPreviewEl) storyTextPreviewEl.innerHTML = "選擇類型以開始...";
                 return;
             }
-            if (CURRENT_STORY_DATA.storySummary && CURRENT_STORY_DATA.storySummary !== "AI 正在整理思緒...") {
-                 if(storyTextPreviewEl) storyTextPreviewEl.innerHTML = CURRENT_STORY_DATA.storySummary.substring(0, 60) + (CURRENT_STORY_DATA.storySummary.length > 60 ? "..." : "");
-            } else if (revealedStoryParts.size > 0) {
-                let previewText = "目前線索：" + Array.from(revealedStoryParts).slice(0, 2).join("；") + (revealedStoryParts.size > 2 ? "..." : "");
-                if(storyTextPreviewEl) storyTextPreviewEl.innerHTML = previewText.substring(0, 60) + (previewText.length > 60 ? "..." : "");
-            } else {
-                if(storyTextPreviewEl) storyTextPreviewEl.innerHTML = "尚無線索，請開始提問！";
+            if (CURRENT_STORY_DATA.storySummary && CURRENT_STORY_DATA.storySummary !== "AI 正在整理思緒..." && !gameEnded) {
+                 if(storyTextPreviewEl && !storyTextPreviewEl.innerHTML.includes("【真相大白】") && !storyTextPreviewEl.innerHTML.includes("【謎底揭曉】")) { // 避免覆蓋遊戲結束訊息
+                    storyTextPreviewEl.innerHTML = CURRENT_STORY_DATA.storySummary.substring(0, 60) + (CURRENT_STORY_DATA.storySummary.length > 60 ? "..." : "");
+                 }
+            } else if (!gameEnded) {
+                 if(storyTextPreviewEl) storyTextPreviewEl.innerHTML = "尚無線索，請開始提問！";
             }
+            updateQCTHDisplay(); // 確保QCTH預覽也更新
         }
 
         function updateFullStoryModalDisplay() {
-             if (!isGameStarted && !gameEnded) {
-                if(fullStoryTextEl) fullStoryTextEl.innerHTML = `<p class="text-gray-400">遊戲尚未開始或故事未生成。</p>`;
+            updateQCTHDisplay(); // 更新起承轉合詳細內容
+            
+            // 更新AI拼湊的故事
+            if (!isGameStarted && !gameEnded) {
                 if(currentStorySummaryEl) currentStorySummaryEl.textContent = "AI 尚未整理思緒...";
                 return;
-            }
-
-            if (revealedStoryParts.size > 0) {
-                if(fullStoryTextEl) fullStoryTextEl.innerHTML = Array.from(revealedStoryParts).map(clue => `<p class="py-1 border-b border-gray-700 last:border-b-0">${clue.replace(/\n/g, '<br>')}</p>`).join('');
-            } else {
-                if(fullStoryTextEl) fullStoryTextEl.innerHTML = `<p class="text-gray-400">目前尚無揭露的線索。</p>`;
             }
             
             if (gameEnded && CURRENT_STORY_DATA.solution) {
@@ -1065,7 +1230,13 @@
         }
 
         function updateTurnCounterDisplay() { if(turnCountEl) turnCountEl.textContent = turnCount; }
-        function updateHintButtonDisplay() { if(hintsRemainingEl) hintsRemainingEl.textContent = hintsRemaining; if(hintButtonEl) hintButtonEl.disabled = hintsRemaining <= 0 || gameEnded; }
+        
+        // 更新新的提示按鈕的顯示
+        function updateNewHintButtonDisplay() { 
+            if(hintsRemainingEl) hintsRemainingEl.textContent = hintsRemaining;
+            if(newHintButtonEl) newHintButtonEl.disabled = hintsRemaining <= 0 || gameEnded; 
+        }
+
 
         function addDialogue(speaker, text, specialClass = null) {
             const bubble = document.createElement('div');
@@ -1087,16 +1258,15 @@
         function showToast(message, type = 'success') {
             if(toastMessageEl) {
                 toastMessageEl.textContent = message;
-                toastMessageEl.className = 'toast show'; // Base classes
+                toastMessageEl.className = 'toast show';
                 if (type === 'error') {
                     toastMessageEl.classList.add('error');
                 } else if (type === 'info') {
                     toastMessageEl.classList.add('info');
-                } else { // success or default
-                    toastMessageEl.style.backgroundColor = 'var(--toast-yellow-bg)'; // Default success style
+                } else {
+                    toastMessageEl.style.backgroundColor = 'var(--toast-yellow-bg)';
                     toastMessageEl.style.color = 'var(--toast-yellow-text)';
                 }
-                // Clear inline styles if class handles it, or set specific ones if 'info' needs them
                 if (type === 'error' || type === 'info') {
                      toastMessageEl.style.backgroundColor = '';
                      toastMessageEl.style.color = '';
@@ -1130,9 +1300,7 @@
                     tips[currentTipIndex].style.opacity = '0';
                     tips[currentTipIndex].style.transform = 'translateY(5px)';
                 }
-
                 currentTipIndex = (currentTipIndex + 1) % tips.length;
-
                 setTimeout(() => {
                     for(let i = 0; i < tips.length; i++) {
                          if(i !== currentTipIndex && tips[i]) {
@@ -1145,7 +1313,6 @@
                         tips[currentTipIndex].style.transform = 'translateY(0)';
                     }
                 }, 500);
-
             }, 4000);
         }
 
@@ -1182,7 +1349,6 @@
                 const bgColor = Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
                 const textColor = 'FFFFFF';
                 const textForImage = encodeURIComponent(genre.substring(0,2));
-                // 使用 placehold.co 生成佔位圖
                 item.style.backgroundImage = `url('https://placehold.co/100x100/${bgColor}/${textColor}?text=${textForImage}&font=roboto')`;
                 item.style.backgroundSize = 'cover';
                 item.style.backgroundPosition = 'center';
@@ -1231,7 +1397,7 @@
                     if(leaderboardEmptyMessageEl) leaderboardEmptyMessageEl.style.display = 'block';
                 } else {
                     if(leaderboardTableEl) leaderboardTableEl.style.display = 'table';
-                    entries.slice(0,10)
+                    entries.slice(0,10) 
                                  .forEach(entry => {
                         const row = leaderboardTableBodyEl.insertRow();
                         row.insertCell().outerHTML = `<td data-label="玩家暱稱：">${entry.nickname || 'N/A'}</td>`;
@@ -1266,7 +1432,7 @@
         });
         if(storyAreaClickableEl) storyAreaClickableEl.addEventListener('click', () => {
             if (isGameStarted || gameEnded) {
-                updateFullStoryModalDisplay();
+                updateFullStoryModalDisplay(); // 這會調用 updateQCTHDisplay
                 if(storyProgressModalEl) toggleModal(storyProgressModalEl, true);
             } else {
                 showToast("遊戲尚未開始，請先選擇類型。", "error");
@@ -1291,7 +1457,15 @@
             if(gameContainerEl) gameContainerEl.style.display = 'none';
             if(genreModalEl) toggleModal(genreModalEl, true);
             populateGenreGrid();
-            CURRENT_STORY_DATA = { gameId: null, title: "尚未生成", initialScenario: "請先選擇一個故事類型。", solution: null, hints: [], sessionHintPool: [], hostingStyle: "標準", storySummary: "AI 正在整理思緒...", playerTitle: "偵探新手", is_cheated: false };
+            CURRENT_STORY_DATA = { 
+                gameId: null, title: "尚未生成", initialScenario: "請先選擇一個故事類型。", solution: null, 
+                hints: [], sessionHintPool: [], hostingStyle: "標準", storySummary: "AI 正在整理思緒...", 
+                playerTitle: "偵探新手", is_cheated: false,
+                qi: { text: null, revealed: false, id_prefix: "qi" },
+                cheng: { text: null, revealed: false, id_prefix: "cheng" },
+                zhuan: { text: null, revealed: false, id_prefix: "zhuan" },
+                he: { text: null, revealed: false, id_prefix: "he" }
+            };
             isGameStarted = false;
             gameEnded = false;
             updateNicknameDisplay();
@@ -1310,28 +1484,28 @@
         });
         if(closeNicknameModalBtn) closeNicknameModalBtn.addEventListener('click', () => {
             toggleModal(nicknameModalEl, false);
-            if (!initialNicknameSet) {
+            if (!initialNicknameSet) { 
                 toggleModal(genreModalEl, true);
             }
         });
 
         if(playerInputForm) playerInputForm.addEventListener('submit', (e) => { e.preventDefault(); const question = playerInputEl.value; handlePlayerQuestion(question); });
         
-        if(hintButtonEl) hintButtonEl.addEventListener('click', () => {
+        // 新的提示按鈕事件監聽
+        if(newHintButtonEl) newHintButtonEl.addEventListener('click', () => {
             if (hintsRemaining > 0 && !gameEnded && CURRENT_STORY_DATA.gameId) {
-                let hintToGive = "沒有更多獨特的提示了，試試這個吧！"; // Fallback message
+                let hintToGive = "沒有更多獨特的提示了，試試這個吧！";
                 
                 if (CURRENT_STORY_DATA.sessionHintPool && CURRENT_STORY_DATA.sessionHintPool.length > 0) {
-                    hintToGive = CURRENT_STORY_DATA.sessionHintPool.pop(); // Get a unique hint
+                    hintToGive = CURRENT_STORY_DATA.sessionHintPool.pop();
                 } else {
-                     // If unique pool is exhausted, provide a random default hint
                     hintToGive = DEFAULT_HINTS[Math.floor(Math.random() * DEFAULT_HINTS.length)];
                     showToast("所有專屬提示已用完，提供一個通用提示。", "info");
                 }
                 
                 addDialogue("npc", `提示：${hintToGive}`);
                 hintsRemaining--;
-                updateHintButtonDisplay();
+                updateNewHintButtonDisplay(); // 更新新提示按鈕的顯示
                 showToast("提示已使用！");
             } else if (!CURRENT_STORY_DATA.gameId) {
                 showToast("遊戲尚未開始，無法獲取提示。", "error");
@@ -1340,14 +1514,17 @@
             }
         });
 
+        // 移除解答 Modal 相關的事件監聽器
+
         // Initial Setup
         updateNicknameDisplay();
         populateGenreGrid();
-        if (genreModalEl) toggleModal(genreModalEl, false);
-        if (nicknameModalEl) {
+        if (genreModalEl) toggleModal(genreModalEl, false); 
+        if (nicknameModalEl) { 
             toggleModal(nicknameModalEl, true);
             if(saveNicknameBtn) saveNicknameBtn.textContent = "開始遊戲";
         }
+        if(rulesHintsCountEl) rulesHintsCountEl.textContent = MAX_HINTS; // 更新規則中的提示次數
     </script>
 </body>
 </html>
