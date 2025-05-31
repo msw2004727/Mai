@@ -969,7 +969,7 @@
             console.log("當前選擇的劇本類型已儲存:", CURRENT_STORY_DATA.selected_genre);
 
             const payload = { genre: genre, nickname: playerNickname };
-            const serverResponse = await makeApiCall(HAIGUITANG_GAME_START_URL, payload, 'POST', `正在生成 ${genre} 故事...`, "AI初始故事生成");
+            const serverResponse = await makeApiCall(HAIGUITANG_GAME_START_URL, payload, 'POST', `主持人正在生成 ${genre} 故事...`, "AI初始故事生成");
 
             if (serverResponse && serverResponse.success && serverResponse.game_id && serverResponse.game_data) {
                 console.log("從後端收到的完整 game_data:", JSON.parse(JSON.stringify(serverResponse.game_data)));
