@@ -276,30 +276,24 @@
           text-align: center;
           margin-top: 10px;
           line-height: 1.5;
-          height: 2.8em;
-          overflow:hidden;
-          position:relative;
+          height: 2.8em; /* 確保容器高度足以容納一行文字 */
+          overflow:hidden; /* 隱藏超出容器的內容 */
+          position:relative; /* 為內部 span 的絕對定位提供基準 */
           width: 100%;
         }
+        /* 修改後的提示語 CSS */
         #loading-modal-tips span {
-            position:absolute;
+            position:absolute; /* 讓所有提示疊加在一起，由 JS 控制哪個顯示 */
             width:100%;
             left:0;
             text-align:center;
-            opacity:0;
-            animation-name: tip-fade-individual;
-            animation-duration: 4s;
-            animation-iteration-count: infinite;
-            transform: translateY(5px);
+            opacity:0; /* 預設隱藏 */
+            transform: translateY(5px); /* 初始位置，用於動畫效果 */
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out; /* 平滑過渡效果 */
+            /* 移除原有的 animation 相關屬性，因為 JS 會控制顯示 */
         }
-        #loading-modal-tips span:nth-child(1) { animation-delay: 0s; }
-        #loading-modal-tips span:nth-child(2) { animation-delay: 4s; }
-        #loading-modal-tips span:nth-child(3) { animation-delay: 8s; }
+        /* 移除原有的 nth-child 延遲動畫規則 */
 
-        @keyframes tip-fade-individual {
-            0%, 100% { opacity: 0; transform: translateY(5px); }
-            25%, 75% { opacity: 1; transform: translateY(0); }
-        }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
         #game-over-modal .modal-content { text-align: center; }
@@ -357,7 +351,7 @@
             max-width: 90vw;
             width: auto;
             min-width: 360px;
-            overflow-x: auto; /* MODIFIED: Added horizontal scroll for leaderboard content */
+            overflow-x: auto; 
         }
         @media (min-width: 768px) {
             #leaderboard-modal .modal-content {
@@ -374,7 +368,7 @@
         }
 
         #leaderboard-table {
-            width: 100%; /* Can be 100% or auto depending on desired behavior with overflow */
+            width: 100%; 
             border-collapse: collapse;
             font-size: 0.875rem;
             color: var(--leaderboard-text-body);
@@ -387,7 +381,7 @@
             text-align: left;
             border-bottom: 1px solid var(--leaderboard-border-color);
             vertical-align: middle;
-            white-space: nowrap; /* MODIFIED: Applied to all th and td */
+            white-space: nowrap; 
         }
 
         #leaderboard-table thead th {
@@ -395,32 +389,19 @@
             color: var(--leaderboard-text-header);
             font-weight: 600;
             font-size: 0.9rem;
-            /* white-space: nowrap; REMOVED: Covered by general th,td rule */
         }
 
-        /* MODIFIED: Removed specific width percentages to allow adaptive width */
         #leaderboard-table th:nth-child(1),
-        #leaderboard-table td:nth-child(1) { text-align: center; } /* 排名 */
-
-        /* 暱稱 - no specific width */
-        /* #leaderboard-table th:nth-child(2), #leaderboard-table td:nth-child(2) {} */
-
-        /* 劇本 - no specific width, removed overflow and text-ellipsis */
-        /* #leaderboard-table th:nth-child(3), #leaderboard-table td:nth-child(3) {} */
+        #leaderboard-table td:nth-child(1) { text-align: center; } 
 
         #leaderboard-table th:nth-child(4),
-        #leaderboard-table td:nth-child(4) { text-align: center; } /* 回合 */
+        #leaderboard-table td:nth-child(4) { text-align: center; } 
 
         #leaderboard-table th:nth-child(5),
-        #leaderboard-table td:nth-child(5) { text-align: center; } /* 解答字數 */
-
-        /* 稱號 - no specific width */
-        /* #leaderboard-table th:nth-child(6), #leaderboard-table td:nth-child(6) {} */
+        #leaderboard-table td:nth-child(5) { text-align: center; } 
 
         #leaderboard-table th:nth-child(7),
-        #leaderboard-table td:nth-child(7) { /* 完成時間 */
-            /* width: 15%; REMOVED */
-            /* white-space: nowrap; REMOVED: Covered by general th,td rule */
+        #leaderboard-table td:nth-child(7) { 
             font-size: 0.8rem;
             color: var(--text-light-secondary);
             text-align: right;
@@ -844,11 +825,13 @@
         let gameWon = false;
         let isGameStarted = false;
         let initialNicknameSet = false;
-        let currentTipIndex = 0;
-        let tipInterval;
+        
+        let currentTipIndex = 0; 
+        let tipInterval;       
+        let shuffledTipsArray = []; 
+
 
         // --- Utility Functions ---
-        // isValidBackendHint 函數移至全域範圍
         function isValidBackendHint(hintText) {
             if (typeof hintText === 'string' && hintText.trim() !== '') {
                 const backendPlaceholders = ["努力生成中", "提示暫缺", "獲取失敗"];
@@ -982,11 +965,9 @@
                 };
                 console.log("收到的 QCTH 專屬提示 (原始):", CURRENT_STORY_DATA.qcth_specific_hints_received);
 
-                // --- 修改點：建立優先使用 AI QCTH 提示的邏輯 ---
                 CURRENT_STORY_DATA.qcthSpecificHintPool = [];
                 CURRENT_STORY_DATA.usedQCTHHints = { qi: false, cheng: false, zhuan: false, he: false };
 
-                // isValidBackendHint 函數已移至全域
                 if (isValidBackendHint(CURRENT_STORY_DATA.qcth_specific_hints_received.qi)) {
                     CURRENT_STORY_DATA.qcthSpecificHintPool.push({type: 'qi', text: CURRENT_STORY_DATA.qcth_specific_hints_received.qi});
                 }
@@ -1244,7 +1225,7 @@
             }
 
             if (isWin) {
-                if(gameOverTrophyEl) gameOverTrophyEl.textContent = isCheated ? "🤫" : "🏆";
+                if(gameOverTrophyEl) gameOverTrophyEl.textContent = isCheated ? "🤫" : "�";
                 if(gameOverTitleEl) {
                     gameOverTitleEl.textContent = victoryMessageFromServer || (isCheated ? "作弊成功!" : "🎉 恭喜！成功揭露所有線索！ 🎉");
                     gameOverTitleEl.className = `font-bold text-2xl ${isCheated ? 'text-yellow-400' : 'text-green-400'}`;
@@ -1403,64 +1384,91 @@
             }
         }
 
+        // --- 修改後的提示語輪播函數 ---
         function startTipCarousel() {
             const tipsContainer = document.getElementById('loading-modal-tips');
-            if (!tipsContainer) return;
-            const tips = tipsContainer.getElementsByTagName('span');
-            if (tips.length === 0) return;
-            currentTipIndex = 0;
-            for(let i = 0; i < tips.length; i++) {
-                tips[i].style.opacity = '0';
-                tips[i].style.animationName = 'none';
+            if (!tipsContainer) {
+                console.error("找不到提示語容器 'loading-modal-tips'");
+                return;
             }
-            if (tips[currentTipIndex]) {
-                tips[currentTipIndex].style.opacity = '1';
-                tips[currentTipIndex].style.transform = 'translateY(0)';
+            const originalTips = Array.from(tipsContainer.getElementsByTagName('span')); // 立即轉換為陣列
+            if (originalTips.length === 0) {
+                console.warn("在 'loading-modal-tips' 中沒有找到任何提示語 (span 元素)。");
+                return;
             }
 
+            // 1. 打亂提示語元素的順序
+            shuffledTipsArray = [...originalTips]; // 創建一個新的已打亂順序的陣列副本
+            for (let i = shuffledTipsArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffledTipsArray[i], shuffledTipsArray[j]] = [shuffledTipsArray[j], shuffledTipsArray[i]];
+            }
+
+            // 2. 初始化：隱藏所有提示
+            shuffledTipsArray.forEach(tip => {
+                if (tip) {
+                    tip.style.opacity = '0';
+                    tip.style.transform = 'translateY(5px)'; // 與 CSS 中的初始隱藏狀態一致
+                }
+            });
+
+            currentTipIndex = 0; // 重置當前提示索引
+            if (shuffledTipsArray.length > 0 && shuffledTipsArray[currentTipIndex]) {
+                // 立即顯示第一個（打亂後的）提示
+                shuffledTipsArray[currentTipIndex].style.opacity = '1';
+                shuffledTipsArray[currentTipIndex].style.transform = 'translateY(0)';
+            }
+
+            // 3. 清除可能存在的舊計時器並啟動新的輪播計時器
             clearInterval(tipInterval);
             tipInterval = setInterval(() => {
-                if (tips[currentTipIndex]) {
-                    tips[currentTipIndex].style.opacity = '0';
-                    tips[currentTipIndex].style.transform = 'translateY(5px)';
+                if (shuffledTipsArray.length === 0) return; 
+
+                // 隱藏當前的提示
+                if (shuffledTipsArray[currentTipIndex]) {
+                    shuffledTipsArray[currentTipIndex].style.opacity = '0';
+                    shuffledTipsArray[currentTipIndex].style.transform = 'translateY(5px)';
                 }
-                currentTipIndex = (currentTipIndex + 1) % tips.length;
+
+                // 更新到下一個提示的索引
+                currentTipIndex = (currentTipIndex + 1) % shuffledTipsArray.length;
+
+                // 短暫延遲後顯示下一個提示，確保隱藏動畫有時間完成
                 setTimeout(() => {
-                    for(let i = 0; i < tips.length; i++) {
-                         if(i !== currentTipIndex && tips[i]) {
-                            tips[i].style.opacity = '0';
-                            tips[i].style.transform = 'translateY(5px)';
-                         }
+                    if (shuffledTipsArray[currentTipIndex]) {
+                        shuffledTipsArray[currentTipIndex].style.opacity = '1';
+                        shuffledTipsArray[currentTipIndex].style.transform = 'translateY(0)';
                     }
-                    if (tips[currentTipIndex]) {
-                        tips[currentTipIndex].style.opacity = '1';
-                        tips[currentTipIndex].style.transform = 'translateY(0)';
-                    }
-                }, 500);
-            }, 4000);
+                }, 500); // 500ms 延遲，應與 CSS transition 時長匹配或稍長
+
+            }, 4000); // 每 4000ms (4秒) 切換一次提示
         }
 
         function stopTipCarousel() {
             clearInterval(tipInterval);
-            const tipsContainer = document.getElementById('loading-modal-tips');
-            if (!tipsContainer) return;
-            const tips = tipsContainer.getElementsByTagName('span');
-            for(let i = 0; i < tips.length; i++) {
-                if (tips[i]) {
-                    tips[i].style.opacity = '0';
-                    tips[i].style.animationName = 'tip-fade-individual';
+            // 當停止時，確保所有提示都設定為隱藏狀態
+            // shuffledTipsArray 可能在 startTipCarousel 執行後才被賦值
+            const tipsToReset = (shuffledTipsArray && shuffledTipsArray.length > 0) 
+                                ? shuffledTipsArray 
+                                : Array.from(document.getElementById('loading-modal-tips')?.getElementsByTagName('span') || []);
+            
+            tipsToReset.forEach(tip => {
+                if (tip) {
+                    tip.style.opacity = '0';
+                    tip.style.transform = 'translateY(5px)';
                 }
-            }
+            });
         }
+        // --- 結束修改 ---
 
         function showLoadingModal(show, message = "AI 正在熬製湯底，請稍候...") {
             if (show) {
                 if(loadingTextEl) loadingTextEl.textContent = message;
                 if(loadingModalEl) toggleModal(loadingModalEl, true);
-                startTipCarousel();
+                startTipCarousel(); // 確保調用
             } else {
                 if(loadingModalEl) toggleModal(loadingModalEl, false);
-                stopTipCarousel();
+                stopTipCarousel(); // 確保調用
             }
         }
 
@@ -1651,20 +1659,17 @@
 
         if(playerInputForm) playerInputForm.addEventListener('submit', (e) => { e.preventDefault(); const question = playerInputEl.value; handlePlayerQuestion(question); });
 
-        // --- 修改點：更新提示按鈕邏輯 ---
         if(newHintButtonEl) newHintButtonEl.addEventListener('click', () => {
             if (hintsRemaining > 0 && !gameEnded && CURRENT_STORY_DATA.gameId) {
                 let hintToGive = null;
 
-                // 1. 優先嘗試提供與當前未揭露的 QCTH 線索相關的專屬提示
                 const qcthOrder = ['qi', 'cheng', 'zhuan', 'he'];
                 for (const qKey of qcthOrder) {
-                    // 檢查 QCTH 線索本身是否存在、是否未揭露、是否有對應的專屬提示、該專屬提示是否尚未使用，以及該提示是否有效
                     if (CURRENT_STORY_DATA[qKey] && !CURRENT_STORY_DATA[qKey].revealed &&
                         CURRENT_STORY_DATA.qcth_specific_hints_received &&
                         CURRENT_STORY_DATA.qcth_specific_hints_received[qKey] &&
                         !CURRENT_STORY_DATA.usedQCTHHints[qKey] &&
-                        isValidBackendHint(CURRENT_STORY_DATA.qcth_specific_hints_received[qKey])  // 使用移至全域的 isValidBackendHint
+                        isValidBackendHint(CURRENT_STORY_DATA.qcth_specific_hints_received[qKey]) 
                        ) {
                         hintToGive = CURRENT_STORY_DATA.qcth_specific_hints_received[qKey];
                         CURRENT_STORY_DATA.usedQCTHHints[qKey] = true;
@@ -1673,7 +1678,6 @@
                     }
                 }
 
-                // 2. 如果沒有可用的、未使用的 QCTH 專屬提示，則從 sessionHintPool (備用通用提示池) 中取
                 if (!hintToGive) {
                     if (CURRENT_STORY_DATA.sessionHintPool && CURRENT_STORY_DATA.sessionHintPool.length > 0) {
                         hintToGive = CURRENT_STORY_DATA.sessionHintPool.pop();
