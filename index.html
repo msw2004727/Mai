@@ -1527,6 +1527,8 @@
             if(leaderboardErrorMessageEl) leaderboardErrorMessageEl.style.display = 'none';
             if(leaderboardModalEl) toggleModal(leaderboardModalEl, true);
 
+            const desiredLimit = 50; 
+            
             const leaderboardData = await makeApiCall(LEADERBOARD_URL, null, 'GET', null, "載入排行榜");
 
             if(leaderboardLoadingEl) leaderboardLoadingEl.style.display = 'none';
