@@ -1521,15 +1521,18 @@
 
         async function showLeaderboard() {
             if(leaderboardLoadingEl) leaderboardLoadingEl.style.display = 'block';
-            if(leaderboardTableEl) leaderboardTableEl.style.display = 'none';
-            if(leaderboardTableBodyEl) leaderboardTableBodyEl.innerHTML = '';
+            if(leaderboardTableEl) leaderboardTableEl.style.display = 'none'; 
+            if(leaderboardTableBodyEl) leaderboardTableBodyEl.innerHTML = ''; 
             if(leaderboardEmptyMessageEl) leaderboardEmptyMessageEl.style.display = 'none';
             if(leaderboardErrorMessageEl) leaderboardErrorMessageEl.style.display = 'none';
             if(leaderboardModalEl) toggleModal(leaderboardModalEl, true);
 
-            const desiredLimit = 50; 
+            const desiredLimit = 50; // <--- 您可以修改這裡的數字，例如 20, 30, 50 等
+
+            // 修改 API URL 以包含 limit 參數
+            const leaderboardUrlWithLimit = `${LEADERBOARD_URL}?limit=${desiredLimit}`;
             
-            const leaderboardData = await makeApiCall(LEADERBOARD_URL, null, 'GET', null, "載入排行榜");
+            const leaderboardData = await makeApiCall(leaderboardUrlWithLimit, null, 'GET', null, "載入排行榜");
 
             if(leaderboardLoadingEl) leaderboardLoadingEl.style.display = 'none';
 
@@ -1538,29 +1541,31 @@
                 if (entries.length === 0) {
                     if(leaderboardEmptyMessageEl) leaderboardEmptyMessageEl.style.display = 'block';
                 } else {
-                    if(leaderboardTableEl) leaderboardTableEl.style.display = 'table';
-                    entries.slice(0,50)
-                                 .forEach((entry, index) => {
+                    if(leaderboardTableEl) leaderboardTableEl.style.display = 'table'; 
+                    
+                    // 移除或修改 .slice(0,10) 以顯示所有獲取的條目 (最多 desiredLimit 條)
+                    // entries.slice(0,10)  <--- 移除或註解掉這部分
+                    entries.forEach((entry, index) => { // 直接遍歷 API 返回的 entries
                         const row = leaderboardTableBodyEl.insertRow();
-
+                        
                         const rankCell = row.insertCell();
                         rankCell.textContent = index + 1;
-
+                        
                         const nicknameCell = row.insertCell();
                         nicknameCell.textContent = entry.nickname || 'N/A';
-
+                        
                         const storyCell = row.insertCell();
-                        storyCell.textContent = entry.genre || '未知類型';
-
+                        storyCell.textContent = entry.genre || '未知類型'; 
+                        
                         const roundsCell = row.insertCell();
                         roundsCell.textContent = entry.rounds !== undefined ? entry.rounds : 'N/A';
-
+                        
                         const lengthCell = row.insertCell();
                         lengthCell.textContent = entry.story_solution_length !== undefined ? entry.story_solution_length : 'N/A';
-
+                        
                         const titleCell = row.insertCell();
                         titleCell.textContent = entry.title_earned || 'N/A';
-
+                        
                         const timeCell = row.insertCell();
                         try {
                             timeCell.textContent = entry.timestamp ? new Date(entry.timestamp).toLocaleString('zh-TW', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }) : 'N/A';
