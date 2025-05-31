@@ -479,7 +479,7 @@
             <div class="grid grid-cols-2">
                 <div id="npc-area">
                     <img id="npc-image" src="https://github.com/msw2004727/Mai/blob/main/NPC.png?raw=true" alt="NPC 圖片" onerror="this.onerror=null; this.src='https://placehold.co/200x100/374151/f3f4f6?text=NPC圖片遺失';">
-                    <div id="npc-name-banner">海龜湯 主持人</div>
+                    <div id="npc-name-banner">NPC 主持人</div>
                 </div>
                 <div id="story-area-clickable" class="rounded-lg overflow-y-auto">
                     <h3 class="header-text-sm font-semibold text-blue-400 mb-1">故事進展 (點擊)：</h3>
@@ -533,7 +533,7 @@
             <p id="story-intro-scenario" class="leading-relaxed my-2"></p>
             <div class="challenge-conditions">
                 <h4 class="font-semibold">挑戰成功條件：</h4>
-                <p>透過提問，逐步揭露故事的「起」、「承」、「轉」、「合」四個關鍵線索！如果直接猜到最終的「合」則直接獲勝！</p>
+                <p>透過提問，逐步揭露故事的「起」、「承」、「轉」、「合」四個關鍵線索！</p>
             </div>
             <div class="game-rules">
                 <h4 class="font-semibold">遊戲規則：</h4>
@@ -541,7 +541,7 @@
                     <li>謎題：NPC提供不完整故事。</li>
                     <li>目標：透過是非題逐步揭露故事的四大關鍵線索。</li>
                     <li>提問：針對人、事、時、地、物。</li>
-                    <li>勝利：當關鍵線索揭露時，遊戲勝利。</li>
+                    <li>勝利：當四個關鍵線索全部揭露時，遊戲勝利。</li>
                     <li>求助：善用提示按鈕獲取線索 (共<span id="rules-hints-count">3</span>次)。</li>
                 </ul>
             </div>
@@ -664,7 +664,7 @@
             </button>
             <h2 class="text-lg font-semibold mb-2 text-center">請輸入您的暱稱開始遊戲</h2>
             <input type="text" id="nickname-input" placeholder="請輸入暱稱 (最多10個字)" maxlength="10">
-            <img id="loading-ad-placeholder" src="https://github.com/msw2004727/Mai/blob/main/0002.jpg.png?raw=true" alt="載入中" width="300" height="60">
+            <img id="loading-ad-placeholder" src="https://github.com/msw2004727/Mai/blob/main/0002.jpg.png?raw=true" alt="載入中" width="300" height="50">
             <button id="save-nickname-btn" class="btn w-full mt-3">遊戲開始</button>
         </div>
     </div>
@@ -683,7 +683,7 @@
         const STORY_GENRES = ["懸疑推理", "奇幻冒險", "科幻謎團", "輕鬆搞笑", "都市傳說", "古代奇案", "恐怖驚悚", "日常溫馨", "荒誕不經"];
         let CURRENT_STORY_DATA = {
             gameId: null,
-            selected_genre: null, // <--- 新增：用於儲存玩家選擇的類型
+            selected_genre: null, // <--- 儲存玩家選擇的類型
             title: "尚未生成",
             initialScenario: "請先選擇一個故事類型。",
             solution: null, 
@@ -698,33 +698,40 @@
             he: { text: null, revealed: false, id_prefix: "he" },
             qcth_specific_hints_received: { qi: null, cheng: null, zhuan: null, he: null } 
         };
-        const DEFAULT_HINTS = [ "沒有提示😅", "答案快接近了😒", "用量子力學的角度思考🫡", "再提示就太明顯了😜", "想像一下故事場景的佈局😏" ];
+        const DEFAULT_HINTS = [ 
+            "嗯...這個問題嘛，可能跟真相有點距離喔，試試從別的角度想想？",
+            "這個方向似乎不太對，換個思路如何？",
+            "這個問題可能不是關鍵，再想想有沒有其他線索？",
+            "這個嘛...我得說，你的想法很有創意，但可能不是我們現在要找的那個點喔。",
+            "嗯哼，偵探先生/小姐，您的思路真是天馬行空！不過，我們是不是先聚焦在謎題本身呢？",
+            "這個問題有點意思，但似乎把我們帶到一條風景不錯的小岔路上了。",
+            "我欣賞你的探索精神！但這個方向...可能離湯底還有點距離呢。",
+            "嗯...你確定這個問題能幫我們解開眼前的謎團嗎？要不要再琢磨琢磨？",
+            "這個提問讓我想到了另一件有趣的事...不過，跟我們的謎題好像關係不大喔。",
+            "哎呀，這個問題像是一陣風，吹得我有點暈頭轉向，不如我們先穩住陣腳？",
+            "唔...這個嘛，我需要一點時間消化一下你的問題，它似乎和我們目前掌握的線索不太一樣。",
+            "你的觀察力很敏銳，不過這個點可能不是解開謎底的鑰匙孔喔。",
+            "這個問題很有深度，但我們是不是先從淺顯一點的地方入手，一步步來？",
+            "嗯...關於這點，我目前沒有太多訊息可以提供，或許換個問題會有新發現？",
+            "你問到了一個相當...嗯...偏僻的角落呢！我們的主線劇情好像不在那裡喔。",
+            "這個方向的探索很有趣，但會不會讓我們離真相越來越遠呢？",
+            "我得提醒你，偵探，有時候太過複雜的思考反而會讓我們忽略最簡單的答案。",
+            "關於這個問題，我的資料庫顯示『查無此關聯』，要不要試試其他的關鍵字？"
+        ];
         let playerNickname = "匿名玩家";
         const MAX_HINTS = 3; 
 
-        const OFF_TRACK_RESPONSES = [
+        const OFF_TRACK_RESPONSES = [ // 這組是給前端隨機替換AI固定句式用的
             "嗯...這個問題嘛，可能跟真相有點距離喔，試試從別的角度想想？",
             "這個方向似乎不太對，換個思路如何？",
-            "這個問題可能不是關鍵，再想想有沒有其他線索？"
-            "這個嘛...我得說，你的想法很有創意，但可能不是我們現在要找的那個點喔。"
-            "嗯哼，偵探先生/小姐，您的思路真是天馬行空！不過，我們是不是先聚焦在謎題本身呢？"
-            "這個問題有點意思，但似乎把我們帶到一條風景不錯的小岔路上了。"
-            "我欣賞你的探索精神！但這個方向...可能離湯底還有點距離呢。"
-            "嗯...你確定這個問題能幫我們解開眼前的謎團嗎？要不要再琢磨琢磨？"
-            "這個提問讓我想到了另一件有趣的事...不過，跟我們的謎題好像關係不大喔。"
-            "哎呀，這個問題像是一陣風，吹得我有點暈頭轉向，不如我們先穩住陣腳？"
-            "唔...這個嘛，我需要一點時間消化一下你的問題，它似乎和我們目前掌握的線索不太一樣。"
-            "你的觀察力很敏銳，不過這個點可能不是解開謎底的鑰匙孔喔。"
-            "這個問題很有深度，但我們是不是先從淺顯一點的地方入手，一步步來？"
-            "嗯...關於這點，我目前沒有太多訊息可以提供，或許換個問題會有新發現？"
-            "你問到了一個相當...嗯...偏僻的角落呢！我們的主線劇情好像不在那裡喔。"
-            "這個方向的探索很有趣，但會不會讓我們離真相越來越遠呢？"
-            "我得提醒你，偵探，有時候太過複雜的思考反而會讓我們忽略最簡單的答案。"
-            "關於這個問題，我的資料庫顯示『查無此關聯』，要不要試試其他的關鍵字？"
+            "這個問題可能不是關鍵，再想想有沒有其他線索？",
+            "或許可以思考一下人物的動機？",
+            "時間點在這件案子裡重要嗎？",
+            "地點的選擇有沒有什麼特殊意義？"
         ];
-        const GENERIC_OFF_TRACK_PHRASE = OFF_TRACK_RESPONSES[0];
+        const GENERIC_OFF_TRACK_PHRASE = OFF_TRACK_RESPONSES[0]; // 這是用來比對 AI 是否回了特定樣板句
 
-        // DOM Elements
+        // DOM Elements (保持不變)
         const gameContainerEl = document.getElementById('game-container');
         const storyAreaClickableEl = document.getElementById('story-area-clickable');
         const storyTextPreviewEl = document.getElementById('story-text-preview');
@@ -799,7 +806,7 @@
         let currentTipIndex = 0;
         let tipInterval;
 
-        // --- Utility Functions ---
+        // --- Utility Functions (保持不變) ---
         function toggleModal(modalElement, show) {
             if (modalElement) {
                 if (show) {
@@ -908,11 +915,11 @@
             isGameStarted = false;
             if(closeStoryIntroModalBtn) closeStoryIntroModalBtn.style.display = 'none';
             if(startGameFromIntroBtn) startGameFromIntroBtn.style.display = 'block';
-            CURRENT_STORY_DATA.selected_genre = genre; // 儲存選擇的類型
+            CURRENT_STORY_DATA.selected_genre = genre; // <--- 修改點：儲存選擇的類型
             console.log("當前選擇的劇本類型已儲存:", CURRENT_STORY_DATA.selected_genre);
 
             const payload = { genre: genre, nickname: playerNickname };
-            const serverResponse = await makeApiCall(HAIGUITANG_GAME_START_URL, payload, 'POST', `主持人正在準備 ${genre} 故事...`, "AI初始故事生成");
+            const serverResponse = await makeApiCall(HAIGUITANG_GAME_START_URL, payload, 'POST', `正在生成 ${genre} 故事...`, "AI初始故事生成");
             
             if (serverResponse && serverResponse.success && serverResponse.game_id && serverResponse.game_data) {
                 console.log("從後端收到的完整 game_data:", JSON.parse(JSON.stringify(serverResponse.game_data)));
@@ -1038,7 +1045,7 @@
                     result.player_title || "作弊大師", 
                     result.is_cheated || true, 
                     result.rounds_played !== undefined ? result.rounds_played : turnCount,
-                    result.message || "作弊成功！真相已揭曉！",
+                    result.message || "作弊成功！真相已揭曉！", // 使用後端作弊訊息
                     result.full_solution || CURRENT_STORY_DATA.solution 
                 );
             } else {
@@ -1093,33 +1100,27 @@
                 }
                 addDialogue("npc", npcResponseToDisplay);
 
-                // 更新 QCTH 狀態 (由後端決定)
                 if (serverResponse.qcth_clues_status) {
-                    let newClueTextToShow = null; // 用於暫存本次揭露的線索文本
+                    let newClueTextToShow = null; 
                     let newClueTypeToShow = null;
 
                     for (const key in serverResponse.qcth_clues_status) {
                         if (CURRENT_STORY_DATA[key] && CURRENT_STORY_DATA[key].revealed !== serverResponse.qcth_clues_status[key]) {
                             CURRENT_STORY_DATA[key].revealed = serverResponse.qcth_clues_status[key];
-                            if (CURRENT_STORY_DATA[key].revealed) { // 如果這個 key 的狀態變為 revealed
+                            if (CURRENT_STORY_DATA[key].revealed) { 
                                 if (serverResponse.revealed_clue_type === key && serverResponse.new_clue_discovered) {
-                                    CURRENT_STORY_DATA[key].text = serverResponse.new_clue_discovered; // 更新線索文本
+                                    CURRENT_STORY_DATA[key].text = serverResponse.new_clue_discovered; 
                                     newClueTextToShow = serverResponse.new_clue_discovered;
                                     newClueTypeToShow = key;
                                 } else if (key === "he" && serverResponse.player_won && serverResponse.game_over) { 
-                                    // 特殊處理：如果後端回報直接猜中結局(he)，但AI回應的revealed_clue_type不是he
-                                    // 則使用本地儲存的he_clue_text (假設已從 initial_story 獲取)
                                     newClueTextToShow = CURRENT_STORY_DATA.he.text;
                                     newClueTypeToShow = "he";
                                 }
                             }
                         }
                     }
-                    // 在循環外統一處理新揭露線索的提示和對話
                     if (newClueTextToShow && newClueTypeToShow) {
                         const qcthNames = {qi: "【起】", cheng: "【承】", zhuan: "【轉】", he: "【合】"};
-                        // 只有當不是因為直接猜中結局勝利時，才用常規的「你發現了...」訊息
-                        // 如果是直接猜中結局，npcResponseToDisplay 應該已經包含了祝賀
                         if (!(newClueTypeToShow === "he" && serverResponse.player_won && serverResponse.game_over && serverResponse.victory_message && serverResponse.victory_message.includes("直接猜中"))) {
                             showToast(`新線索 ${qcthNames[newClueTypeToShow]} 已揭露！`);
                             addDialogue("npc", `你發現了 ${qcthNames[newClueTypeToShow]} 的線索：<br>${newClueTextToShow.replace(/\n/g, '<br>')}`, "dialogue-highlight");
@@ -1136,11 +1137,12 @@
                 }
                 updateStoryDisplayPreview(); 
                 
+                // *** 修改點：遊戲結束判斷完全依賴後端 ***
                 if (serverResponse.game_over) {
-                    if (!gameEnded) { 
+                    if (!gameEnded) { // 確保 endGame 只被調用一次
                         endGame(
                             serverResponse.player_won,
-                            serverResponse.player_title_if_won || (serverResponse.player_won ? "海龜湯達人" : "再接再厲"), 
+                            serverResponse.player_title_if_won, // 後端已處理好稱號
                             serverResponse.is_cheated || false, 
                             serverResponse.rounds_played,
                             serverResponse.victory_message, 
@@ -1148,6 +1150,7 @@
                         );
                     }
                 }
+                // *** 移除前端的 checkWinCondition() 調用 endGame 的部分 ***
 
             } else {
                 addDialogue("npc", (serverResponse && serverResponse.error) || "抱歉，我現在有點混亂，請稍後再試一次。 (回應格式錯誤)");
@@ -1172,7 +1175,8 @@
                 }
             }
         }
-
+        
+        // *** 修改點：更新 endGame 函數參數 ***
         async function endGame(isWin, playerTitleFromAI, isCheated, roundsFromServer, victoryMessageFromServer, solutionFromServer) {
             if (gameEnded) return; 
             gameEnded = true;
@@ -1191,7 +1195,6 @@
             if (isWin) {
                 if(gameOverTrophyEl) gameOverTrophyEl.textContent = isCheated ? "🤫" : "🏆";
                 if(gameOverTitleEl) {
-                    // 優先使用後端傳來的勝利訊息
                     gameOverTitleEl.textContent = victoryMessageFromServer || (isCheated ? "作弊成功!" : "🎉 恭喜！成功揭露所有線索！ 🎉");
                     gameOverTitleEl.className = `font-bold text-2xl ${isCheated ? 'text-yellow-400' : 'text-green-400'}`;
                 }
@@ -1260,14 +1263,15 @@
             }
         }
         
-        // checkWinCondition 函數不再直接調用 endGame
+        // *** 修改點：checkWinCondition 不再調用 endGame ***
         function checkWinCondition() {
             const allRevealed = CURRENT_STORY_DATA.qi.revealed &&
                                 CURRENT_STORY_DATA.cheng.revealed &&
                                 CURRENT_STORY_DATA.zhuan.revealed &&
                                 CURRENT_STORY_DATA.he.revealed;
             if (allRevealed && !gameEnded) { 
-                console.log("前端偵測到所有QCTH線索已揭露 (遊戲結束應由後端確認)。");
+                // 遊戲結束和勝利判斷主要由後端處理，此處僅作日誌記錄或未來可能的純UI響應
+                console.log("前端偵測到所有QCTH線索已揭露 (遊戲結束狀態應由後端確認)。");
             }
             return allRevealed;
         }
@@ -1446,7 +1450,7 @@
                 rounds: turns, 
                 story_solution_length: storySolutionLength, 
                 title_earned: title,
-                genre: CURRENT_STORY_DATA.selected_genre || "未知類型" 
+                genre: CURRENT_STORY_DATA.selected_genre || "未知類型" // <--- 已加入劇本類型
             };
             console.log("準備儲存到排行榜的資料:", payload); 
             const result = await makeApiCall(LEADERBOARD_ADD_URL, payload, 'POST', "儲存成績中...", "儲存排行榜");
@@ -1486,7 +1490,7 @@
                         nicknameCell.textContent = entry.nickname || 'N/A';
                         
                         const storyCell = row.insertCell();
-                        storyCell.textContent = entry.genre || '未知類型'; // 使用 entry.genre
+                        storyCell.textContent = entry.genre || '未知類型'; // <--- 修改：使用 entry.genre
                         
                         const roundsCell = row.insertCell();
                         roundsCell.textContent = entry.rounds !== undefined ? entry.rounds : 'N/A';
