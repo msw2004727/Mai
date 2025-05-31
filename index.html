@@ -17,24 +17,23 @@
             --accent-green: #22c55e;
             --accent-yellow: #f59e0b;
             --accent-gold: #ffd700;
-            --accent-purple: #8b5cf6;
+            --accent-purple: #8b5cf6; 
             --toast-yellow-bg: #fffbeb;
             --toast-yellow-text: #92400e;
             --bubble-hint-bg: #f0fdf4;
             --bubble-hint-text: #14532d;
             --bubble-hint-border: #a7f3d0;
-            --challenge-bg: #2c3a4b;
-            --dialogue-info-bg: #2c3a4b;
+            --challenge-bg: #2c3a4b; 
+            --dialogue-info-bg: #2c3a4b; 
             --clue-revealed-text: var(--accent-green);
             --clue-pending-text: var(--text-light-secondary);
-            /* Leaderboard colors (from previous version, kept for consistency) */
-            --leaderboard-bg: #263243;
-            --leaderboard-header-bg: #313E50;
-            --leaderboard-row-bg: var(--bg-dark);
-            --leaderboard-row-hover-bg: #2a3442;
+            /* New variables for leaderboard styling */
+            --leaderboard-bg: var(--bg-dark-secondary);
             --leaderboard-text-header: var(--accent-gold);
             --leaderboard-text-body: var(--text-light);
             --leaderboard-border-color: var(--bg-dark-tertiary);
+            --leaderboard-header-bg: #2c3a4b; /* Slightly different from modal content bg */
+            --leaderboard-row-hover-bg: var(--bg-dark-tertiary);
         }
         html, body {
             height: 100%;
@@ -121,6 +120,7 @@
         .button-group button { font-size: 0.8rem; padding: 4px 6px; }
         .button-group { display: flex; align-items: center; gap: 6px; }
 
+        /* 起承轉合預覽區樣式 */
         #qcth-preview { font-size: 0.75rem; line-height: 1.3; }
         #qcth-preview > div > span { font-weight: 500; }
         .qcth-preview-revealed { color: var(--clue-revealed-text) !important; }
@@ -154,12 +154,13 @@
             line-height: 1.5;
             flex-shrink: 0;
         }
-        #new-hint-button {
+        /* 新的提示按鈕樣式 (原解答按鈕位置) */
+        #new-hint-button { 
             background-color: var(--accent-yellow);
             color: var(--bg-dark);
         }
         #new-hint-button:hover {
-            background-color: #facc15;
+            background-color: #facc15; 
         }
 
 
@@ -176,6 +177,7 @@
             border-left: 4px solid var(--accent-yellow);
             padding-left: 10px;
         }
+        /* 移除了 .player-solution-attempt 樣式，因為不再有專門的解答泡泡 */
 
 
         .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
@@ -207,6 +209,7 @@
         #story-intro-modal ul li { margin-bottom: 0.2rem; }
         #story-intro-modal .btn { margin-top: 1.2rem; }
 
+        /* 故事進展 Modal 樣式調整 */
         #story-progress-modal h2 { font-size: 1.2rem; margin-bottom: 0.6rem;}
         #qcth-details-container .qcth-item { margin-bottom: 0.75rem; padding: 0.75rem; border-radius: 6px; background-color: rgba(75, 85, 99, 0.3); border-left: 3px solid var(--accent-blue); }
         #qcth-details-container .qcth-item h4 { font-size: 1rem; font-weight: 600; color: var(--accent-yellow); margin-bottom: 0.25rem; }
@@ -217,7 +220,7 @@
         #story-progress-modal #current-story-summary-container { margin-top: 1rem; padding-top: 1rem; border-top: 1px dashed var(--bg-dark-tertiary); }
         #story-progress-modal #current-story-summary { font-style: italic; font-size:0.9rem; color: var(--text-light-secondary); max-height: 150px; overflow-y: auto;}
 
-        /* Loading Modal Styles - Reverted to Spinner and Ad Placeholder */
+
         #loading-modal .modal-content {
             display: flex;
             flex-direction: column;
@@ -225,28 +228,29 @@
             justify-content: center;
             text-align: center;
             padding: 25px;
-            background-color: var(--bg-dark); /* Ensure dark background */
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Restore shadow */
+            background: transparent;
+            box-shadow: none;
+            height: auto;
         }
-        .loading-spinner { /* Re-add spinner styles */
+        .loading-spinner {
             border: 5px solid var(--bg-dark-tertiary);
             border-top: 5px solid var(--accent-blue);
             border-radius: 50%;
             width: 60px;
             height: 60px;
             animation: spin 1s linear infinite;
-            margin-bottom: 20px; /* Space below spinner */
+            margin-bottom: 20px;
         }
-        #loading-text { /* Ensure this ID is used for the loading text p tag */
+        #loading-text {
           font-size: 1.2rem;
           color: var(--text-light);
           font-weight: 600;
           margin-bottom: 15px;
           user-select: none;
         }
-        #loading-ad-placeholder { /* Style for ad placeholder */
-            width: 300px; /* Standard ad size */
-            height: 50px;  /* Standard ad size */
+        #loading-ad-placeholder {
+            width: 300px;
+            height: 50px;
             background-color: var(--bg-dark-tertiary);
             border: 1px dashed var(--text-light-secondary);
             border-radius: 6px;
@@ -255,12 +259,12 @@
             justify-content: center;
             color: var(--text-light-secondary);
             font-size: 0.8rem;
-            margin: 20px 0; /* Space around ad */
+            margin: 20px 0;
         }
-        #loading-modal-tips { /* Keep tips styling */
+        #loading-modal-tips {
           font-size: 0.9rem;
           color: var(--text-light);
-          background: rgba(0,0,0, 0.2); /* Subtle background for tips */
+          background: rgba(0,0,0, 0.2);
           border-radius: 8px;
           padding: 10px 15px;
           max-width: 90%;
@@ -273,98 +277,92 @@
           width: 100%;
         }
         #loading-modal-tips span {
-            position:absolute;
-            width:100%;
-            left:0;
-            text-align:center;
-            opacity:0;
-            animation-name: tip-fade-individual;
-            animation-duration: 4s;
-            animation-iteration-count: infinite;
-            transform: translateY(5px);
+            position:absolute; /* [cite: index.html] */
+            width:100%; /* [cite: index.html] */
+            left:0; /* [cite: index.html] */
+            text-align:center; /* [cite: index.html] */
+            opacity:0; /* [cite: index.html] */
+            animation-name: tip-fade-individual; /* [cite: index.html] */
+            animation-duration: 4s; /* [cite: index.html] */
+            animation-iteration-count: infinite; /* [cite: index.html] */
+            transform: translateY(5px); /* [cite: index.html] */
         }
-        #loading-modal-tips span:nth-child(1) { animation-delay: 0s; }
-        #loading-modal-tips span:nth-child(2) { animation-delay: 4s; }
-        #loading-modal-tips span:nth-child(3) { animation-delay: 8s; }
+        #loading-modal-tips span:nth-child(1) { animation-delay: 0s; } /* [cite: index.html] */
+        #loading-modal-tips span:nth-child(2) { animation-delay: 4s; } /* [cite: index.html] */
+        #loading-modal-tips span:nth-child(3) { animation-delay: 8s; } /* [cite: index.html] */
 
-        @keyframes tip-fade-individual {
-            0%, 100% { opacity: 0; transform: translateY(5px); }
-            25%, 75% { opacity: 1; transform: translateY(0); }
+        @keyframes tip-fade-individual { /* [cite: index.html] */
+            0%, 100% { opacity: 0; transform: translateY(5px); } /* [cite: index.html] */
+            25%, 75% { opacity: 1; transform: translateY(0); } /* [cite: index.html] */
         }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } } /* [cite: index.html] */
 
-
-        #game-over-modal .modal-content { text-align: center; }
-        #game-over-trophy {
-            font-size: 5rem;
-            margin-bottom: 1rem;
+        /* Game Over Modal Enhancements */
+        #game-over-modal .modal-content { text-align: center; } /* [cite: index.html] */
+        #game-over-trophy { /* New ID for the trophy image/icon */ /* [cite: index.html] */
+            font-size: 5rem; /* Large trophy icon */ /* [cite: index.html] */
+            color: var(--accent-gold); /* [cite: index.html] */
+            margin-bottom: 1rem; /* [cite: index.html] */
         }
-        #game-over-modal h2 { font-size: 1.8rem; margin-bottom: 0.5rem; }
-        #player-title-display { font-size: 1.3rem; color: var(--accent-yellow); margin-bottom: 1rem; font-weight: bold;}
+        #game-over-modal h2 { font-size: 1.8rem; margin-bottom: 0.5rem; } /* [cite: index.html] */
+        #player-title-display { font-size: 1.3rem; color: var(--accent-yellow); margin-bottom: 1rem; font-weight: bold;} /* [cite: index.html] */
         #game-over-solution-reveal {
-            font-size: 0.95rem;
-            color: var(--text-light-secondary);
-            margin-bottom: 1.5rem;
-            padding: 10px;
-            background-color: var(--bg-dark-secondary);
-            border-radius: 6px;
-            text-align: left;
-            max-height: 150px;
-            overflow-y: auto;
+            font-size: 0.95rem; /* [cite: index.html] */
+            color: var(--text-light-secondary); /* [cite: index.html] */
+            margin-bottom: 1.5rem; /* [cite: index.html] */
+            padding: 10px; /* [cite: index.html] */
+            background-color: var(--bg-dark-secondary); /* [cite: index.html] */
+            border-radius: 6px; /* [cite: index.html] */
+            text-align: left; /* [cite: index.html] */
+            max-height: 150px; /* [cite: index.html] */
+            overflow-y: auto; /* [cite: index.html] */
         }
-        #game-over-solution-reveal strong { color: var(--accent-yellow); }
+        #game-over-solution-reveal strong { color: var(--accent-yellow); } /* [cite: index.html] */
 
-        .stats-grid-gameover {
-            display: flex;
-            flex-direction: column;
-            gap: 0.8rem;
-            font-size: 1rem;
-            margin-bottom: 1.8rem;
-            width: 100%;
-            max-width: 300px;
-            margin-left: auto;
-            margin-right: auto;
+        .stats-grid-gameover { /* New class for styling game over stats */ /* [cite: index.html] */
+            display: flex; /* [cite: index.html] */
+            flex-direction: column; /* [cite: index.html] */
+            gap: 0.8rem; /* Space between stat items */ /* [cite: index.html] */
+            font-size: 1rem; /* Larger font for stats */ /* [cite: index.html] */
+            margin-bottom: 1.8rem; /* [cite: index.html] */
+            width: 100%; /* [cite: index.html] */
+            max-width: 300px; /* Limit width for better centering */ /* [cite: index.html] */
+            margin-left: auto; /* [cite: index.html] */
+            margin-right: auto; /* [cite: index.html] */
         }
         .stat-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 0.5rem 0.8rem;
-            background-color: var(--bg-dark-secondary);
-            border-radius: 6px;
+            display: flex; /* [cite: index.html] */
+            justify-content: space-between; /* Label on left, value on right */ /* [cite: index.html] */
+            padding: 0.5rem 0.8rem; /* [cite: index.html] */
+            background-color: var(--bg-dark-secondary); /* [cite: index.html] */
+            border-radius: 6px; /* [cite: index.html] */
         }
         .stat-label {
-            font-weight: 500;
-            color: var(--text-light-secondary);
+            font-weight: 500; /* [cite: index.html] */
+            color: var(--text-light-secondary); /* [cite: index.html] */
         }
         .stat-value {
-            font-weight: 600;
-            color: var(--text-light);
+            font-weight: 600; /* [cite: index.html] */
+            color: var(--text-light); /* [cite: index.html] */
         }
-        .game-over-buttons { display: flex; flex-direction: column; gap: 0.6rem; }
-
+        .game-over-buttons { display: flex; flex-direction: column; gap: 0.6rem; } /* [cite: index.html] */
 
         /* Leaderboard Modal New Styles */
         #leaderboard-modal .modal-content {
-            background-color: var(--leaderboard-bg);
-            max-width: 90vw;
+            background-color: var(--leaderboard-bg); 
+            max-width: 90vw; 
             width: auto;
-            min-width: 360px;
+            min-width: 360px; /* Adjusted min-width for better small screen fit */
         }
         @media (min-width: 768px) {
             #leaderboard-modal .modal-content {
-                max-width: 750px;
+                max-width: 750px; /* Adjusted for better content fit */
             }
         }
-         @media (min-width: 1024px) {
-            #leaderboard-modal .modal-content {
-                max-width: 800px;
-            }
-        }
-
 
         #leaderboard-modal h2 {
-            font-size: 1.75rem;
-            color: var(--leaderboard-text-header);
+            font-size: 1.6rem; 
+            color: var(--leaderboard-text-header); 
             text-align: center;
             margin-bottom: 1.5rem;
             text-shadow: 0 1px 3px rgba(0,0,0,0.5);
@@ -372,112 +370,111 @@
 
         #leaderboard-table {
             width: 100%;
-            border-collapse: collapse;
-            font-size: 0.875rem;
+            border-collapse: collapse; 
+            font-size: 0.875rem; 
             color: var(--leaderboard-text-body);
-            margin-top: 0;
-            table-layout: fixed;
+            margin-top: 0; 
         }
 
         #leaderboard-table th,
         #leaderboard-table td {
-            padding: 10px 8px;
+            padding: 12px 15px; /* Increased padding for better spacing */
             text-align: left;
             border-bottom: 1px solid var(--leaderboard-border-color);
-            word-wrap: break-word;
+            vertical-align: middle; /* Ensure vertical alignment */
         }
 
-        #leaderboard-table thead th {
-            background-color: var(--leaderboard-header-bg);
+        #leaderboard-table thead th { 
+            background-color: var(--leaderboard-header-bg); 
             color: var(--leaderboard-text-header);
-            font-weight: 600;
+            font-weight: 600; 
             font-size: 0.9rem;
-            white-space: nowrap;
-            position: sticky;
-            top: 0;
-            z-index: 1;
+            white-space: nowrap; 
         }
-        #leaderboard-table th:nth-child(1),
-        #leaderboard-table td:nth-child(1) { text-align: center; width: 8%; min-width: 40px; }
+        
+        /* Specific column alignments and widths for better readability */
+        #leaderboard-table th:nth-child(1), /* 排名 */
+        #leaderboard-table td:nth-child(1) { text-align: center; width: 8%; }
 
-        #leaderboard-table th:nth-child(2),
-        #leaderboard-table td:nth-child(2) { width: 18%; min-width: 100px; }
+        #leaderboard-table th:nth-child(2), /* 暱稱 */
+        #leaderboard-table td:nth-child(2) { width: 20%; } 
 
-        #leaderboard-table th:nth-child(3),
-        #leaderboard-table td:nth-child(3) { width: 20%; min-width: 120px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
+        #leaderboard-table th:nth-child(3), /* 劇本 */
+        #leaderboard-table td:nth-child(3) { width: 20%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-        #leaderboard-table th:nth-child(4),
-        #leaderboard-table td:nth-child(4) { text-align: center; width: 8%; min-width: 50px;}
+        #leaderboard-table th:nth-child(4), /* 回合 */
+        #leaderboard-table td:nth-child(4) { text-align: center; width: 10%;}
 
-        #leaderboard-table th:nth-child(5),
-        #leaderboard-table td:nth-child(5) { text-align: center; width: 12%; min-width: 70px;}
+        #leaderboard-table th:nth-child(5), /* 解答字數 */
+        #leaderboard-table td:nth-child(5) { text-align: center; width: 12%;}
 
-        #leaderboard-table th:nth-child(6),
-        #leaderboard-table td:nth-child(6) { width: 18%; min-width: 100px; }
+        #leaderboard-table th:nth-child(6), /* 稱號 */
+        #leaderboard-table td:nth-child(6) { width: 15%; }
 
-        #leaderboard-table th:nth-child(7),
-        #leaderboard-table td:nth-child(7) { width: 16%; min-width: 120px; font-size: 0.8rem; color: var(--text-light-secondary); white-space: nowrap;}
+        #leaderboard-table th:nth-child(7), /* 完成時間 */
+        #leaderboard-table td:nth-child(7) { width: 15%; white-space: nowrap; font-size: 0.8rem; color: var(--text-light-secondary); text-align: right; }
 
 
         #leaderboard-table tbody tr:hover {
-            background-color: var(--leaderboard-row-hover-bg);
+            background-color: var(--leaderboard-row-hover-bg); 
         }
         #leaderboard-table tbody tr:last-child td {
-            border-bottom: none;
+            border-bottom: none; 
         }
         #leaderboard-table td::before { display: none; }
+        #leaderboard-table thead { display: table-header-group; }
 
 
-        #ai-maintenance-modal .modal-content { text-align: center; }
-        #ai-maintenance-modal h2 { font-size: 1.3rem; margin-bottom: 1rem; color: var(--accent-red); }
-        #ai-maintenance-modal p { font-size: 1rem; margin-bottom: 1.2rem; white-space: pre-wrap; }
+        #ai-maintenance-modal .modal-content { text-align: center; } /* [cite: index.html] */
+        #ai-maintenance-modal h2 { font-size: 1.3rem; margin-bottom: 1rem; color: var(--accent-red); } /* [cite: index.html] */
+        #ai-maintenance-modal p { font-size: 1rem; margin-bottom: 1.2rem; white-space: pre-wrap; } /* [cite: index.html] */
 
-        #nickname-modal .modal-content { max-width: 350px; }
-        #nickname-input { width: 100%; padding: 8px 10px; margin-top: 10px; margin-bottom: 5px; border-radius: 6px; border: 1px solid var(--bg-dark-tertiary); background-color: var(--bg-dark-secondary); color: var(--text-light); font-size: 1rem; }
+        #nickname-modal .modal-content { max-width: 350px; } /* [cite: index.html] */
+        #nickname-input { width: 100%; padding: 8px 10px; margin-top: 10px; margin-bottom: 5px; border-radius: 6px; border: 1px solid var(--bg-dark-tertiary); background-color: var(--bg-dark-secondary); color: var(--text-light); font-size: 1rem; } /* [cite: index.html] */
         #ad-placeholder {
-            width: 100%;
-            height: 60px;
-            background-color: var(--bg-dark-tertiary);
-            border: 1px dashed var(--text-light-secondary);
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-light-secondary);
-            font-size: 0.8rem;
-            margin-top: 10px;
-            margin-bottom: 10px;
+            width: 100%; /* [cite: index.html] */
+            height: 60px; /* [cite: index.html] */
+            background-color: var(--bg-dark-tertiary); /* [cite: index.html] */
+            border: 1px dashed var(--text-light-secondary); /* [cite: index.html] */
+            border-radius: 6px; /* [cite: index.txt] */
+            display: flex; /* [cite: index.html] */
+            align-items: center; /* [cite: index.html] */
+            justify-content: center; /* [cite: index.html] */
+            color: var(--text-light-secondary); /* [cite: index.html] */
+            font-size: 0.8rem; /* [cite: index.html] */
+            margin-top: 10px; /* [cite: index.html] */
+            margin-bottom: 10px; /* [cite: index.html] */
         }
 
         .toast {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: var(--toast-yellow-bg);
-            color: var(--toast-yellow-text);
-            padding: 10px 20px;
-            border-radius: 6px;
-            font-size: 0.9rem;
-            z-index: 2000;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease, bottom 0.3s ease;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: fixed; /* [cite: index.html] */
+            bottom: 20px; /* [cite: index.html] */
+            left: 50%; /* [cite: index.html] */
+            transform: translateX(-50%); /* [cite: index.html] */
+            background-color: var(--toast-yellow-bg); /* [cite: index.html] */
+            color: var(--toast-yellow-text); /* [cite: index.html] */
+            padding: 10px 20px; /* [cite: index.html] */
+            border-radius: 6px; /* [cite: index.html] */
+            font-size: 0.9rem; /* [cite: index.html] */
+            z-index: 2000; /* [cite: index.html] */
+            opacity: 0; /* [cite: index.html] */
+            visibility: hidden; /* [cite: index.html] */
+            transition: opacity 0.3s ease, visibility 0.3s ease, bottom 0.3s ease; /* [cite: index.html] */
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1); /* [cite: index.html] */
         }
-        .toast.show { opacity: 1; visibility: visible; bottom: 30px; }
-        .toast.error { background-color: var(--accent-red); color: var(--text-light); }
-        .toast.info { background-color: var(--accent-blue); color: var(--text-light); }
+        .toast.show { opacity: 1; visibility: visible; bottom: 30px; } /* [cite: index.html] */
+        .toast.error { background-color: var(--accent-red); color: var(--text-light); } /* [cite: index.html] */
+        .toast.info { background-color: var(--accent-blue); color: var(--text-light); } /* [cite: index.html] */
 
 
-        .btn { background-color: var(--accent-blue); color: var(--text-light); padding: 8px 15px; border-radius: 6px; border: none; cursor: pointer; font-weight: 500; transition: background-color 0.2s ease; font-size: 0.95rem; }
-        .btn:hover { background-color: #2563eb; }
-        .btn-secondary { background-color: var(--bg-dark-tertiary); }
-        .btn-secondary:hover { background-color: #5c677a; }
-        .btn:disabled { background-color: var(--bg-dark-tertiary); color: var(--text-light-secondary); cursor: not-allowed; }
-        .btn-gold { background-color: var(--accent-gold); color: var(--bg-dark); font-weight: bold; border: 1px solid #daa520; }
-        .btn-gold:hover { background-color: #e6c300; }
-        #leaderboard-btn-ingame { font-size: 0.8rem !important; padding: 4px 6px !important; }
+        .btn { background-color: var(--accent-blue); color: var(--text-light); padding: 8px 15px; border-radius: 6px; border: none; cursor: pointer; font-weight: 500; transition: background-color 0.2s ease; font-size: 0.95rem; } /* [cite: index.html] */
+        .btn:hover { background-color: #2563eb; } /* [cite: index.html] */
+        .btn-secondary { background-color: var(--bg-dark-tertiary); } /* [cite: index.html] */
+        .btn-secondary:hover { background-color: #5c677a; } /* [cite: index.html] */
+        .btn:disabled { background-color: var(--bg-dark-tertiary); color: var(--text-light-secondary); cursor: not-allowed; } /* [cite: index.html] */
+        .btn-gold { background-color: var(--accent-gold); color: var(--bg-dark); font-weight: bold; border: 1px solid #daa520; } /* [cite: index.html] */
+        .btn-gold:hover { background-color: #e6c300; } /* [cite: index.html] */
+        #leaderboard-btn-ingame { font-size: 0.8rem !important; padding: 4px 6px !important; } /* [cite: index.html] */
 
     </style>
 </head>
@@ -516,7 +513,7 @@
             <form id="player-input-form">
                 <input type="text" id="player-input" class="flex-grow" placeholder="問一個是非題..." autocomplete="off">
                 <button type="submit" class="btn">送出</button>
-                <button type="button" id="new-hint-button" class="btn">提示 (<span id="hints-remaining">3</span>)</button>
+                <button type="button" id="new-hint-button" class="btn">提示 (<span id="hints-remaining">3</span>)</button> 
             </form>
         </div>
     </div>
@@ -606,7 +603,7 @@
             <button id="close-game-over-modal-btn" class="modal-close-btn">
                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
             </button>
-            <div id="game-over-trophy">🏆</div>
+            <div id="game-over-trophy">🏆</div> 
             <h2 id="game-over-title" class="font-bold">恭喜過關！</h2>
             <p id="player-title-display">稱號：海龜湯大師</p>
             <div id="game-over-solution-reveal">
@@ -630,29 +627,27 @@
         </div>
     </div>
 
-     <div id="leaderboard-modal" class="modal">
+    <div id="leaderboard-modal" class="modal">
         <div class="modal-content">
             <button id="close-leaderboard-modal-btn" class="modal-close-btn">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
             </button>
             <h2>🏆海龜湯英雄榜🏆</h2>
             <div id="leaderboard-loading" style="display:none;" class="my-4 text-center">載入中...</div>
-            <div class="overflow-x-auto"> <table id="leaderboard-table">
-                    <thead>
-                        <tr>
-                            <th>排名</th>
-                            <th>暱稱</th>
-                            <th>劇本</th>
-                            <th>回合</th>
-                            <th>提問字數</th>
-                            <th>稱號</th>
-                            <th>完成時間</th>
-                        </tr>
-                    </thead>
-                    <tbody id="leaderboard-table-body">
-                        </tbody>
-                </table>
-            </div>
+            <table id="leaderboard-table">
+                <thead>
+                    <tr>
+                        <th>排名</th>
+                        <th>暱稱</th>
+                        <th>劇本</th>
+                        <th>回合</th>
+                        <th>解答字數</th> <th>稱號</th>
+                        <th>完成時間</th>
+                    </tr>
+                </thead>
+                <tbody id="leaderboard-table-body">
+                    </tbody>
+            </table>
             <p id="leaderboard-empty-message" class="text-gray-400 mt-4" style="display:none;">排行榜目前是空的！</p>
             <p id="leaderboard-error-message" class="text-red-400 mt-4" style="display:none;">無法載入排行榜，請稍後再試。</p>
         </div>
@@ -682,22 +677,24 @@
 
     <script>
         // --- API URLs ---
-        const HAIGUITANG_GAME_START_URL = 'https://d1d5ef45-d04b-4a1c-be4b-64a0680c6847-00-xxpggv06ka2e.sisko.replit.dev/haiguitang/game/start';
-        const HAIGUITANG_GAME_GUESS_URL_TEMPLATE = 'https://d1d5ef45-d04b-4a1c-be4b-64a0680c6847-00-xxpggv06ka2e.sisko.replit.dev/haiguitang/game/{gameId}/guess';
-        const HAIGUITANG_CHEAT_URL_TEMPLATE = 'https://d1d5ef45-d04b-4a1c-be4b-64a0680c6847-00-xxpggv06ka2e.sisko.replit.dev/haiguitang/game/{gameId}/cheat';
-        const LEADERBOARD_URL = 'https://d1d5ef45-d04b-4a1c-be4b-64a0680c6847-00-xxpggv06ka2e.sisko.replit.dev/haiguitang/leaderboard';
-        const LEADERBOARD_ADD_URL = 'https://d1d5ef45-d04b-4a1c-be4b-64a0680c6847-00-xxpggv06ka2e.sisko.replit.dev/haiguitang/leaderboard/add';
+        // Restored absolute URLs
+        const BASE_API_URL = 'https://d1d5ef45-d04b-4a1c-be4b-64a0680c6847-00-xxpggv06ka2e.sisko.replit.dev';
+        const HAIGUITANG_GAME_START_URL = `${BASE_API_URL}/haiguitang/game/start`;
+        const HAIGUITANG_GAME_GUESS_URL_TEMPLATE = `${BASE_API_URL}/haiguitang/game/{gameId}/guess`;
+        const HAIGUITANG_CHEAT_URL_TEMPLATE = `${BASE_API_URL}/haiguitang/game/{gameId}/cheat`;
+        const LEADERBOARD_URL = `${BASE_API_URL}/haiguitang/leaderboard`;
+        const LEADERBOARD_ADD_URL = `${BASE_API_URL}/haiguitang/leaderboard/add`;
 
         const STORY_GENRES = ["懸疑推理", "奇幻冒險", "科幻謎團", "輕鬆搞笑", "都市傳說", "古代奇案", "恐怖驚悚", "日常溫馨", "荒誕不經"];
         let CURRENT_STORY_DATA = {
             gameId: null,
             title: "尚未生成",
             initialScenario: "請先選擇一個故事類型。",
-            solution: null,
-            hints: [],
-            sessionHintPool: [],
+            solution: null, 
+            hints: [], 
+            sessionHintPool: [], 
             hostingStyle: "標準",
-            storySummary: "AI 正在整理思緒...",
+            storySummary: "AI 正在整理思緒...", 
             playerTitle: "偵探新手",
             is_cheated: false,
             qi: { text: null, revealed: false, id_prefix: "qi" },
@@ -707,7 +704,7 @@
         };
         const DEFAULT_HINTS = [ "試著從地點、人物、物品、時間、原因等方向提問。", "受害者的死法是否常見？", "現場是否有不尋常的物品？", "死者是否有仇家？", "兇手是否在現場留下了什麼？" ];
         let playerNickname = "匿名玩家";
-        const MAX_HINTS = 3;
+        const MAX_HINTS = 3; 
 
         const OFF_TRACK_RESPONSES = [
             "嗯...這個問題嘛，可能跟真相有點距離喔，試試從別的角度想想？",
@@ -722,7 +719,7 @@
         const storyTextPreviewEl = document.getElementById('story-text-preview');
         const turnCountEl = document.getElementById('turn-count');
         const newHintButtonEl = document.getElementById('new-hint-button');
-        const hintsRemainingEl = document.getElementById('hints-remaining');
+        const hintsRemainingEl = document.getElementById('hints-remaining'); 
         const rulesHintsCountEl = document.getElementById('rules-hints-count');
         const reviewStoryIntroBtn = document.getElementById('review-story-intro-btn');
         const dialogueHistoryEl = document.getElementById('dialogue-history');
@@ -747,10 +744,7 @@
         const currentStorySummaryEl = document.getElementById('current-story-summary');
         const closeStoryProgressModalBtn = document.getElementById('close-story-progress-modal-btn');
         const loadingModalEl = document.getElementById('loading-modal');
-        const loadingTextEl = document.getElementById('loading-text'); // For the text below spinner
-        const loadingAdPlaceholderEl = document.getElementById('loading-ad-placeholder'); // For the ad
-        const loadingModalTipsEl = document.getElementById('loading-modal-tips'); // For the tips
-
+        const loadingTextEl = document.getElementById('loading-text');
         const aiMaintenanceModalEl = document.getElementById('ai-maintenance-modal');
         const closeMaintenanceModalBtn = document.getElementById('close-maintenance-modal-btn');
         const aiMaintenanceMessageEl = document.getElementById('ai-maintenance-message');
@@ -775,7 +769,6 @@
         const gameOverTrophyEl = document.getElementById('game-over-trophy');
         const finalSolutionTextEl = document.getElementById('final-solution-text');
         const gameOverSolutionRevealEl = document.getElementById('game-over-solution-reveal');
-
         const qiPreviewStatusEl = document.getElementById('qi-preview-status');
         const chengPreviewStatusEl = document.getElementById('cheng-preview-status');
         const zhuanPreviewStatusEl = document.getElementById('zhuan-preview-status');
@@ -784,7 +777,6 @@
         const chengClueTextEl = document.getElementById('cheng-clue-text');
         const zhuanClueTextEl = document.getElementById('zhuan-clue-text');
         const heClueTextEl = document.getElementById('he-clue-text');
-
 
         let turnCount = 0;
         let totalCharCount = 0;
@@ -796,6 +788,7 @@
         let currentTipIndex = 0;
         let tipInterval;
 
+        // --- Utility Functions ---
         function toggleModal(modalElement, show) {
             if (modalElement) {
                 if (show) {
@@ -864,7 +857,7 @@
                     }
                     throw new Error(backendErrorMessage);
                 }
-                if (response.status === 204) {
+                if (response.status === 204) { 
                     return { success: true, data: null };
                 }
                 const data = await response.json();
@@ -876,7 +869,7 @@
                 console.error(`${errorMessagePrefix}錯誤:`, error.message);
                 if (method === 'POST' && loadingMessage) showLoadingModal(false);
 
-                if (aiMaintenanceMessageEl && method !== 'GET') {
+                if (aiMaintenanceMessageEl && method !== 'GET') { 
                     let displayErrorMessage = error.message;
                     if (error.message.toLowerCase().includes('failed to fetch')) {
                         displayErrorMessage = "無法連接到 AI 故事伺服器。\n請檢查您的網路連線，或可能是伺服器暫時無法使用。";
@@ -887,7 +880,7 @@
                 return { error: error.message, success: false };
             }
         }
-
+        
         function highlightKeywordsInScenario(text) {
             if (typeof text !== 'string') return '';
             const keywords = ["屍體", "房間", "窗戶", "奇怪", "神秘", "唯一", "沒有", "血跡", "兇手", "動機", "線索", "證據", "死亡", "被害人", "嫌疑人", "消失", "秘密", "關鍵"];
@@ -899,6 +892,7 @@
             return highlightedText.replace(/\n/g, '<br>');
         }
 
+        // --- Game Logic Functions ---
         async function generateInitialStoryWithAI(genre) {
             isGameStarted = false;
             if(closeStoryIntroModalBtn) closeStoryIntroModalBtn.style.display = 'none';
@@ -906,13 +900,13 @@
 
             const payload = { genre: genre, nickname: playerNickname };
             const serverResponse = await makeApiCall(HAIGUITANG_GAME_START_URL, payload, 'POST', `正在生成 ${genre} 故事...`, "AI初始故事生成");
-
+            
             if (serverResponse && serverResponse.success && serverResponse.game_id && serverResponse.game_data) {
                 CURRENT_STORY_DATA = {
                     gameId: serverResponse.game_id,
                     title: serverResponse.game_data.title || "未知標題",
                     initialScenario: serverResponse.game_data.initialScenario || "謎題描述缺失。",
-                    solution: serverResponse.game_data.solution || "真相未提供。",
+                    solution: serverResponse.game_data.solution || "真相未提供。", 
                     hints: serverResponse.game_data.hints || [],
                     sessionHintPool: [...new Set([...(serverResponse.game_data.hints || []), ...DEFAULT_HINTS])].sort(() => 0.5 - Math.random()),
                     hostingStyle: serverResponse.game_data.hostingStyle || "標準",
@@ -927,10 +921,9 @@
                 hintsRemaining = Math.min(MAX_HINTS, CURRENT_STORY_DATA.sessionHintPool.length);
                 if(rulesHintsCountEl) rulesHintsCountEl.textContent = MAX_HINTS;
 
-
                 if(storyIntroTitleEl) storyIntroTitleEl.textContent = `故事序幕：${CURRENT_STORY_DATA.title}`;
                 if(storyIntroScenarioEl) storyIntroScenarioEl.innerHTML = highlightKeywordsInScenario(CURRENT_STORY_DATA.initialScenario);
-                updateQCTHDisplay();
+                updateQCTHDisplay(); 
                 if(genreModalEl) toggleModal(genreModalEl, false);
                 setTimeout(() => { if(storyIntroModalEl) toggleModal(storyIntroModalEl, true); }, 300);
             } else {
@@ -944,14 +937,11 @@
         function initGame() {
             turnCount = 0;
             totalCharCount = 0;
-
             CURRENT_STORY_DATA.sessionHintPool = [...new Set([...(CURRENT_STORY_DATA.hints || []), ...DEFAULT_HINTS])].sort(() => 0.5 - Math.random());
             hintsRemaining = Math.min(MAX_HINTS, CURRENT_STORY_DATA.sessionHintPool.length);
-
             ['qi', 'cheng', 'zhuan', 'he'].forEach(key => {
                 if(CURRENT_STORY_DATA[key]) CURRENT_STORY_DATA[key].revealed = false;
             });
-
             gameEnded = false;
             gameWon = false;
             isGameStarted = true;
@@ -959,9 +949,9 @@
             CURRENT_STORY_DATA.is_cheated = false;
 
             updateTurnCounterDisplay();
-            updateNewHintButtonDisplay();
-            updateStoryDisplayPreview();
-            updateQCTHDisplay();
+            updateNewHintButtonDisplay(); 
+            updateStoryDisplayPreview(); 
+            updateQCTHDisplay(); 
             if(dialogueHistoryEl) dialogueHistoryEl.innerHTML = '';
 
             if(gameContainerEl) gameContainerEl.style.display = 'flex';
@@ -973,10 +963,9 @@
             addDialogue("npc", `挑戰成功條件：揭露故事的「起」、「承」、「轉」、「合」四個關鍵線索！`, "dialogue-highlight");
             addDialogue("npc", `主持人風格：${CURRENT_STORY_DATA.hostingStyle}`);
             addDialogue("npc", `你可以開始問是非題了。`);
-
             setTimeout(() => { addDialogue("npc", "例如：「現場還有其他人嗎？」或「事件發生在白天嗎？」"); }, 700);
             if(playerInputEl) { playerInputEl.disabled = false; playerInputEl.value = ''; playerInputEl.focus(); }
-            if(newHintButtonEl) newHintButtonEl.disabled = false;
+            if(newHintButtonEl) newHintButtonEl.disabled = false; 
         }
 
         async function applyHaiguitangCheatCode(gameId, cheatCode) {
@@ -989,28 +978,18 @@
 
             if (result && result.success) {
                 addDialogue("npc", `神秘代碼 '${cheatCode}' 已成功啟用！<br>${result.message || '真相即將揭曉！'}`);
-                if (result.full_solution) { // 後端應回傳 full_solution
-                    CURRENT_STORY_DATA.solution = result.full_solution;
+                if (result.full_solution) {
+                    CURRENT_STORY_DATA.solution = result.full_solution; 
                     addDialogue("npc", `完整真相是：<br>${CURRENT_STORY_DATA.solution.replace(/\n/g, '<br>')}`);
                 }
-                 // 假設後端也會回傳 QCTH 的內容
-                if (result.qcth_clues) {
-                    ['qi', 'cheng', 'zhuan', 'he'].forEach(key => {
-                        if (CURRENT_STORY_DATA[key] && result.qcth_clues[key]) {
-                            CURRENT_STORY_DATA[key].text = result.qcth_clues[key];
-                            CURRENT_STORY_DATA[key].revealed = true;
+                ['qi', 'cheng', 'zhuan', 'he'].forEach(key => {
+                    if(CURRENT_STORY_DATA[key]) {
+                        CURRENT_STORY_DATA[key].revealed = true;
+                        if(!CURRENT_STORY_DATA[key].text && CURRENT_STORY_DATA.solution) {
+                             CURRENT_STORY_DATA[key].text = `(${key.toUpperCase()}) 線索已透過密碼揭露。`;
                         }
-                    });
-                } else { // 如果後端沒提供，就標記為作弊揭露
-                     ['qi', 'cheng', 'zhuan', 'he'].forEach(key => {
-                        if(CURRENT_STORY_DATA[key]) {
-                            CURRENT_STORY_DATA[key].revealed = true;
-                            if(!CURRENT_STORY_DATA[key].text && CURRENT_STORY_DATA.solution) {
-                                 CURRENT_STORY_DATA[key].text = `(${key.toUpperCase()}) 線索已透過密碼揭露。`;
-                            }
-                        }
-                    });
-                }
+                    }
+                });
                 updateQCTHDisplay();
                 const playerTitle = result.is_cheated ? "作弊大師" : (result.player_title || "海龜湯高手");
                 endGame(true, playerTitle, true, result.rounds_played);
@@ -1023,7 +1002,7 @@
             if (gameEnded || !questionText.trim()) return;
 
             const trimmedQuestion = questionText.trim();
-            if (trimmedQuestion === "88888888") {
+            if (trimmedQuestion === "88888888") { 
                 if (CURRENT_STORY_DATA.gameId) {
                     await applyHaiguitangCheatCode(CURRENT_STORY_DATA.gameId, "88888888");
                     if(playerInputEl) playerInputEl.value = '';
@@ -1055,40 +1034,50 @@
 
             if (serverResponse && serverResponse.success) {
                 let npcResponseToDisplay = serverResponse.npc_response || "NPC 似乎沒有回應...";
-
+                
                 if (!serverResponse.new_clue_discovered && npcResponseToDisplay.trim() === GENERIC_OFF_TRACK_PHRASE.trim()) {
                     npcResponseToDisplay = OFF_TRACK_RESPONSES[Math.floor(Math.random() * OFF_TRACK_RESPONSES.length)];
                 }
                 addDialogue("npc", npcResponseToDisplay);
 
-                // 處理後端回傳的已揭露 QCTH 線索
-                if (serverResponse.revealed_qcth_key && CURRENT_STORY_DATA[serverResponse.revealed_qcth_key]) {
-                    const key = serverResponse.revealed_qcth_key;
-                    CURRENT_STORY_DATA[key].revealed = true;
-                    CURRENT_STORY_DATA[key].text = serverResponse.new_clue_discovered || CURRENT_STORY_DATA[key].text || "線索已揭露"; // 使用後端提供的文本
-                    
-                    const qcthNames = {qi: "【起】", cheng: "【承】", zhuan: "【轉】", he: "【合】"};
-                    showToast(`新線索 ${qcthNames[key]} 已揭露！`);
-                    addDialogue("npc", `你發現了 ${qcthNames[key]} 的線索：<br>${CURRENT_STORY_DATA[key].text.replace(/\n/g, '<br>')}`, "dialogue-highlight");
-                    updateQCTHDisplay();
-                    checkWinCondition();
-                } else if (serverResponse.new_clue_discovered && typeof serverResponse.new_clue_discovered === 'string' && serverResponse.new_clue_discovered.trim() !== "") {
-                    // 如果不是特定的QCTH線索，但仍有新線索文本，可以考慮如何處理或顯示
-                     console.log("收到非QCTH類型的通用新線索:", serverResponse.new_clue_discovered);
-                     // 這裡可以選擇是否將其加入一個通用的 revealedStoryParts 數組 (如果保留該機制)
+                if (serverResponse.new_clue_discovered && typeof serverResponse.new_clue_discovered === 'string') {
+                    const discoveredClueText = serverResponse.new_clue_discovered.trim();
+                    let qcthKeyRevealed = null;
+
+                    for (const key of ['qi', 'cheng', 'zhuan', 'he']) {
+                        if (CURRENT_STORY_DATA[key] && !CURRENT_STORY_DATA[key].revealed && 
+                            CURRENT_STORY_DATA[key].text && discoveredClueText.includes(CURRENT_STORY_DATA[key].text.substring(0,10))) { 
+                            CURRENT_STORY_DATA[key].revealed = true;
+                            CURRENT_STORY_DATA[key].text = discoveredClueText; 
+                            qcthKeyRevealed = key;
+                            break;
+                        } else if (CURRENT_STORY_DATA[key] && !CURRENT_STORY_DATA[key].revealed && serverResponse.revealed_clue_type === key) {
+                            CURRENT_STORY_DATA[key].revealed = true;
+                            CURRENT_STORY_DATA[key].text = discoveredClueText;
+                            qcthKeyRevealed = key;
+                            break;
+                        }
+                    }
+
+                    if (qcthKeyRevealed) {
+                        const qcthNames = {qi: "【起】", cheng: "【承】", zhuan: "【轉】", he: "【合】"};
+                        showToast(`新線索 ${qcthNames[qcthKeyRevealed]} 已揭露！`);
+                        addDialogue("npc", `你發現了 ${qcthNames[qcthKeyRevealed]} 的線索：<br>${CURRENT_STORY_DATA[qcthKeyRevealed].text.replace(/\n/g, '<br>')}`, "dialogue-highlight");
+                        updateQCTHDisplay();
+                        checkWinCondition(); 
+                    } else {
+                        console.log("揭露的線索非主要的起承轉合線索，或無法匹配:", discoveredClueText);
+                    }
                 }
-
-
+                
                 if (serverResponse.story_summary) {
                     CURRENT_STORY_DATA.storySummary = serverResponse.story_summary;
                 } else {
                     let revealedQCTHCount = ['qi', 'cheng', 'zhuan', 'he'].filter(k => CURRENT_STORY_DATA[k].revealed).length;
                     CURRENT_STORY_DATA.storySummary = `已揭露 ${revealedQCTHCount}/4 個關鍵線索。AI 正在整理目前的遊戲進展...`;
                 }
-
-                updateStoryDisplayPreview();
-                updateQCTHDisplay();
-
+                updateStoryDisplayPreview(); 
+                updateQCTHDisplay(); 
             } else {
                 addDialogue("npc", (serverResponse && serverResponse.error) || "抱歉，我現在有點混亂，請稍後再試一次。 (回應格式錯誤)");
             }
@@ -1123,14 +1112,9 @@
             CURRENT_STORY_DATA.is_cheated = isCheated;
 
             if (!CURRENT_STORY_DATA.solution && CURRENT_STORY_DATA.gameId) {
-                console.warn("遊戲結束時，CURRENT_STORY_DATA.solution 未被設定。將嘗試從後端獲取。");
-                // 可以在此處嘗試調用一個API來獲取solution，如果前端沒有的話
-                // 例如：const solutionData = await makeApiCall(`/haiguitang/game/${CURRENT_STORY_DATA.gameId}/solution`, null, 'GET');
-                // if(solutionData && solutionData.solution) CURRENT_STORY_DATA.solution = solutionData.solution;
-                // else CURRENT_STORY_DATA.solution = "謎底未能正確獲取，請檢查後端。";
-                 CURRENT_STORY_DATA.solution = "謎底未能正確獲取。"; // 簡化處理
+                console.warn("遊戲結束時，CURRENT_STORY_DATA.solution 未被設定。");
+                CURRENT_STORY_DATA.solution = "謎底未能正確獲取，請檢查後端。";
             }
-
 
             if (isWin) {
                 if(gameOverTrophyEl) gameOverTrophyEl.textContent = isCheated ? "🤫" : "🏆";
@@ -1139,29 +1123,29 @@
                     gameOverTitleEl.className = `font-bold text-2xl ${isCheated ? 'text-yellow-400' : 'text-green-400'}`;
                 }
                 if(playerTitleDisplayEl) playerTitleDisplayEl.textContent = `稱號：${playerTitleFromAI}`;
-                if(gameOverSolutionRevealEl) gameOverSolutionRevealEl.style.display = 'block';
-                if(finalSolutionTextEl) finalSolutionTextEl.innerHTML = (CURRENT_STORY_DATA.solution || "解答正在來的路上...").replace(/\n/g, '<br>');
+                if(gameOverSolutionRevealEl) gameOverSolutionRevealEl.style.display = 'block'; 
+                if(finalSolutionTextEl) finalSolutionTextEl.innerHTML = (CURRENT_STORY_DATA.solution).replace(/\n/g, '<br>');
 
                 if (!isCheated) {
                     await saveToLeaderboard(playerNickname, finalTurns, CURRENT_STORY_DATA.solution ? CURRENT_STORY_DATA.solution.length : 0, playerTitleFromAI);
                 }
-            } else {
-                if(gameOverTrophyEl) gameOverTrophyEl.textContent = "🤔";
+            } else { 
+                if(gameOverTrophyEl) gameOverTrophyEl.textContent = "🤔"; 
                 if(gameOverTitleEl) {
-                    gameOverTitleEl.textContent = "遊戲結束";
+                    gameOverTitleEl.textContent = "遊戲結束"; 
                     gameOverTitleEl.className = "font-bold text-2xl text-yellow-400";
                 }
                 if(playerTitleDisplayEl) playerTitleDisplayEl.textContent = "稱號：再接再厲的偵探";
                 if(gameOverSolutionRevealEl) gameOverSolutionRevealEl.style.display = 'block';
-                if(finalSolutionTextEl) finalSolutionTextEl.innerHTML = (CURRENT_STORY_DATA.solution || "解答正在來的路上...").replace(/\n/g, '<br>');
-                addDialogue("npc", `遊戲結束。正確答案是：<br>${(CURRENT_STORY_DATA.solution || "解答正在來的路上...").replace(/\n/g, '<br>')}`);
+                if(finalSolutionTextEl) finalSolutionTextEl.innerHTML = (CURRENT_STORY_DATA.solution).replace(/\n/g, '<br>');
+                addDialogue("npc", `遊戲結束。正確答案是：<br>${(CURRENT_STORY_DATA.solution).replace(/\n/g, '<br>')}`);
             }
             if(statNicknameEl) statNicknameEl.textContent = playerNickname;
             if(statTurnsEl) statTurnsEl.textContent = finalTurns;
             if(statCharCountEl) statCharCountEl.textContent = totalCharCount;
 
-            updateStoryDisplayPreview();
-            updateQCTHDisplay();
+            updateStoryDisplayPreview(); 
+            updateQCTHDisplay(); 
             if(gameOverModalEl) toggleModal(gameOverModalEl, true);
         }
 
@@ -1172,7 +1156,6 @@
                 zhuan: { previewEl: zhuanPreviewStatusEl, detailEl: zhuanClueTextEl, name: "轉" },
                 he: { previewEl: hePreviewStatusEl, detailEl: heClueTextEl, name: "合" }
             };
-
             let revealedCount = 0;
             for (const key of ['qi', 'cheng', 'zhuan', 'he']) {
                 const clueData = CURRENT_STORY_DATA[key];
@@ -1210,13 +1193,12 @@
                 CURRENT_STORY_DATA.cheng.revealed &&
                 CURRENT_STORY_DATA.zhuan.revealed &&
                 CURRENT_STORY_DATA.he.revealed) {
-                if (!gameEnded) {
+                if (!gameEnded) { 
                     addDialogue("npc", "恭喜你！你已成功拼湊出所有「起承轉合」的關鍵線索，真相即將揭曉！", "dialogue-highlight");
                     endGame(true, CURRENT_STORY_DATA.playerTitle || "海龜湯大偵探", false, turnCount);
                 }
             }
         }
-
 
         function updateStoryDisplayPreview() {
             if (!isGameStarted) {
@@ -1224,23 +1206,21 @@
                 return;
             }
             if (CURRENT_STORY_DATA.storySummary && CURRENT_STORY_DATA.storySummary !== "AI 正在整理思緒..." && !gameEnded) {
-                 if(storyTextPreviewEl && !storyTextPreviewEl.innerHTML.includes("【真相大白】") && !storyTextPreviewEl.innerHTML.includes("【謎底揭曉】")) {
+                 if(storyTextPreviewEl && !storyTextPreviewEl.innerHTML.includes("【真相大白】") && !storyTextPreviewEl.innerHTML.includes("【謎底揭曉】")) { 
                     storyTextPreviewEl.innerHTML = CURRENT_STORY_DATA.storySummary.substring(0, 60) + (CURRENT_STORY_DATA.storySummary.length > 60 ? "..." : "");
                  }
             } else if (!gameEnded) {
                  if(storyTextPreviewEl) storyTextPreviewEl.innerHTML = "尚無線索，請開始提問！";
             }
-            updateQCTHDisplay();
+            updateQCTHDisplay(); 
         }
 
         function updateFullStoryModalDisplay() {
-            updateQCTHDisplay();
-            
+            updateQCTHDisplay(); 
             if (!isGameStarted && !gameEnded) {
                 if(currentStorySummaryEl) currentStorySummaryEl.textContent = "AI 尚未整理思緒...";
                 return;
             }
-            
             if (gameEnded && CURRENT_STORY_DATA.solution) {
                 const resultType = gameWon ? (CURRENT_STORY_DATA.is_cheated ? '【真相已現 (密)】' : '【完整真相】') : '【最終謎底】';
                 const resultColor = gameWon ? (CURRENT_STORY_DATA.is_cheated ? 'text-yellow-400' : 'text-green-400') : 'text-red-400';
@@ -1254,30 +1234,26 @@
         }
 
         function updateTurnCounterDisplay() { if(turnCountEl) turnCountEl.textContent = turnCount; }
-        
         function updateNewHintButtonDisplay() { 
             if(hintsRemainingEl) hintsRemainingEl.textContent = hintsRemaining;
             if(newHintButtonEl) newHintButtonEl.disabled = hintsRemaining <= 0 || gameEnded; 
         }
 
-
         function addDialogue(speaker, text, specialClass = null) {
             const bubble = document.createElement('div');
             bubble.classList.add('chat-bubble', speaker === 'player' ? 'player' : 'npc');
-            
             if (specialClass) {
                 bubble.classList.add(specialClass);
             } else if (speaker === 'npc' && text.startsWith('提示：')) {
                 bubble.classList.add('hint-bubble');
             }
-
             bubble.innerHTML = highlightKeywordsInScenario(text).replace(/<hr class="dialogue-hr">/g, '<hr class="dialogue-hr">');
-            
             if(dialogueHistoryEl) dialogueHistoryEl.appendChild(bubble);
             scrollToBottom();
         }
 
         function scrollToBottom() { if(dialogueHistoryScrollableEl) dialogueHistoryScrollableEl.scrollTop = dialogueHistoryScrollableEl.scrollHeight; }
+        
         function showToast(message, type = 'success') {
             if(toastMessageEl) {
                 toastMessageEl.textContent = message;
@@ -1286,13 +1262,14 @@
                     toastMessageEl.classList.add('error');
                 } else if (type === 'info') {
                     toastMessageEl.classList.add('info');
-                } else {
+                } else { // Default to success-like yellow
                     toastMessageEl.style.backgroundColor = 'var(--toast-yellow-bg)';
                     toastMessageEl.style.color = 'var(--toast-yellow-text)';
                 }
+                // Clear explicit styles if class-based ones should take over
                 if (type === 'error' || type === 'info') {
-                     toastMessageEl.style.backgroundColor = '';
-                     toastMessageEl.style.color = '';
+                     toastMessageEl.style.backgroundColor = ''; // Let CSS class define it
+                     toastMessageEl.style.color = ''; // Let CSS class define it
                 }
 
                 setTimeout(() => {
@@ -1306,37 +1283,38 @@
             if (!tipsContainer) return;
             const tips = tipsContainer.getElementsByTagName('span');
             if (tips.length === 0) return;
-
             currentTipIndex = 0;
             for(let i = 0; i < tips.length; i++) {
                 tips[i].style.opacity = '0';
-                tips[i].style.animationName = 'none';
+                tips[i].style.animationName = 'none'; // Reset animation for direct control
             }
-            if (tips[currentTipIndex]) {
+            if (tips[currentTipIndex]) { // Show first tip immediately
                 tips[currentTipIndex].style.opacity = '1';
                 tips[currentTipIndex].style.transform = 'translateY(0)';
             }
 
-            clearInterval(tipInterval);
+            clearInterval(tipInterval); // Clear any existing interval
             tipInterval = setInterval(() => {
-                if (tips[currentTipIndex]) {
+                if (tips[currentTipIndex]) { // Fade out current tip
                     tips[currentTipIndex].style.opacity = '0';
                     tips[currentTipIndex].style.transform = 'translateY(5px)';
                 }
-                currentTipIndex = (currentTipIndex + 1) % tips.length;
+                currentTipIndex = (currentTipIndex + 1) % tips.length; // Move to next tip
+                // After a short delay (for fade out to complete), fade in the new tip
                 setTimeout(() => {
+                    // Ensure all other tips are hidden before showing the current one
                     for(let i = 0; i < tips.length; i++) {
                          if(i !== currentTipIndex && tips[i]) {
                             tips[i].style.opacity = '0';
                             tips[i].style.transform = 'translateY(5px)';
                          }
                     }
-                    if (tips[currentTipIndex]) {
+                    if (tips[currentTipIndex]) { // Fade in new current tip
                         tips[currentTipIndex].style.opacity = '1';
                         tips[currentTipIndex].style.transform = 'translateY(0)';
                     }
-                }, 500);
-            }, 4000);
+                }, 500); // Delay for fade-in, adjust as needed
+            }, 4000); // Interval between tip changes
         }
 
         function stopTipCarousel() {
@@ -1346,8 +1324,8 @@
             const tips = tipsContainer.getElementsByTagName('span');
             for(let i = 0; i < tips.length; i++) {
                 if (tips[i]) {
-                    tips[i].style.opacity = '0';
-                    tips[i].style.animationName = 'tip-fade-individual';
+                    tips[i].style.opacity = '0'; // Hide all tips
+                    tips[i].style.animationName = 'tip-fade-individual'; // Restore CSS animation if needed elsewhere
                 }
             }
         }
@@ -1362,6 +1340,7 @@
                 stopTipCarousel();
             }
         }
+
         function populateGenreGrid() {
             if(!genreGridContainerEl) return;
             genreGridContainerEl.innerHTML = '';
@@ -1369,23 +1348,25 @@
                 const item = document.createElement('div');
                 item.classList.add('genre-item');
                 item.innerHTML = `<span class="genre-item-text">${genre}</span>`;
+                // Placeholder image generation
                 const bgColor = Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
-                const textColor = 'FFFFFF';
-                const textForImage = encodeURIComponent(genre.substring(0,2));
+                const textColor = 'FFFFFF'; // White text for better contrast on random bg
+                const textForImage = encodeURIComponent(genre.substring(0,2)); // Use first two chars of genre
                 item.style.backgroundImage = `url('https://placehold.co/100x100/${bgColor}/${textColor}?text=${textForImage}&font=roboto')`;
                 item.style.backgroundSize = 'cover';
                 item.style.backgroundPosition = 'center';
-                item.style.position = 'relative';
+                item.style.position = 'relative'; // For overlay
 
+                // Adding a semi-transparent overlay for better text readability
                 const overlay = document.createElement('div');
                 overlay.style.position = 'absolute';
                 overlay.style.top = '0';
                 overlay.style.left = '0';
                 overlay.style.width = '100%';
                 overlay.style.height = '100%';
-                overlay.style.backgroundColor = 'rgba(0,0,0,0.3)';
-                overlay.style.zIndex = '0';
-                item.insertBefore(overlay, item.firstChild);
+                overlay.style.backgroundColor = 'rgba(0,0,0,0.3)'; // Dark overlay
+                overlay.style.zIndex = '0'; // Behind the text
+                item.insertBefore(overlay, item.firstChild); // Insert overlay before text span
 
                 item.addEventListener('click', () => generateInitialStoryWithAI(genre));
                 genreGridContainerEl.appendChild(item);
@@ -1404,40 +1385,66 @@
 
         async function showLeaderboard() {
             if(leaderboardLoadingEl) leaderboardLoadingEl.style.display = 'block';
-            if(leaderboardTableEl) leaderboardTableEl.style.display = 'none';
-            if(leaderboardTableBodyEl) leaderboardTableBodyEl.innerHTML = '';
+            if(leaderboardTableEl) leaderboardTableEl.style.display = 'none'; // Hide table while loading
+            if(leaderboardTableBodyEl) leaderboardTableBodyEl.innerHTML = ''; // Clear previous entries
             if(leaderboardEmptyMessageEl) leaderboardEmptyMessageEl.style.display = 'none';
             if(leaderboardErrorMessageEl) leaderboardErrorMessageEl.style.display = 'none';
             if(leaderboardModalEl) toggleModal(leaderboardModalEl, true);
 
-            const response = await makeApiCall(LEADERBOARD_URL, null, 'GET', null, "載入排行榜"); 
+            const leaderboardData = await makeApiCall(LEADERBOARD_URL, null, 'GET', null, "載入排行榜");
 
             if(leaderboardLoadingEl) leaderboardLoadingEl.style.display = 'none';
 
-            if (response && response.success && Array.isArray(response.leaderboard)) {
-                const leaderboardData = response.leaderboard;
-                if (leaderboardData.length === 0) {
+            if (leaderboardData && leaderboardData.success && Array.isArray(leaderboardData.leaderboard)) {
+                const entries = leaderboardData.leaderboard;
+                if (entries.length === 0) {
                     if(leaderboardEmptyMessageEl) leaderboardEmptyMessageEl.style.display = 'block';
                 } else {
-                    if(leaderboardTableEl) leaderboardTableEl.style.display = 'table';
-                    leaderboardData.slice(0,10) 
-                                 .forEach((entry, index) => { // Added index for rank
+                    if(leaderboardTableEl) leaderboardTableEl.style.display = 'table'; // Show table now
+                    entries.slice(0,10) // Show top 10
+                                 .forEach((entry, index) => {
                         const row = leaderboardTableBodyEl.insertRow();
-                        row.insertCell().textContent = index + 1; // 排名
-                        row.insertCell().textContent = entry.nickname || 'N/A';
-                        row.insertCell().textContent = entry.story_title || '未知劇本'; // 假設後端回傳 story_title
-                        row.insertCell().textContent = entry.rounds !== undefined ? entry.rounds : 'N/A';
-                        row.insertCell().textContent = entry.char_count !== undefined ? entry.char_count : 'N/A'; // 假設後端回傳 char_count
-                        row.insertCell().textContent = entry.title_earned || 'N/A';
-                        row.insertCell().textContent = entry.timestamp ? new Date(entry.timestamp).toLocaleString('zh-TW', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }) : 'N/A'; // 格式化時間
+                        
+                        // 排名
+                        const rankCell = row.insertCell();
+                        rankCell.textContent = index + 1;
+                        
+                        // 暱稱
+                        const nicknameCell = row.insertCell();
+                        nicknameCell.textContent = entry.nickname || 'N/A';
+                        
+                        // 劇本 (Placeholder, as it's not in backend data)
+                        const storyCell = row.insertCell();
+                        storyCell.textContent = '未知劇本'; 
+                        
+                        // 回合
+                        const roundsCell = row.insertCell();
+                        roundsCell.textContent = entry.rounds !== undefined ? entry.rounds : 'N/A';
+                        
+                        // 解答字數 (Using story_solution_length)
+                        const lengthCell = row.insertCell();
+                        lengthCell.textContent = entry.story_solution_length !== undefined ? entry.story_solution_length : 'N/A';
+                        
+                        // 稱號
+                        const titleCell = row.insertCell();
+                        titleCell.textContent = entry.title_earned || 'N/A';
+                        
+                        // 完成時間
+                        const timeCell = row.insertCell();
+                        try {
+                            timeCell.textContent = entry.timestamp ? new Date(entry.timestamp).toLocaleString('zh-TW', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }) : 'N/A';
+                        } catch (e) {
+                            timeCell.textContent = '時間格式錯誤';
+                        }
                     });
                 }
             } else {
-                const errorMsg = (response && response.error) ? response.error : "無法載入排行榜資料或格式錯誤。";
+                const errorMsg = (leaderboardData && leaderboardData.error) ? leaderboardData.error : "無法載入排行榜資料或格式錯誤。";
                 if(leaderboardErrorMessageEl) leaderboardErrorMessageEl.textContent = errorMsg;
                 if(leaderboardErrorMessageEl) leaderboardErrorMessageEl.style.display = 'block';
             }
         }
+
 
         // --- Event Listeners ---
         if(startGameFromIntroBtn) startGameFromIntroBtn.addEventListener('click', () => { if(storyIntroModalEl) toggleModal(storyIntroModalEl, false); initGame(); });
@@ -1473,19 +1480,21 @@
         if(closeStoryProgressModalBtn) closeStoryProgressModalBtn.addEventListener('click', () => toggleModal(storyProgressModalEl, false));
         if(closeMaintenanceModalBtn) closeMaintenanceModalBtn.addEventListener('click', () => {
             if(aiMaintenanceModalEl) toggleModal(aiMaintenanceModalEl, false);
-            if (!isGameStarted) {
+            if (!isGameStarted) { // If game hasn't started, go back to genre selection
                 if(genreModalEl) toggleModal(genreModalEl, true);
             }
+            // If game was in progress, user can try interacting again.
         });
         if(closeGameOverModalBtn) closeGameOverModalBtn.addEventListener('click', () => toggleModal(gameOverModalEl, false));
         if(playAgainBtn) playAgainBtn.addEventListener('click', () => {
             if(gameOverModalEl) toggleModal(gameOverModalEl, false);
-            if(gameContainerEl) gameContainerEl.style.display = 'none';
-            if(genreModalEl) toggleModal(genreModalEl, true);
-            populateGenreGrid();
-            CURRENT_STORY_DATA = {
-                gameId: null, title: "尚未生成", initialScenario: "請先選擇一個故事類型。", solution: null,
-                hints: [], sessionHintPool: [], hostingStyle: "標準", storySummary: "AI 正在整理思緒...",
+            if(gameContainerEl) gameContainerEl.style.display = 'none'; // Hide game area
+            if(genreModalEl) toggleModal(genreModalEl, true); // Show genre selection
+            populateGenreGrid(); // Refresh genres
+            // Reset game state variables
+            CURRENT_STORY_DATA = { 
+                gameId: null, title: "尚未生成", initialScenario: "請先選擇一個故事類型。", solution: null, 
+                hints: [], sessionHintPool: [], hostingStyle: "標準", storySummary: "AI 正在整理思緒...", 
                 playerTitle: "偵探新手", is_cheated: false,
                 qi: { text: null, revealed: false, id_prefix: "qi" },
                 cheng: { text: null, revealed: false, id_prefix: "cheng" },
@@ -1494,43 +1503,44 @@
             };
             isGameStarted = false;
             gameEnded = false;
-            updateNicknameDisplay();
+            updateNicknameDisplay(); // Ensure nickname is current
         });
 
         if(changeNicknameBtnGenre) changeNicknameBtnGenre.addEventListener('click', () => {
-            updateNicknameDisplay();
+            updateNicknameDisplay(); // Load current nickname into input
             if(nicknameInputEl) nicknameInputEl.value = playerNickname === "匿名玩家" ? "" : playerNickname;
             if(nicknameModalEl) toggleModal(nicknameModalEl, true);
-            if(closeNicknameModalBtn) closeNicknameModalBtn.style.display = 'block';
+            if(closeNicknameModalBtn) closeNicknameModalBtn.style.display = 'block'; // Show close button
             if(saveNicknameBtn) saveNicknameBtn.textContent = "儲存暱稱";
         });
 
         if(saveNicknameBtn) saveNicknameBtn.addEventListener('click', () => {
-            saveNickname(!initialNicknameSet);
+            saveNickname(!initialNicknameSet); // Pass true if it's the initial setup
         });
         if(closeNicknameModalBtn) closeNicknameModalBtn.addEventListener('click', () => {
             toggleModal(nicknameModalEl, false);
-            if (!initialNicknameSet) {
+            if (!initialNicknameSet) { // If initial setup was skipped, go back to genre modal
                 toggleModal(genreModalEl, true);
             }
         });
 
         if(playerInputForm) playerInputForm.addEventListener('submit', (e) => { e.preventDefault(); const question = playerInputEl.value; handlePlayerQuestion(question); });
-
+        
         if(newHintButtonEl) newHintButtonEl.addEventListener('click', () => {
             if (hintsRemaining > 0 && !gameEnded && CURRENT_STORY_DATA.gameId) {
                 let hintToGive = "沒有更多獨特的提示了，試試這個吧！";
-
+                
                 if (CURRENT_STORY_DATA.sessionHintPool && CURRENT_STORY_DATA.sessionHintPool.length > 0) {
-                    hintToGive = CURRENT_STORY_DATA.sessionHintPool.pop();
+                    hintToGive = CURRENT_STORY_DATA.sessionHintPool.pop(); // Get a hint from the shuffled pool
                 } else {
+                    // Fallback if pool is exhausted (should not happen if MAX_HINTS <= pool.length)
                     hintToGive = DEFAULT_HINTS[Math.floor(Math.random() * DEFAULT_HINTS.length)];
                     showToast("所有專屬提示已用完，提供一個通用提示。", "info");
                 }
-
+                
                 addDialogue("npc", `提示：${hintToGive}`);
                 hintsRemaining--;
-                updateNewHintButtonDisplay();
+                updateNewHintButtonDisplay(); 
                 showToast("提示已使用！");
             } else if (!CURRENT_STORY_DATA.gameId) {
                 showToast("遊戲尚未開始，無法獲取提示。", "error");
@@ -1542,10 +1552,10 @@
         // Initial Setup
         updateNicknameDisplay();
         populateGenreGrid();
-        if (genreModalEl) toggleModal(genreModalEl, false);
-        if (nicknameModalEl) {
+        if (genreModalEl) toggleModal(genreModalEl, false); // Start with genre modal hidden
+        if (nicknameModalEl) { // Show nickname modal first
             toggleModal(nicknameModalEl, true);
-            if(saveNicknameBtn) saveNicknameBtn.textContent = "開始遊戲";
+            if(saveNicknameBtn) saveNicknameBtn.textContent = "開始遊戲"; // Initial button text
         }
         if(rulesHintsCountEl) rulesHintsCountEl.textContent = MAX_HINTS;
     </script>
