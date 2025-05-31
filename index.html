@@ -691,7 +691,7 @@
             title: "尚未生成",
             initialScenario: "請先選擇一個故事類型。",
             solution: null, 
-            hints: [], 
+            // hints: [], // 舊的通用AI提示，現在由 qcth_specific_hints_received 和 sessionHintPool 管理
             sessionHintPool: [], 
             hostingStyle: "標準",
             storySummary: "AI 正在整理思緒...", 
@@ -700,7 +700,8 @@
             qi: { text: null, revealed: false, id_prefix: "qi" },
             cheng: { text: null, revealed: false, id_prefix: "cheng" },
             zhuan: { text: null, revealed: false, id_prefix: "zhuan" },
-            he: { text: null, revealed: false, id_prefix: "he" }
+            he: { text: null, revealed: false, id_prefix: "he" },
+            qcth_specific_hints_received: { qi: null, cheng: null, zhuan: null, he: null } // 新增：儲存從後端接收的QCTH專屬提示
         };
         const DEFAULT_HINTS = [ "試著從地點、人物、物品、時間、原因等方向提問。", "受害者的死法是否常見？", "現場是否有不尋常的物品？", "死者是否有仇家？", "兇手是否在現場留下了什麼？" ];
         let playerNickname = "匿名玩家";
@@ -902,22 +903,59 @@
             const serverResponse = await makeApiCall(HAIGUITANG_GAME_START_URL, payload, 'POST', `正在生成 ${genre} 故事...`, "AI初始故事生成");
             
             if (serverResponse && serverResponse.success && serverResponse.game_id && serverResponse.game_data) {
-                CURRENT_STORY_DATA = {
-                    gameId: serverResponse.game_id,
-                    title: serverResponse.game_data.title || "未知標題",
-                    initialScenario: serverResponse.game_data.initialScenario || "謎題描述缺失。",
-                    solution: serverResponse.game_data.solution || "真相未提供。", 
-                    hints: serverResponse.game_data.hints || [],
-                    sessionHintPool: [...new Set([...(serverResponse.game_data.hints || []), ...DEFAULT_HINTS])].sort(() => 0.5 - Math.random()),
-                    hostingStyle: serverResponse.game_data.hostingStyle || "標準",
-                    storySummary: "根據目前線索，故事大概是這樣的...",
-                    playerTitle: "偵探新手",
-                    is_cheated: false,
-                    qi: { text: serverResponse.game_data.qi_clue_text || "起之線索未定義", revealed: false, id_prefix: "qi" },
-                    cheng: { text: serverResponse.game_data.cheng_clue_text || "承之線索未定義", revealed: false, id_prefix: "cheng" },
-                    zhuan: { text: serverResponse.game_data.zhuan_clue_text || "轉之線索未定義", revealed: false, id_prefix: "zhuan" },
-                    he: { text: serverResponse.game_data.he_clue_text || "合之線索未定義", revealed: false, id_prefix: "he" }
+                console.log("從後端收到的完整 game_data:", JSON.parse(JSON.stringify(serverResponse.game_data)));
+                
+                // 儲存 QCTH 專屬提示，並提供預設回退文本
+                CURRENT_STORY_DATA.qcth_specific_hints_received = {
+                    qi: serverResponse.game_data.qi_hint || "【起】的提示暫缺",
+                    cheng: serverResponse.game_data.cheng_hint || "【承】的提示暫缺",
+                    zhuan: serverResponse.game_data.zhuan_hint || "【轉】的提示暫缺",
+                    he: serverResponse.game_data.he_hint || "【合】的提示暫缺"
                 };
+                console.log("收到的 QCTH 專屬提示 (原始):", CURRENT_STORY_DATA.qcth_specific_hints_received);
+
+                let validQCTHHints = [];
+                // 輔助函數，檢查提示是否有效（非空且不是後端預設的錯誤/未生成訊息）
+                function isValidBackendHint(hintText) {
+                    if (typeof hintText === 'string' && hintText.trim() !== '') {
+                        const backendPlaceholders = ["努力生成中", "提示暫缺", "獲取失敗"]; // 這些是 game_manager 可能的預設回退
+                        return !backendPlaceholders.some(placeholder => hintText.includes(placeholder));
+                    }
+                    return false;
+                }
+
+                if (isValidBackendHint(CURRENT_STORY_DATA.qcth_specific_hints_received.qi)) validQCTHHints.push(CURRENT_STORY_DATA.qcth_specific_hints_received.qi);
+                if (isValidBackendHint(CURRENT_STORY_DATA.qcth_specific_hints_received.cheng)) validQCTHHints.push(CURRENT_STORY_DATA.qcth_specific_hints_received.cheng);
+                if (isValidBackendHint(CURRENT_STORY_DATA.qcth_specific_hints_received.zhuan)) validQCTHHints.push(CURRENT_STORY_DATA.qcth_specific_hints_received.zhuan);
+                if (isValidBackendHint(CURRENT_STORY_DATA.qcth_specific_hints_received.he)) validQCTHHints.push(CURRENT_STORY_DATA.qcth_specific_hints_received.he);
+                
+                console.log("過濾後有效的 QCTH 專屬提示 (用於提示池):", validQCTHHints);
+
+                // 創建提示池：優先使用有效的 QCTH 專屬提示，然後是 DEFAULT_HINTS 作為備用
+                CURRENT_STORY_DATA.sessionHintPool = [...new Set([...validQCTHHints, ...DEFAULT_HINTS])].sort(() => 0.5 - Math.random());
+                
+                console.log("最終的提示池 (sessionHintPool):", CURRENT_STORY_DATA.sessionHintPool);
+
+                if (validQCTHHints.length < 4 && validQCTHHints.length > 0) { 
+                    console.warn("AI 未能為所有「起承轉合」部分都生成有效的專屬提示。");
+                } else if (validQCTHHints.length === 0) {
+                     console.info("本次 AI 未提供任何有效的 QCTH 專屬提示，提示池將主要依賴 DEFAULT_HINTS。");
+                }
+                
+                // 儲存其他故事資料
+                CURRENT_STORY_DATA.gameId = serverResponse.game_id;
+                CURRENT_STORY_DATA.title = serverResponse.game_data.title || "未知標題";
+                CURRENT_STORY_DATA.initialScenario = serverResponse.game_data.initialScenario || "謎題描述缺失。";
+                CURRENT_STORY_DATA.solution = serverResponse.game_data.solution || "真相未提供。";
+                CURRENT_STORY_DATA.hostingStyle = serverResponse.game_data.hostingStyle || "標準";
+                CURRENT_STORY_DATA.storySummary = "根據目前線索，故事大概是這樣的...";
+                CURRENT_STORY_DATA.playerTitle = "偵探新手";
+                CURRENT_STORY_DATA.is_cheated = false;
+                CURRENT_STORY_DATA.qi = { text: serverResponse.game_data.qi_clue_text || "起之線索未定義", revealed: false, id_prefix: "qi" };
+                CURRENT_STORY_DATA.cheng = { text: serverResponse.game_data.cheng_clue_text || "承之線索未定義", revealed: false, id_prefix: "cheng" };
+                CURRENT_STORY_DATA.zhuan = { text: serverResponse.game_data.zhuan_clue_text || "轉之線索未定義", revealed: false, id_prefix: "zhuan" };
+                CURRENT_STORY_DATA.he = { text: serverResponse.game_data.he_clue_text || "合之線索未定義", revealed: false, id_prefix: "he" };
+                
                 hintsRemaining = Math.min(MAX_HINTS, CURRENT_STORY_DATA.sessionHintPool.length);
                 if(rulesHintsCountEl) rulesHintsCountEl.textContent = MAX_HINTS;
 
@@ -937,8 +975,8 @@
         function initGame() {
             turnCount = 0;
             totalCharCount = 0;
-            CURRENT_STORY_DATA.sessionHintPool = [...new Set([...(CURRENT_STORY_DATA.hints || []), ...DEFAULT_HINTS])].sort(() => 0.5 - Math.random());
-            hintsRemaining = Math.min(MAX_HINTS, CURRENT_STORY_DATA.sessionHintPool.length);
+            // sessionHintPool 和 hintsRemaining 的初始化已移至 generateInitialStoryWithAI
+            
             ['qi', 'cheng', 'zhuan', 'he'].forEach(key => {
                 if(CURRENT_STORY_DATA[key]) CURRENT_STORY_DATA[key].revealed = false;
             });
@@ -1035,8 +1073,14 @@
             if (serverResponse && serverResponse.success) {
                 let npcResponseToDisplay = serverResponse.npc_response || "NPC 似乎沒有回應...";
                 
-                if (!serverResponse.new_clue_discovered && npcResponseToDisplay.trim() === GENERIC_OFF_TRACK_PHRASE.trim()) {
+                // 前端通用無關回應的替換邏輯
+                const offTrackKeywords = ["摸不著頭腦", "換個方向試試", "不太對勁", "有點距離"]; // 可以擴充更多觸發詞
+                let isGenericOffTrackByKeywords = offTrackKeywords.some(keyword => npcResponseToDisplay.includes(keyword));
+                
+                if (!serverResponse.new_clue_discovered && 
+                    (npcResponseToDisplay.trim() === GENERIC_OFF_TRACK_PHRASE.trim() || isGenericOffTrackByKeywords) ) {
                     npcResponseToDisplay = OFF_TRACK_RESPONSES[Math.floor(Math.random() * OFF_TRACK_RESPONSES.length)];
+                    console.log("前端觸發了通用無關回應替換。原始AI回應:", serverResponse.npc_response, "替換後:", npcResponseToDisplay);
                 }
                 addDialogue("npc", npcResponseToDisplay);
 
@@ -1494,12 +1538,13 @@
             // Reset game state variables
             CURRENT_STORY_DATA = { 
                 gameId: null, title: "尚未生成", initialScenario: "請先選擇一個故事類型。", solution: null, 
-                hints: [], sessionHintPool: [], hostingStyle: "標準", storySummary: "AI 正在整理思緒...", 
+                sessionHintPool: [], hostingStyle: "標準", storySummary: "AI 正在整理思緒...", 
                 playerTitle: "偵探新手", is_cheated: false,
                 qi: { text: null, revealed: false, id_prefix: "qi" },
                 cheng: { text: null, revealed: false, id_prefix: "cheng" },
                 zhuan: { text: null, revealed: false, id_prefix: "zhuan" },
-                he: { text: null, revealed: false, id_prefix: "he" }
+                he: { text: null, revealed: false, id_prefix: "he" },
+                qcth_specific_hints_received: { qi: null, cheng: null, zhuan: null, he: null }
             };
             isGameStarted = false;
             gameEnded = false;
@@ -1528,14 +1573,24 @@
         
         if(newHintButtonEl) newHintButtonEl.addEventListener('click', () => {
             if (hintsRemaining > 0 && !gameEnded && CURRENT_STORY_DATA.gameId) {
-                let hintToGive = "沒有更多獨特的提示了，試試這個吧！";
+                let hintToGive = "沒有更多獨特的提示了，試試這個吧！"; // Default if pool is empty
                 
                 if (CURRENT_STORY_DATA.sessionHintPool && CURRENT_STORY_DATA.sessionHintPool.length > 0) {
                     hintToGive = CURRENT_STORY_DATA.sessionHintPool.pop(); // Get a hint from the shuffled pool
+                    console.log("從 sessionHintPool 取出的提示:", hintToGive);
                 } else {
-                    // Fallback if pool is exhausted (should not happen if MAX_HINTS <= pool.length)
-                    hintToGive = DEFAULT_HINTS[Math.floor(Math.random() * DEFAULT_HINTS.length)];
-                    showToast("所有專屬提示已用完，提供一個通用提示。", "info");
+                    // This case should ideally not be reached if MAX_HINTS is less than or equal to
+                    // the initial size of sessionHintPool (which includes DEFAULT_HINTS).
+                    // However, as a fallback:
+                    if (DEFAULT_HINTS.length > 0) {
+                        hintToGive = DEFAULT_HINTS[Math.floor(Math.random() * DEFAULT_HINTS.length)];
+                        showToast("所有專屬提示已用完，提供一個通用提示。", "info");
+                        console.log("sessionHintPool 已空，從 DEFAULT_HINTS 取出備用提示:", hintToGive);
+                    } else {
+                        showToast("所有提示已用盡！", "info");
+                        console.warn("sessionHintPool 和 DEFAULT_HINTS 都已空，無法提供提示。");
+                        return; // No hints left to give
+                    }
                 }
                 
                 addDialogue("npc", `提示：${hintToGive}`);
