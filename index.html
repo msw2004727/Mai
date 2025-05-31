@@ -177,8 +177,6 @@
             border-left: 4px solid var(--accent-yellow);
             padding-left: 10px;
         }
-        /* 移除了 .player-solution-attempt 樣式，因為不再有專門的解答泡泡 */
-
 
         .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
         .modal.active { opacity: 1; visibility: visible; }
@@ -209,7 +207,6 @@
         #story-intro-modal ul li { margin-bottom: 0.2rem; }
         #story-intro-modal .btn { margin-top: 1.2rem; }
 
-        /* 故事進展 Modal 樣式調整 */
         #story-progress-modal h2 { font-size: 1.2rem; margin-bottom: 0.6rem;}
         #qcth-details-container .qcth-item { margin-bottom: 0.75rem; padding: 0.75rem; border-radius: 6px; background-color: rgba(75, 85, 99, 0.3); border-left: 3px solid var(--accent-blue); }
         #qcth-details-container .qcth-item h4 { font-size: 1rem; font-weight: 600; color: var(--accent-yellow); margin-bottom: 0.25rem; }
@@ -277,86 +274,85 @@
           width: 100%;
         }
         #loading-modal-tips span {
-            position:absolute; /* [cite: index.html] */
-            width:100%; /* [cite: index.html] */
-            left:0; /* [cite: index.html] */
-            text-align:center; /* [cite: index.html] */
-            opacity:0; /* [cite: index.html] */
-            animation-name: tip-fade-individual; /* [cite: index.html] */
-            animation-duration: 4s; /* [cite: index.html] */
-            animation-iteration-count: infinite; /* [cite: index.html] */
-            transform: translateY(5px); /* [cite: index.html] */
+            position:absolute; 
+            width:100%; 
+            left:0; 
+            text-align:center; 
+            opacity:0; 
+            animation-name: tip-fade-individual; 
+            animation-duration: 4s; 
+            animation-iteration-count: infinite; 
+            transform: translateY(5px); 
         }
-        #loading-modal-tips span:nth-child(1) { animation-delay: 0s; } /* [cite: index.html] */
-        #loading-modal-tips span:nth-child(2) { animation-delay: 4s; } /* [cite: index.html] */
-        #loading-modal-tips span:nth-child(3) { animation-delay: 8s; } /* [cite: index.html] */
+        #loading-modal-tips span:nth-child(1) { animation-delay: 0s; } 
+        #loading-modal-tips span:nth-child(2) { animation-delay: 4s; } 
+        #loading-modal-tips span:nth-child(3) { animation-delay: 8s; } 
 
-        @keyframes tip-fade-individual { /* [cite: index.html] */
-            0%, 100% { opacity: 0; transform: translateY(5px); } /* [cite: index.html] */
-            25%, 75% { opacity: 1; transform: translateY(0); } /* [cite: index.html] */
+        @keyframes tip-fade-individual { 
+            0%, 100% { opacity: 0; transform: translateY(5px); } 
+            25%, 75% { opacity: 1; transform: translateY(0); } 
         }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } } /* [cite: index.html] */
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } } 
 
-        /* Game Over Modal Enhancements */
-        #game-over-modal .modal-content { text-align: center; } /* [cite: index.html] */
-        #game-over-trophy { /* New ID for the trophy image/icon */ /* [cite: index.html] */
-            font-size: 5rem; /* Large trophy icon */ /* [cite: index.html] */
-            color: var(--accent-gold); /* [cite: index.html] */
-            margin-bottom: 1rem; /* [cite: index.html] */
+        #game-over-modal .modal-content { text-align: center; } 
+        #game-over-trophy { 
+            font-size: 5rem; 
+            color: var(--accent-gold); 
+            margin-bottom: 1rem; 
         }
-        #game-over-modal h2 { font-size: 1.8rem; margin-bottom: 0.5rem; } /* [cite: index.html] */
-        #player-title-display { font-size: 1.3rem; color: var(--accent-yellow); margin-bottom: 1rem; font-weight: bold;} /* [cite: index.html] */
+        #game-over-modal h2 { font-size: 1.8rem; margin-bottom: 0.5rem; } 
+        #player-title-display { font-size: 1.3rem; color: var(--accent-yellow); margin-bottom: 1rem; font-weight: bold;} 
         #game-over-solution-reveal {
-            font-size: 0.95rem; /* [cite: index.html] */
-            color: var(--text-light-secondary); /* [cite: index.html] */
-            margin-bottom: 1.5rem; /* [cite: index.html] */
-            padding: 10px; /* [cite: index.html] */
-            background-color: var(--bg-dark-secondary); /* [cite: index.html] */
-            border-radius: 6px; /* [cite: index.html] */
-            text-align: left; /* [cite: index.html] */
-            max-height: 150px; /* [cite: index.html] */
-            overflow-y: auto; /* [cite: index.html] */
+            font-size: 0.95rem; 
+            color: var(--text-light-secondary); 
+            margin-bottom: 1.5rem; 
+            padding: 10px; 
+            background-color: var(--bg-dark-secondary); 
+            border-radius: 6px; 
+            text-align: left; 
+            max-height: 150px; 
+            overflow-y: auto; 
         }
-        #game-over-solution-reveal strong { color: var(--accent-yellow); } /* [cite: index.html] */
+        #game-over-solution-reveal strong { color: var(--accent-yellow); } 
 
-        .stats-grid-gameover { /* New class for styling game over stats */ /* [cite: index.html] */
-            display: flex; /* [cite: index.html] */
-            flex-direction: column; /* [cite: index.html] */
-            gap: 0.8rem; /* Space between stat items */ /* [cite: index.html] */
-            font-size: 1rem; /* Larger font for stats */ /* [cite: index.html] */
-            margin-bottom: 1.8rem; /* [cite: index.html] */
-            width: 100%; /* [cite: index.html] */
-            max-width: 300px; /* Limit width for better centering */ /* [cite: index.html] */
-            margin-left: auto; /* [cite: index.html] */
-            margin-right: auto; /* [cite: index.html] */
+        .stats-grid-gameover { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 0.8rem; 
+            font-size: 1rem; 
+            margin-bottom: 1.8rem; 
+            width: 100%; 
+            max-width: 300px; 
+            margin-left: auto; 
+            margin-right: auto; 
         }
         .stat-item {
-            display: flex; /* [cite: index.html] */
-            justify-content: space-between; /* Label on left, value on right */ /* [cite: index.html] */
-            padding: 0.5rem 0.8rem; /* [cite: index.html] */
-            background-color: var(--bg-dark-secondary); /* [cite: index.html] */
-            border-radius: 6px; /* [cite: index.html] */
+            display: flex; 
+            justify-content: space-between; 
+            padding: 0.5rem 0.8rem; 
+            background-color: var(--bg-dark-secondary); 
+            border-radius: 6px; 
         }
         .stat-label {
-            font-weight: 500; /* [cite: index.html] */
-            color: var(--text-light-secondary); /* [cite: index.html] */
+            font-weight: 500; 
+            color: var(--text-light-secondary); 
         }
         .stat-value {
-            font-weight: 600; /* [cite: index.html] */
-            color: var(--text-light); /* [cite: index.html] */
+            font-weight: 600; 
+            color: var(--text-light); 
         }
-        .game-over-buttons { display: flex; flex-direction: column; gap: 0.6rem; } /* [cite: index.html] */
+        .game-over-buttons { display: flex; flex-direction: column; gap: 0.6rem; } 
 
         /* Leaderboard Modal New Styles */
         #leaderboard-modal .modal-content {
             background-color: var(--leaderboard-bg); 
             max-width: 90vw; 
             width: auto;
-            min-width: 360px; /* Adjusted min-width for better small screen fit */
+            min-width: 360px; 
         }
         @media (min-width: 768px) {
             #leaderboard-modal .modal-content {
-                max-width: 750px; /* Adjusted for better content fit */
+                max-width: 750px; 
             }
         }
 
@@ -378,10 +374,10 @@
 
         #leaderboard-table th,
         #leaderboard-table td {
-            padding: 12px 15px; /* Increased padding for better spacing */
+            padding: 12px 15px; 
             text-align: left;
             border-bottom: 1px solid var(--leaderboard-border-color);
-            vertical-align: middle; /* Ensure vertical alignment */
+            vertical-align: middle; 
         }
 
         #leaderboard-table thead th { 
@@ -392,26 +388,25 @@
             white-space: nowrap; 
         }
         
-        /* Specific column alignments and widths for better readability */
-        #leaderboard-table th:nth-child(1), /* 排名 */
+        #leaderboard-table th:nth-child(1), 
         #leaderboard-table td:nth-child(1) { text-align: center; width: 8%; }
 
-        #leaderboard-table th:nth-child(2), /* 暱稱 */
+        #leaderboard-table th:nth-child(2), 
         #leaderboard-table td:nth-child(2) { width: 20%; } 
 
-        #leaderboard-table th:nth-child(3), /* 劇本 */
+        #leaderboard-table th:nth-child(3), 
         #leaderboard-table td:nth-child(3) { width: 20%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-        #leaderboard-table th:nth-child(4), /* 回合 */
+        #leaderboard-table th:nth-child(4), 
         #leaderboard-table td:nth-child(4) { text-align: center; width: 10%;}
 
-        #leaderboard-table th:nth-child(5), /* 解答字數 */
+        #leaderboard-table th:nth-child(5), 
         #leaderboard-table td:nth-child(5) { text-align: center; width: 12%;}
 
-        #leaderboard-table th:nth-child(6), /* 稱號 */
+        #leaderboard-table th:nth-child(6), 
         #leaderboard-table td:nth-child(6) { width: 15%; }
 
-        #leaderboard-table th:nth-child(7), /* 完成時間 */
+        #leaderboard-table th:nth-child(7), 
         #leaderboard-table td:nth-child(7) { width: 15%; white-space: nowrap; font-size: 0.8rem; color: var(--text-light-secondary); text-align: right; }
 
 
@@ -425,56 +420,56 @@
         #leaderboard-table thead { display: table-header-group; }
 
 
-        #ai-maintenance-modal .modal-content { text-align: center; } /* [cite: index.html] */
-        #ai-maintenance-modal h2 { font-size: 1.3rem; margin-bottom: 1rem; color: var(--accent-red); } /* [cite: index.html] */
-        #ai-maintenance-modal p { font-size: 1rem; margin-bottom: 1.2rem; white-space: pre-wrap; } /* [cite: index.html] */
+        #ai-maintenance-modal .modal-content { text-align: center; } 
+        #ai-maintenance-modal h2 { font-size: 1.3rem; margin-bottom: 1rem; color: var(--accent-red); } 
+        #ai-maintenance-modal p { font-size: 1rem; margin-bottom: 1.2rem; white-space: pre-wrap; } 
 
-        #nickname-modal .modal-content { max-width: 350px; } /* [cite: index.html] */
-        #nickname-input { width: 100%; padding: 8px 10px; margin-top: 10px; margin-bottom: 5px; border-radius: 6px; border: 1px solid var(--bg-dark-tertiary); background-color: var(--bg-dark-secondary); color: var(--text-light); font-size: 1rem; } /* [cite: index.html] */
+        #nickname-modal .modal-content { max-width: 350px; } 
+        #nickname-input { width: 100%; padding: 8px 10px; margin-top: 10px; margin-bottom: 5px; border-radius: 6px; border: 1px solid var(--bg-dark-tertiary); background-color: var(--bg-dark-secondary); color: var(--text-light); font-size: 1rem; } 
         #ad-placeholder {
-            width: 100%; /* [cite: index.html] */
-            height: 60px; /* [cite: index.html] */
-            background-color: var(--bg-dark-tertiary); /* [cite: index.html] */
-            border: 1px dashed var(--text-light-secondary); /* [cite: index.html] */
-            border-radius: 6px; /* [cite: index.txt] */
-            display: flex; /* [cite: index.html] */
-            align-items: center; /* [cite: index.html] */
-            justify-content: center; /* [cite: index.html] */
-            color: var(--text-light-secondary); /* [cite: index.html] */
-            font-size: 0.8rem; /* [cite: index.html] */
-            margin-top: 10px; /* [cite: index.html] */
-            margin-bottom: 10px; /* [cite: index.html] */
+            width: 100%; 
+            height: 60px; 
+            background-color: var(--bg-dark-tertiary); 
+            border: 1px dashed var(--text-light-secondary); 
+            border-radius: 6px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            color: var(--text-light-secondary); 
+            font-size: 0.8rem; 
+            margin-top: 10px; 
+            margin-bottom: 10px; 
         }
 
         .toast {
-            position: fixed; /* [cite: index.html] */
-            bottom: 20px; /* [cite: index.html] */
-            left: 50%; /* [cite: index.html] */
-            transform: translateX(-50%); /* [cite: index.html] */
-            background-color: var(--toast-yellow-bg); /* [cite: index.html] */
-            color: var(--toast-yellow-text); /* [cite: index.html] */
-            padding: 10px 20px; /* [cite: index.html] */
-            border-radius: 6px; /* [cite: index.html] */
-            font-size: 0.9rem; /* [cite: index.html] */
-            z-index: 2000; /* [cite: index.html] */
-            opacity: 0; /* [cite: index.html] */
-            visibility: hidden; /* [cite: index.html] */
-            transition: opacity 0.3s ease, visibility 0.3s ease, bottom 0.3s ease; /* [cite: index.html] */
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1); /* [cite: index.html] */
+            position: fixed; 
+            bottom: 20px; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            background-color: var(--toast-yellow-bg); 
+            color: var(--toast-yellow-text); 
+            padding: 10px 20px; 
+            border-radius: 6px; 
+            font-size: 0.9rem; 
+            z-index: 2000; 
+            opacity: 0; 
+            visibility: hidden; 
+            transition: opacity 0.3s ease, visibility 0.3s ease, bottom 0.3s ease; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
         }
-        .toast.show { opacity: 1; visibility: visible; bottom: 30px; } /* [cite: index.html] */
-        .toast.error { background-color: var(--accent-red); color: var(--text-light); } /* [cite: index.html] */
-        .toast.info { background-color: var(--accent-blue); color: var(--text-light); } /* [cite: index.html] */
+        .toast.show { opacity: 1; visibility: visible; bottom: 30px; } 
+        .toast.error { background-color: var(--accent-red); color: var(--text-light); } 
+        .toast.info { background-color: var(--accent-blue); color: var(--text-light); } 
 
 
-        .btn { background-color: var(--accent-blue); color: var(--text-light); padding: 8px 15px; border-radius: 6px; border: none; cursor: pointer; font-weight: 500; transition: background-color 0.2s ease; font-size: 0.95rem; } /* [cite: index.html] */
-        .btn:hover { background-color: #2563eb; } /* [cite: index.html] */
-        .btn-secondary { background-color: var(--bg-dark-tertiary); } /* [cite: index.html] */
-        .btn-secondary:hover { background-color: #5c677a; } /* [cite: index.html] */
-        .btn:disabled { background-color: var(--bg-dark-tertiary); color: var(--text-light-secondary); cursor: not-allowed; } /* [cite: index.html] */
-        .btn-gold { background-color: var(--accent-gold); color: var(--bg-dark); font-weight: bold; border: 1px solid #daa520; } /* [cite: index.html] */
-        .btn-gold:hover { background-color: #e6c300; } /* [cite: index.html] */
-        #leaderboard-btn-ingame { font-size: 0.8rem !important; padding: 4px 6px !important; } /* [cite: index.html] */
+        .btn { background-color: var(--accent-blue); color: var(--text-light); padding: 8px 15px; border-radius: 6px; border: none; cursor: pointer; font-weight: 500; transition: background-color 0.2s ease; font-size: 0.95rem; } 
+        .btn:hover { background-color: #2563eb; } 
+        .btn-secondary { background-color: var(--bg-dark-tertiary); } 
+        .btn-secondary:hover { background-color: #5c677a; } 
+        .btn:disabled { background-color: var(--bg-dark-tertiary); color: var(--text-light-secondary); cursor: not-allowed; } 
+        .btn-gold { background-color: var(--accent-gold); color: var(--bg-dark); font-weight: bold; border: 1px solid #daa520; } 
+        .btn-gold:hover { background-color: #e6c300; } 
+        #leaderboard-btn-ingame { font-size: 0.8rem !important; padding: 4px 6px !important; } 
 
     </style>
 </head>
@@ -589,7 +584,7 @@
         <div class="modal-content">
             <div class="loading-spinner"></div>
             <p id="loading-text" class="text-lg font-semibold my-2">AI 正在熬製湯底，請稍候...</p>
-            <img id="loading-ad-placeholder" src="https://github.com/msw2004727/Mai/blob/main/0001.jpg.png?raw=true" alt="載入中" width="300" height="50">
+            <div id="loading-ad-placeholder">[圖片：載入中圖片 (300x50)]</div>
             <div id="loading-modal-tips">
                 <span>提示：線索可能藏在不起眼的細節中...</span>
                 <span>提示：試著排除不可能的情況...</span>
@@ -641,7 +636,8 @@
                         <th>暱稱</th>
                         <th>劇本</th>
                         <th>回合</th>
-                        <th>解答字數</th> <th>稱號</th>
+                        <th>解答字數</th> 
+                        <th>稱號</th>
                         <th>完成時間</th>
                     </tr>
                 </thead>
@@ -668,7 +664,7 @@
             </button>
             <h2 class="text-lg font-semibold mb-2 text-center">請輸入您的暱稱開始遊戲</h2>
             <input type="text" id="nickname-input" placeholder="請輸入暱稱 (最多10個字)" maxlength="10">
-            <img id="loading-ad-placeholder" src="https://github.com/msw2004727/Mai/blob/main/0002.jpg.png?raw=true" alt="載入中" width="300" height="100">
+            <div id="ad-placeholder">[圖片：圖片保留位置 (300x60)]</div>
             <button id="save-nickname-btn" class="btn w-full mt-3">遊戲開始</button>
         </div>
     </div>
@@ -677,7 +673,6 @@
 
     <script>
         // --- API URLs ---
-        // Restored absolute URLs
         const BASE_API_URL = 'https://d1d5ef45-d04b-4a1c-be4b-64a0680c6847-00-xxpggv06ka2e.sisko.replit.dev';
         const HAIGUITANG_GAME_START_URL = `${BASE_API_URL}/haiguitang/game/start`;
         const HAIGUITANG_GAME_GUESS_URL_TEMPLATE = `${BASE_API_URL}/haiguitang/game/{gameId}/guess`;
@@ -691,7 +686,6 @@
             title: "尚未生成",
             initialScenario: "請先選擇一個故事類型。",
             solution: null, 
-            // hints: [], // 舊的通用AI提示，現在由 qcth_specific_hints_received 和 sessionHintPool 管理
             sessionHintPool: [], 
             hostingStyle: "標準",
             storySummary: "AI 正在整理思緒...", 
@@ -701,7 +695,7 @@
             cheng: { text: null, revealed: false, id_prefix: "cheng" },
             zhuan: { text: null, revealed: false, id_prefix: "zhuan" },
             he: { text: null, revealed: false, id_prefix: "he" },
-            qcth_specific_hints_received: { qi: null, cheng: null, zhuan: null, he: null } // 新增：儲存從後端接收的QCTH專屬提示
+            qcth_specific_hints_received: { qi: null, cheng: null, zhuan: null, he: null } 
         };
         const DEFAULT_HINTS = [ "試著從地點、人物、物品、時間、原因等方向提問。", "受害者的死法是否常見？", "現場是否有不尋常的物品？", "死者是否有仇家？", "兇手是否在現場留下了什麼？" ];
         let playerNickname = "匿名玩家";
@@ -905,7 +899,6 @@
             if (serverResponse && serverResponse.success && serverResponse.game_id && serverResponse.game_data) {
                 console.log("從後端收到的完整 game_data:", JSON.parse(JSON.stringify(serverResponse.game_data)));
                 
-                // 儲存 QCTH 專屬提示，並提供預設回退文本
                 CURRENT_STORY_DATA.qcth_specific_hints_received = {
                     qi: serverResponse.game_data.qi_hint || "【起】的提示暫缺",
                     cheng: serverResponse.game_data.cheng_hint || "【承】的提示暫缺",
@@ -915,10 +908,9 @@
                 console.log("收到的 QCTH 專屬提示 (原始):", CURRENT_STORY_DATA.qcth_specific_hints_received);
 
                 let validQCTHHints = [];
-                // 輔助函數，檢查提示是否有效（非空且不是後端預設的錯誤/未生成訊息）
                 function isValidBackendHint(hintText) {
                     if (typeof hintText === 'string' && hintText.trim() !== '') {
-                        const backendPlaceholders = ["努力生成中", "提示暫缺", "獲取失敗"]; // 這些是 game_manager 可能的預設回退
+                        const backendPlaceholders = ["努力生成中", "提示暫缺", "獲取失敗"]; 
                         return !backendPlaceholders.some(placeholder => hintText.includes(placeholder));
                     }
                     return false;
@@ -931,7 +923,6 @@
                 
                 console.log("過濾後有效的 QCTH 專屬提示 (用於提示池):", validQCTHHints);
 
-                // 創建提示池：優先使用有效的 QCTH 專屬提示，然後是 DEFAULT_HINTS 作為備用
                 CURRENT_STORY_DATA.sessionHintPool = [...new Set([...validQCTHHints, ...DEFAULT_HINTS])].sort(() => 0.5 - Math.random());
                 
                 console.log("最終的提示池 (sessionHintPool):", CURRENT_STORY_DATA.sessionHintPool);
@@ -942,7 +933,6 @@
                      console.info("本次 AI 未提供任何有效的 QCTH 專屬提示，提示池將主要依賴 DEFAULT_HINTS。");
                 }
                 
-                // 儲存其他故事資料
                 CURRENT_STORY_DATA.gameId = serverResponse.game_id;
                 CURRENT_STORY_DATA.title = serverResponse.game_data.title || "未知標題";
                 CURRENT_STORY_DATA.initialScenario = serverResponse.game_data.initialScenario || "謎題描述缺失。";
@@ -975,7 +965,6 @@
         function initGame() {
             turnCount = 0;
             totalCharCount = 0;
-            // sessionHintPool 和 hintsRemaining 的初始化已移至 generateInitialStoryWithAI
             
             ['qi', 'cheng', 'zhuan', 'he'].forEach(key => {
                 if(CURRENT_STORY_DATA[key]) CURRENT_STORY_DATA[key].revealed = false;
@@ -1016,21 +1005,25 @@
 
             if (result && result.success) {
                 addDialogue("npc", `神秘代碼 '${cheatCode}' 已成功啟用！<br>${result.message || '真相即將揭曉！'}`);
-                if (result.full_solution) {
-                    CURRENT_STORY_DATA.solution = result.full_solution; 
-                    addDialogue("npc", `完整真相是：<br>${CURRENT_STORY_DATA.solution.replace(/\n/g, '<br>')}`);
-                }
-                ['qi', 'cheng', 'zhuan', 'he'].forEach(key => {
-                    if(CURRENT_STORY_DATA[key]) {
-                        CURRENT_STORY_DATA[key].revealed = true;
-                        if(!CURRENT_STORY_DATA[key].text && CURRENT_STORY_DATA.solution) {
-                             CURRENT_STORY_DATA[key].text = `(${key.toUpperCase()}) 線索已透過密碼揭露。`;
+                
+                // 後端作弊碼回應現在包含 player_title, full_solution, qcth_clues_status, rounds_played
+                if(result.qcth_clues_status) {
+                    for (const key in result.qcth_clues_status) {
+                        if (CURRENT_STORY_DATA[key]) {
+                            CURRENT_STORY_DATA[key].revealed = result.qcth_clues_status[key];
                         }
                     }
-                });
-                updateQCTHDisplay();
-                const playerTitle = result.is_cheated ? "作弊大師" : (result.player_title || "海龜湯高手");
-                endGame(true, playerTitle, true, result.rounds_played);
+                }
+                updateQCTHDisplay(); // 更新QCTH顯示
+
+                endGame(
+                    result.player_won || true, // 作弊視為勝利
+                    result.player_title || "作弊大師", 
+                    result.is_cheated || true, 
+                    result.rounds_played !== undefined ? result.rounds_played : turnCount,
+                    result.message || "作弊成功！真相已揭曉！",
+                    result.full_solution || CURRENT_STORY_DATA.solution // 使用後端提供的解答
+                );
             } else {
                 showToast(result && result.error ? result.error : "作弊碼處理失敗或無效。", "error");
             }
@@ -1073,8 +1066,7 @@
             if (serverResponse && serverResponse.success) {
                 let npcResponseToDisplay = serverResponse.npc_response || "NPC 似乎沒有回應...";
                 
-                // 前端通用無關回應的替換邏輯
-                const offTrackKeywords = ["摸不著頭腦", "換個方向試試", "不太對勁", "有點距離"]; // 可以擴充更多觸發詞
+                const offTrackKeywords = ["摸不著頭腦", "換個方向試試", "不太對勁", "有點距離"]; 
                 let isGenericOffTrackByKeywords = offTrackKeywords.some(keyword => npcResponseToDisplay.includes(keyword));
                 
                 if (!serverResponse.new_clue_discovered && 
@@ -1084,35 +1076,21 @@
                 }
                 addDialogue("npc", npcResponseToDisplay);
 
-                if (serverResponse.new_clue_discovered && typeof serverResponse.new_clue_discovered === 'string') {
-                    const discoveredClueText = serverResponse.new_clue_discovered.trim();
-                    let qcthKeyRevealed = null;
-
-                    for (const key of ['qi', 'cheng', 'zhuan', 'he']) {
-                        if (CURRENT_STORY_DATA[key] && !CURRENT_STORY_DATA[key].revealed && 
-                            CURRENT_STORY_DATA[key].text && discoveredClueText.includes(CURRENT_STORY_DATA[key].text.substring(0,10))) { 
-                            CURRENT_STORY_DATA[key].revealed = true;
-                            CURRENT_STORY_DATA[key].text = discoveredClueText; 
-                            qcthKeyRevealed = key;
-                            break;
-                        } else if (CURRENT_STORY_DATA[key] && !CURRENT_STORY_DATA[key].revealed && serverResponse.revealed_clue_type === key) {
-                            CURRENT_STORY_DATA[key].revealed = true;
-                            CURRENT_STORY_DATA[key].text = discoveredClueText;
-                            qcthKeyRevealed = key;
-                            break;
+                if (serverResponse.qcth_clues_status) {
+                    for (const key in serverResponse.qcth_clues_status) {
+                        if (CURRENT_STORY_DATA[key] && CURRENT_STORY_DATA[key].revealed !== serverResponse.qcth_clues_status[key]) {
+                            CURRENT_STORY_DATA[key].revealed = serverResponse.qcth_clues_status[key];
+                            if (CURRENT_STORY_DATA[key].revealed && serverResponse.revealed_clue_type === key && serverResponse.new_clue_discovered) {
+                                // 如果是剛揭露的 QCTH 線索，更新其文本
+                                CURRENT_STORY_DATA[key].text = serverResponse.new_clue_discovered;
+                                const qcthNames = {qi: "【起】", cheng: "【承】", zhuan: "【轉】", he: "【合】"};
+                                showToast(`新線索 ${qcthNames[key]} 已揭露！`);
+                                addDialogue("npc", `你發現了 ${qcthNames[key]} 的線索：<br>${CURRENT_STORY_DATA[key].text.replace(/\n/g, '<br>')}`, "dialogue-highlight");
+                            }
                         }
                     }
-
-                    if (qcthKeyRevealed) {
-                        const qcthNames = {qi: "【起】", cheng: "【承】", zhuan: "【轉】", he: "【合】"};
-                        showToast(`新線索 ${qcthNames[qcthKeyRevealed]} 已揭露！`);
-                        addDialogue("npc", `你發現了 ${qcthNames[qcthKeyRevealed]} 的線索：<br>${CURRENT_STORY_DATA[qcthKeyRevealed].text.replace(/\n/g, '<br>')}`, "dialogue-highlight");
-                        updateQCTHDisplay();
-                        checkWinCondition(); 
-                    } else {
-                        console.log("揭露的線索非主要的起承轉合線索，或無法匹配:", discoveredClueText);
-                    }
                 }
+                updateQCTHDisplay(); 
                 
                 if (serverResponse.story_summary) {
                     CURRENT_STORY_DATA.storySummary = serverResponse.story_summary;
@@ -1121,7 +1099,21 @@
                     CURRENT_STORY_DATA.storySummary = `已揭露 ${revealedQCTHCount}/4 個關鍵線索。AI 正在整理目前的遊戲進展...`;
                 }
                 updateStoryDisplayPreview(); 
-                updateQCTHDisplay(); 
+                
+                // 遊戲結束判斷完全依賴後端傳來的 serverResponse.game_over
+                if (serverResponse.game_over) {
+                    if (!gameEnded) { // 確保 endGame 只被調用一次
+                        endGame(
+                            serverResponse.player_won,
+                            serverResponse.player_title_if_won || (serverResponse.player_won ? "海龜湯達人" : "再接再厲"), 
+                            serverResponse.is_cheated || false, 
+                            serverResponse.rounds_played,
+                            serverResponse.victory_message, // 使用後端提供的勝利訊息
+                            serverResponse.full_solution_if_game_over // 使用後端提供的解答
+                        );
+                    }
+                }
+
             } else {
                 addDialogue("npc", (serverResponse && serverResponse.error) || "抱歉，我現在有點混亂，請稍後再試一次。 (回應格式錯誤)");
             }
@@ -1146,43 +1138,45 @@
             }
         }
 
-        async function endGame(isWin, playerTitleFromAI = "海龜湯高手", isCheated = false, roundsFromServer = null) {
+        async function endGame(isWin, playerTitleFromAI, isCheated, roundsFromServer, victoryMessageFromServer, solutionFromServer) {
+            if (gameEnded) return; // 防止重複觸發
             gameEnded = true;
             gameWon = isWin;
             if(playerInputEl) playerInputEl.disabled = true;
             if(newHintButtonEl) newHintButtonEl.disabled = true;
 
             const finalTurns = roundsFromServer !== null ? roundsFromServer : turnCount;
-            CURRENT_STORY_DATA.is_cheated = isCheated;
+            CURRENT_STORY_DATA.is_cheated = isCheated; // 儲存作弊狀態
 
-            if (!CURRENT_STORY_DATA.solution && CURRENT_STORY_DATA.gameId) {
-                console.warn("遊戲結束時，CURRENT_STORY_DATA.solution 未被設定。");
-                CURRENT_STORY_DATA.solution = "謎底未能正確獲取，請檢查後端。";
+            const finalSolution = solutionFromServer || CURRENT_STORY_DATA.solution || "謎底未能正確獲取。";
+            if (!CURRENT_STORY_DATA.solution && solutionFromServer) { // 更新本地的solution副本
+                CURRENT_STORY_DATA.solution = solutionFromServer;
             }
+
 
             if (isWin) {
                 if(gameOverTrophyEl) gameOverTrophyEl.textContent = isCheated ? "🤫" : "🏆";
                 if(gameOverTitleEl) {
-                    gameOverTitleEl.textContent = isCheated ? "作弊成功!" : "🎉 恭喜！成功揭露所有線索！ 🎉";
+                    gameOverTitleEl.textContent = victoryMessageFromServer || (isCheated ? "作弊成功!" : "🎉 恭喜！成功揭露所有線索！ 🎉");
                     gameOverTitleEl.className = `font-bold text-2xl ${isCheated ? 'text-yellow-400' : 'text-green-400'}`;
                 }
-                if(playerTitleDisplayEl) playerTitleDisplayEl.textContent = `稱號：${playerTitleFromAI}`;
+                if(playerTitleDisplayEl) playerTitleDisplayEl.textContent = `稱號：${playerTitleFromAI || "海龜湯高手"}`;
                 if(gameOverSolutionRevealEl) gameOverSolutionRevealEl.style.display = 'block'; 
-                if(finalSolutionTextEl) finalSolutionTextEl.innerHTML = (CURRENT_STORY_DATA.solution).replace(/\n/g, '<br>');
+                if(finalSolutionTextEl) finalSolutionTextEl.innerHTML = finalSolution.replace(/\n/g, '<br>');
 
                 if (!isCheated) {
-                    await saveToLeaderboard(playerNickname, finalTurns, CURRENT_STORY_DATA.solution ? CURRENT_STORY_DATA.solution.length : 0, playerTitleFromAI);
+                    await saveToLeaderboard(playerNickname, finalTurns, finalSolution.length, playerTitleFromAI || "海龜湯高手");
                 }
             } else { 
                 if(gameOverTrophyEl) gameOverTrophyEl.textContent = "🤔"; 
                 if(gameOverTitleEl) {
-                    gameOverTitleEl.textContent = "遊戲結束"; 
+                    gameOverTitleEl.textContent = victoryMessageFromServer || "遊戲結束"; 
                     gameOverTitleEl.className = "font-bold text-2xl text-yellow-400";
                 }
-                if(playerTitleDisplayEl) playerTitleDisplayEl.textContent = "稱號：再接再厲的偵探";
+                if(playerTitleDisplayEl) playerTitleDisplayEl.textContent = `稱號：${playerTitleFromAI || "再接再厲的偵探"}`;
                 if(gameOverSolutionRevealEl) gameOverSolutionRevealEl.style.display = 'block';
-                if(finalSolutionTextEl) finalSolutionTextEl.innerHTML = (CURRENT_STORY_DATA.solution).replace(/\n/g, '<br>');
-                addDialogue("npc", `遊戲結束。正確答案是：<br>${(CURRENT_STORY_DATA.solution).replace(/\n/g, '<br>')}`);
+                if(finalSolutionTextEl) finalSolutionTextEl.innerHTML = finalSolution.replace(/\n/g, '<br>');
+                // 如果不是勝利，通常不會記錄到排行榜，除非有特殊邏輯
             }
             if(statNicknameEl) statNicknameEl.textContent = playerNickname;
             if(statTurnsEl) statTurnsEl.textContent = finalTurns;
@@ -1232,16 +1226,20 @@
             }
         }
         
+        // checkWinCondition 函數不再直接調用 endGame，遊戲結束狀態由後端決定
         function checkWinCondition() {
-            if (CURRENT_STORY_DATA.qi.revealed &&
-                CURRENT_STORY_DATA.cheng.revealed &&
-                CURRENT_STORY_DATA.zhuan.revealed &&
-                CURRENT_STORY_DATA.he.revealed) {
-                if (!gameEnded) { 
-                    addDialogue("npc", "恭喜你！你已成功拼湊出所有「起承轉合」的關鍵線索，真相即將揭曉！", "dialogue-highlight");
-                    endGame(true, CURRENT_STORY_DATA.playerTitle || "海龜湯大偵探", false, turnCount);
-                }
+            // 此函數現在可以保留用於檢查本地數據是否全部揭露，主要用於UI更新，
+            // 但不再觸發 endGame。實際的遊戲結束和勝利判斷由後端 master。
+            // 例如，如果所有線索都揭露了，可以在這裡做一些UI上的慶祝，但遊戲狀態的改變依賴後端。
+            // 目前 `handlePlayerQuestion` 中已包含基於後端回應的 `endGame` 調用。
+            const allRevealed = CURRENT_STORY_DATA.qi.revealed &&
+                                CURRENT_STORY_DATA.cheng.revealed &&
+                                CURRENT_STORY_DATA.zhuan.revealed &&
+                                CURRENT_STORY_DATA.he.revealed;
+            if (allRevealed && !gameEnded) { // 只是為了日誌或未來可能的UI響應
+                console.log("前端偵測到所有QCTH線索已揭露 (遊戲結束應由後端確認)。");
             }
+            return allRevealed;
         }
 
         function updateStoryDisplayPreview() {
@@ -1306,14 +1304,13 @@
                     toastMessageEl.classList.add('error');
                 } else if (type === 'info') {
                     toastMessageEl.classList.add('info');
-                } else { // Default to success-like yellow
+                } else { 
                     toastMessageEl.style.backgroundColor = 'var(--toast-yellow-bg)';
                     toastMessageEl.style.color = 'var(--toast-yellow-text)';
                 }
-                // Clear explicit styles if class-based ones should take over
                 if (type === 'error' || type === 'info') {
-                     toastMessageEl.style.backgroundColor = ''; // Let CSS class define it
-                     toastMessageEl.style.color = ''; // Let CSS class define it
+                     toastMessageEl.style.backgroundColor = ''; 
+                     toastMessageEl.style.color = ''; 
                 }
 
                 setTimeout(() => {
@@ -1330,35 +1327,33 @@
             currentTipIndex = 0;
             for(let i = 0; i < tips.length; i++) {
                 tips[i].style.opacity = '0';
-                tips[i].style.animationName = 'none'; // Reset animation for direct control
+                tips[i].style.animationName = 'none'; 
             }
-            if (tips[currentTipIndex]) { // Show first tip immediately
+            if (tips[currentTipIndex]) { 
                 tips[currentTipIndex].style.opacity = '1';
                 tips[currentTipIndex].style.transform = 'translateY(0)';
             }
 
-            clearInterval(tipInterval); // Clear any existing interval
+            clearInterval(tipInterval); 
             tipInterval = setInterval(() => {
-                if (tips[currentTipIndex]) { // Fade out current tip
+                if (tips[currentTipIndex]) { 
                     tips[currentTipIndex].style.opacity = '0';
                     tips[currentTipIndex].style.transform = 'translateY(5px)';
                 }
-                currentTipIndex = (currentTipIndex + 1) % tips.length; // Move to next tip
-                // After a short delay (for fade out to complete), fade in the new tip
+                currentTipIndex = (currentTipIndex + 1) % tips.length; 
                 setTimeout(() => {
-                    // Ensure all other tips are hidden before showing the current one
                     for(let i = 0; i < tips.length; i++) {
                          if(i !== currentTipIndex && tips[i]) {
                             tips[i].style.opacity = '0';
                             tips[i].style.transform = 'translateY(5px)';
                          }
                     }
-                    if (tips[currentTipIndex]) { // Fade in new current tip
+                    if (tips[currentTipIndex]) { 
                         tips[currentTipIndex].style.opacity = '1';
                         tips[currentTipIndex].style.transform = 'translateY(0)';
                     }
-                }, 500); // Delay for fade-in, adjust as needed
-            }, 4000); // Interval between tip changes
+                }, 500); 
+            }, 4000); 
         }
 
         function stopTipCarousel() {
@@ -1368,8 +1363,8 @@
             const tips = tipsContainer.getElementsByTagName('span');
             for(let i = 0; i < tips.length; i++) {
                 if (tips[i]) {
-                    tips[i].style.opacity = '0'; // Hide all tips
-                    tips[i].style.animationName = 'tip-fade-individual'; // Restore CSS animation if needed elsewhere
+                    tips[i].style.opacity = '0'; 
+                    tips[i].style.animationName = 'tip-fade-individual'; 
                 }
             }
         }
@@ -1392,25 +1387,23 @@
                 const item = document.createElement('div');
                 item.classList.add('genre-item');
                 item.innerHTML = `<span class="genre-item-text">${genre}</span>`;
-                // Placeholder image generation
                 const bgColor = Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
-                const textColor = 'FFFFFF'; // White text for better contrast on random bg
-                const textForImage = encodeURIComponent(genre.substring(0,2)); // Use first two chars of genre
+                const textColor = 'FFFFFF'; 
+                const textForImage = encodeURIComponent(genre.substring(0,2)); 
                 item.style.backgroundImage = `url('https://placehold.co/100x100/${bgColor}/${textColor}?text=${textForImage}&font=roboto')`;
                 item.style.backgroundSize = 'cover';
                 item.style.backgroundPosition = 'center';
-                item.style.position = 'relative'; // For overlay
+                item.style.position = 'relative'; 
 
-                // Adding a semi-transparent overlay for better text readability
                 const overlay = document.createElement('div');
                 overlay.style.position = 'absolute';
                 overlay.style.top = '0';
                 overlay.style.left = '0';
                 overlay.style.width = '100%';
                 overlay.style.height = '100%';
-                overlay.style.backgroundColor = 'rgba(0,0,0,0.3)'; // Dark overlay
-                overlay.style.zIndex = '0'; // Behind the text
-                item.insertBefore(overlay, item.firstChild); // Insert overlay before text span
+                overlay.style.backgroundColor = 'rgba(0,0,0,0.3)'; 
+                overlay.style.zIndex = '0'; 
+                item.insertBefore(overlay, item.firstChild); 
 
                 item.addEventListener('click', () => generateInitialStoryWithAI(genre));
                 genreGridContainerEl.appendChild(item);
@@ -1429,8 +1422,8 @@
 
         async function showLeaderboard() {
             if(leaderboardLoadingEl) leaderboardLoadingEl.style.display = 'block';
-            if(leaderboardTableEl) leaderboardTableEl.style.display = 'none'; // Hide table while loading
-            if(leaderboardTableBodyEl) leaderboardTableBodyEl.innerHTML = ''; // Clear previous entries
+            if(leaderboardTableEl) leaderboardTableEl.style.display = 'none'; 
+            if(leaderboardTableBodyEl) leaderboardTableBodyEl.innerHTML = ''; 
             if(leaderboardEmptyMessageEl) leaderboardEmptyMessageEl.style.display = 'none';
             if(leaderboardErrorMessageEl) leaderboardErrorMessageEl.style.display = 'none';
             if(leaderboardModalEl) toggleModal(leaderboardModalEl, true);
@@ -1444,36 +1437,29 @@
                 if (entries.length === 0) {
                     if(leaderboardEmptyMessageEl) leaderboardEmptyMessageEl.style.display = 'block';
                 } else {
-                    if(leaderboardTableEl) leaderboardTableEl.style.display = 'table'; // Show table now
-                    entries.slice(0,10) // Show top 10
+                    if(leaderboardTableEl) leaderboardTableEl.style.display = 'table'; 
+                    entries.slice(0,10) 
                                  .forEach((entry, index) => {
                         const row = leaderboardTableBodyEl.insertRow();
                         
-                        // 排名
                         const rankCell = row.insertCell();
                         rankCell.textContent = index + 1;
                         
-                        // 暱稱
                         const nicknameCell = row.insertCell();
                         nicknameCell.textContent = entry.nickname || 'N/A';
                         
-                        // 劇本 (Placeholder, as it's not in backend data)
                         const storyCell = row.insertCell();
                         storyCell.textContent = '未知劇本'; 
                         
-                        // 回合
                         const roundsCell = row.insertCell();
                         roundsCell.textContent = entry.rounds !== undefined ? entry.rounds : 'N/A';
                         
-                        // 解答字數 (Using story_solution_length)
                         const lengthCell = row.insertCell();
                         lengthCell.textContent = entry.story_solution_length !== undefined ? entry.story_solution_length : 'N/A';
                         
-                        // 稱號
                         const titleCell = row.insertCell();
                         titleCell.textContent = entry.title_earned || 'N/A';
                         
-                        // 完成時間
                         const timeCell = row.insertCell();
                         try {
                             timeCell.textContent = entry.timestamp ? new Date(entry.timestamp).toLocaleString('zh-TW', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }) : 'N/A';
@@ -1488,7 +1474,6 @@
                 if(leaderboardErrorMessageEl) leaderboardErrorMessageEl.style.display = 'block';
             }
         }
-
 
         // --- Event Listeners ---
         if(startGameFromIntroBtn) startGameFromIntroBtn.addEventListener('click', () => { if(storyIntroModalEl) toggleModal(storyIntroModalEl, false); initGame(); });
@@ -1524,18 +1509,16 @@
         if(closeStoryProgressModalBtn) closeStoryProgressModalBtn.addEventListener('click', () => toggleModal(storyProgressModalEl, false));
         if(closeMaintenanceModalBtn) closeMaintenanceModalBtn.addEventListener('click', () => {
             if(aiMaintenanceModalEl) toggleModal(aiMaintenanceModalEl, false);
-            if (!isGameStarted) { // If game hasn't started, go back to genre selection
+            if (!isGameStarted) { 
                 if(genreModalEl) toggleModal(genreModalEl, true);
             }
-            // If game was in progress, user can try interacting again.
         });
         if(closeGameOverModalBtn) closeGameOverModalBtn.addEventListener('click', () => toggleModal(gameOverModalEl, false));
         if(playAgainBtn) playAgainBtn.addEventListener('click', () => {
             if(gameOverModalEl) toggleModal(gameOverModalEl, false);
-            if(gameContainerEl) gameContainerEl.style.display = 'none'; // Hide game area
-            if(genreModalEl) toggleModal(genreModalEl, true); // Show genre selection
-            populateGenreGrid(); // Refresh genres
-            // Reset game state variables
+            if(gameContainerEl) gameContainerEl.style.display = 'none'; 
+            if(genreModalEl) toggleModal(genreModalEl, true); 
+            populateGenreGrid(); 
             CURRENT_STORY_DATA = { 
                 gameId: null, title: "尚未生成", initialScenario: "請先選擇一個故事類型。", solution: null, 
                 sessionHintPool: [], hostingStyle: "標準", storySummary: "AI 正在整理思緒...", 
@@ -1548,23 +1531,23 @@
             };
             isGameStarted = false;
             gameEnded = false;
-            updateNicknameDisplay(); // Ensure nickname is current
+            updateNicknameDisplay(); 
         });
 
         if(changeNicknameBtnGenre) changeNicknameBtnGenre.addEventListener('click', () => {
-            updateNicknameDisplay(); // Load current nickname into input
+            updateNicknameDisplay(); 
             if(nicknameInputEl) nicknameInputEl.value = playerNickname === "匿名玩家" ? "" : playerNickname;
             if(nicknameModalEl) toggleModal(nicknameModalEl, true);
-            if(closeNicknameModalBtn) closeNicknameModalBtn.style.display = 'block'; // Show close button
+            if(closeNicknameModalBtn) closeNicknameModalBtn.style.display = 'block'; 
             if(saveNicknameBtn) saveNicknameBtn.textContent = "儲存暱稱";
         });
 
         if(saveNicknameBtn) saveNicknameBtn.addEventListener('click', () => {
-            saveNickname(!initialNicknameSet); // Pass true if it's the initial setup
+            saveNickname(!initialNicknameSet); 
         });
         if(closeNicknameModalBtn) closeNicknameModalBtn.addEventListener('click', () => {
             toggleModal(nicknameModalEl, false);
-            if (!initialNicknameSet) { // If initial setup was skipped, go back to genre modal
+            if (!initialNicknameSet) { 
                 toggleModal(genreModalEl, true);
             }
         });
@@ -1573,15 +1556,12 @@
         
         if(newHintButtonEl) newHintButtonEl.addEventListener('click', () => {
             if (hintsRemaining > 0 && !gameEnded && CURRENT_STORY_DATA.gameId) {
-                let hintToGive = "沒有更多獨特的提示了，試試這個吧！"; // Default if pool is empty
+                let hintToGive = "沒有更多獨特的提示了，試試這個吧！"; 
                 
                 if (CURRENT_STORY_DATA.sessionHintPool && CURRENT_STORY_DATA.sessionHintPool.length > 0) {
-                    hintToGive = CURRENT_STORY_DATA.sessionHintPool.pop(); // Get a hint from the shuffled pool
+                    hintToGive = CURRENT_STORY_DATA.sessionHintPool.pop(); 
                     console.log("從 sessionHintPool 取出的提示:", hintToGive);
                 } else {
-                    // This case should ideally not be reached if MAX_HINTS is less than or equal to
-                    // the initial size of sessionHintPool (which includes DEFAULT_HINTS).
-                    // However, as a fallback:
                     if (DEFAULT_HINTS.length > 0) {
                         hintToGive = DEFAULT_HINTS[Math.floor(Math.random() * DEFAULT_HINTS.length)];
                         showToast("所有專屬提示已用完，提供一個通用提示。", "info");
@@ -1589,7 +1569,7 @@
                     } else {
                         showToast("所有提示已用盡！", "info");
                         console.warn("sessionHintPool 和 DEFAULT_HINTS 都已空，無法提供提示。");
-                        return; // No hints left to give
+                        return; 
                     }
                 }
                 
@@ -1607,10 +1587,10 @@
         // Initial Setup
         updateNicknameDisplay();
         populateGenreGrid();
-        if (genreModalEl) toggleModal(genreModalEl, false); // Start with genre modal hidden
-        if (nicknameModalEl) { // Show nickname modal first
+        if (genreModalEl) toggleModal(genreModalEl, false); 
+        if (nicknameModalEl) { 
             toggleModal(nicknameModalEl, true);
-            if(saveNicknameBtn) saveNicknameBtn.textContent = "開始遊戲"; // Initial button text
+            if(saveNicknameBtn) saveNicknameBtn.textContent = "開始遊戲"; 
         }
         if(rulesHintsCountEl) rulesHintsCountEl.textContent = MAX_HINTS;
     </script>
