@@ -1225,7 +1225,7 @@
             }
 
             if (isWin) {
-                if(gameOverTrophyEl) gameOverTrophyEl.textContent = isCheated ? "🤫" : "�";
+                if(gameOverTrophyEl) gameOverTrophyEl.textContent = isCheated ? "🤫" : "🏆";
                 if(gameOverTitleEl) {
                     gameOverTitleEl.textContent = victoryMessageFromServer || (isCheated ? "作弊成功!" : "🎉 恭喜！成功揭露所有線索！ 🎉");
                     gameOverTitleEl.className = `font-bold text-2xl ${isCheated ? 'text-yellow-400' : 'text-green-400'}`;
