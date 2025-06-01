@@ -641,7 +641,7 @@
                         <th>暱稱</th>
                         <th>劇本</th>
                         <th>回合</th>
-                        <th>解答字數</th>
+                        <th>總提問字數</th>
                         <th>稱號</th>
                         <th>完成時間</th>
                     </tr>
@@ -1236,7 +1236,7 @@
 
                 if (!isCheated) {
                     console.log("準備提交到排行榜的劇本類型 (endGame):", CURRENT_STORY_DATA.selected_genre);
-                    await saveToLeaderboard(playerNickname, finalTurns, finalSolution.length, playerTitleFromAI || "海龜湯高手");
+                    await saveToLeaderboard(playerNickname, finalTurns, totalCharCount, playerTitleFromAI || "海龜湯高手");
                 }
             } else {
                 if(gameOverTrophyEl) gameOverTrophyEl.textContent = "🤔";
@@ -1502,14 +1502,14 @@
             });
         }
 
-        async function saveToLeaderboard(nickname, turns, storySolutionLength, title) {
-            const payload = {
-                nickname: nickname,
-                rounds: turns,
-                story_solution_length: storySolutionLength,
-                title_earned: title,
-                genre: CURRENT_STORY_DATA.selected_genre || "未知類型"
-            };
+        async function saveToLeaderboard(nickname, turns, charCountForLeaderboard, title) { // 參數名修改以更清晰
+    const payload = { 
+        nickname: nickname, 
+        rounds: turns, 
+        story_solution_length: charCountForLeaderboard, // 後端欄位名不變，但現在存的是 totalCharCount
+        title_earned: title,
+        genre: CURRENT_STORY_DATA.selected_genre || "未知類型" 
+    };
             console.log("準備儲存到排行榜的資料:", payload);
             const result = await makeApiCall(LEADERBOARD_ADD_URL, payload, 'POST', "儲存成績中...", "儲存排行榜");
             if (result && result.success) {
